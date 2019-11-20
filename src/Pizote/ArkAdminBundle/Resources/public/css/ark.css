@@ -10,7 +10,7 @@ html {
 }
 body {
   font-family: 'Open Sans', Arial, sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   color: #666;
   line-height: 2;
   background-color: #FFF;
@@ -120,11 +120,11 @@ a:focus {
   color: #2a6496;
 }
 .table {
-  font-size: 12px;
+  font-size: 11px;
   border-top: solid 1px #EEE;
 }
 .table > thead > tr > th {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   border-bottom: none;
   text-transform: uppercase;
@@ -2373,7 +2373,7 @@ table.dataTable thead th {
   font-weight: 300;
 }
 label {
-  font-weight: 600;
+  font-weight: 500;
 }
 .form-control[disabled],
 .form-control[readonly],
