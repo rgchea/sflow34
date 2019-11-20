@@ -1,0 +1,1272 @@
+
+<style>
+
+	.ui-helper-hidden-accessible{
+		display: none;
+	}
+    .input-group {
+        z-index: 0;
+    }
+    
+	.select2-search{
+		z-index: 1 !important;
+		
+	}
+	
+	input[type="radio"], .radio-inline input[type="radio"]  {
+		float:right !important;
+	    margin-left: -20px !important;
+	}	
+	    
+</style>
+
+<script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+<script type="text/javascript" src="{{ asset('bundles/pizotearkadmin/js/raphael-sketchpad-master/javascripts/raphael-2.0.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/pizotearkadmin/js/raphael-sketchpad-master/javascripts/json2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/pizotearkadmin/js/raphael-sketchpad-master/src/raphael.sketchpad.js') }}"></script>
+		
+		<div data-widget-editbutton="false" data-widget-colorbutton="false" id="wid-id-2" class="jarviswidget jarviswidget-sortable" style="" role="widget">
+
+			<header role="heading">
+				<h2>Orden de Reparación #{{entity.repairOrder.ticketNumber}}</h2>
+
+				<span id="spinner" class="jarviswidget-loader" style="display: none"><i class="fa fa-refresh fa-spin"></i></span>
+				<script
+				  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+				  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+				  crossorigin="anonymous"></script>  
+				  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">				
+			</header>
+
+  
+			<!-- widget div-->
+			<div role="content">
+
+				<!-- widget edit box -->
+				<div class="jarviswidget-editbox">
+					<!-- This area used as dropdown edit box -->
+
+				</div>
+				<!-- end widget edit box -->
+
+				<!-- widget content -->
+				<div class="widget-body">
+					
+					<div class="form-group col-md-6">
+						<h3 class="text-info"><b></b>ESTADO-> {{order_status}}</b></h3>
+					</div>
+					<div class="form-group col-md-6">
+						<h3 class="text-info"><b></b>Técnico: {{entity.assignedTo.username}}</b></h3>
+					</div>
+
+					<div class="clearfix"></div>				
+					
+	                    {{ form_start(form) }}
+	                    {{ form_errors(form) }}
+						
+						<fieldset>
+
+							<p class="accordion-expand-holder">
+							    <a id="expand_all" class="accordion-expand-all" href="#">Ver Todo</a>
+							</p>
+							<div id="accordion" class="ui-accordion ui-widget ui-helper-reset">
+							
+							    <h3 class="accordion-header ui-accordion-header ui-helper-reset ui-state-default ui-accordion-icons ui-corner-all">
+							        <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"></span>
+							        Datos del Dispositivo
+							    </h3>
+							    <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom">
+
+							    	
+							        <p>
+
+										<div class="clearfix"></div>
+				                        <div class="form-group col-sm-1">
+				                            <label for="">Operador</label>
+				                            <input disabled="" value="{{entity.repairOrder.operator.name}}" />
+				                        </div>						
+			
+				                        <div class="form-group col-sm-1">
+				                            <label for="">Agencia</label>
+				                            <input disabled="" value="{{entity.repairOrder.agency.name}}" />
+				                        </div>					
+				                        
+										
+				                        <div class="form-group col-sm-1">
+				                            <label for="">Tipo</label>
+				                            <input disabled="" value="{{entity.repairOrder.deviceType.name}}" />
+				                        </div>						
+			
+				                        <div class="form-group col-sm-1">
+				                            <label for="">Color</label>
+				                            <input disabled="" value="{{entity.repairOrder.deviceColor.name}}" />
+				                        </div>
+										<div class="form-group col-md-1" >&nbsp;</div>
+										<div class="form-group col-sm-1">
+											<label for="">Problema</label>
+											<textarea cols="50" rows="4" disabled="disabled">{{entity.repairOrder.deviceProblem}}</textarea>
+										</div>
+
+
+			
+										<div class="clearfix"></div>
+				                        <div class="form-group col-sm-1">
+				                            <label for="">Marca</label>
+				                            <input disabled="" value="{{entity.repairOrder.deviceBrand.name}}" />
+				                        </div>		
+				                        <div class="form-group col-sm-1">
+				                            <label for="">Modelo</label>
+				                            <input disabled="" value="{{entity.repairOrder.deviceModel.name}}" />
+				                        </div>
+
+										<div class="form-group col-md-1" >&nbsp;</div>
+										<div class="form-group col-md-1" >&nbsp;</div>
+										<div class="form-group col-md-1" >&nbsp;</div>
+
+										<div class="form-group col-sm-1">
+											<label for="">Observaciones</label>
+											<textarea cols="50" rows="4" disabled="disabled">{{entity.repairOrder.deviceObservation}}</textarea>
+										</div>
+
+										<div class="clearfix"></div>
+				                        <div class="form-group col-md-1" >
+				                            <label for="">IMEI</label>
+				                            <input disabled="" value="{{entity.repairOrder.deviceImei}}" />
+				                        </div>						
+									
+			                        
+				                        <div class="form-group col-md-1" >
+				                            <label for="">Cod Fab</label>
+				                            <input disabled="" value="{{entity.repairOrder.deviceCodeFab}}" />
+				                        </div>
+
+										<div class="form-group col-md-1" >&nbsp;</div>
+										<div class="form-group col-md-1" >&nbsp;</div>
+										<div class="form-group col-md-1" >&nbsp;</div>
+
+										<div class="form-group col-sm-1">
+											<label for="">Accesorios</label>
+											<textarea cols="50" rows="4" disabled="disabled">{{strAccessories}}</textarea>
+										</div>
+
+
+
+									<div class="clearfix"></div>
+
+										<div class="form-group col-sm-1" >
+											<label for="">Tipo de Ingreso</label>
+											<input disabled="" value="{{entity.repairOrder.repairEntrytype.name}}" />
+										</div>
+
+										<div class="form-group col-md-1" >&nbsp;</div>
+										<div class="form-group col-md-1" >&nbsp;</div>
+										<div class="form-group col-md-1" >&nbsp;</div>
+										<div class="form-group col-md-1" >&nbsp;</div>
+
+										<div class="form-group col-sm-1">
+											<label for="">Fallas</label>
+											<textarea cols="50" rows="4" disabled="disabled">{{strDefects}}</textarea>
+										</div>
+
+
+									<div class="clearfix"></div>
+				                        
+				                        <div class="form-group col-sm-1" >
+				                            <label for="">Fecha de Compra</label>
+				                            <input disabled="" value="{{entity.repairOrder.devicePurchaseDate|date('Y-m-d')}}" />
+				                        </div>						
+									
+			                        
+				                        <div class="form-group col-sm-1" >
+				                            <label for="">Número Asociado</label>
+				                            <input disabled="" value="{{entity.repairOrder.phoneNumber}}" />
+				                        </div>			
+				                        	
+				                        				                        	
+		
+
+										
+
+										<div class="clearfix"></div>
+										<br>
+										<div id="wrapper">
+										    <img style="width:800px; z-index: -10" src="{{ asset('bundles/soluceladmin/img/phoneview.png')}}">
+
+												<div  id="editor" style="width:800px;position: absolute: margin-top: -400px" ></div>	
+											  
+										    </div>
+										</div>				                        		  							        	
+							        </p>
+							    </div>
+								<h3 class="accordion-header ui-accordion-header ui-helper-reset ui-state-default ui-accordion-icons ui-corner-all">
+							        <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"></span>
+							        Datos de Reparación
+							    </h3>
+							     <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom">
+							        <p>
+
+
+
+										 <div class="form-group col-md-6">
+											 <label for="device_imei_out">IMEI OUT</label>
+											 <input type="text" name="repairo[device_imei_out]" id="device_imei_out" required="required" class="form-control" value="{{entity.repairOrder.deviceImeiOut}}">
+										 </div>
+
+
+										 <div class="form-group col-md-6">
+											 <label for="device_imei2_out">IMEI 2 OUT</label>
+											 <input type="text" name="repairo[device_imei2_out]" id="device_imei2_out" required="required" class="form-control" value="{{entity.repairOrder.deviceImei2Out}}">
+										 </div>
+
+									 	<div class="clearfix"></div>
+							    		{% set myDisplay = entity.repairOrder.deviceBrand.name == "Motorola" ?  1 : 0 %}
+	
+	
+										{% if myDisplay %}
+										
+											<div class="clearfix"></div>
+								
+											<div class="form-group col-md-6">
+										      <label for="device_msn_out">SERIAL NUMBER OUT</label>
+										      <input type="text" name="repairomoto[device_msn_out]" id="device_msn_out" required="required" class="form-control" value="{{entity.repairOrder.deviceMsnOut}}">
+											</div>											
+										
+					                        <div class="form-group col-md-6">
+					                            {{ form_label(form.softwareOut) }}
+					                            {{ form_errors(form.softwareOut) }}
+					                            {{ form_widget(form.softwareOut, { 'attr': {'class' : 'form-control', 'required' : "required" } }
+					                            ) }}
+					                        </div>	  		
+					                        
+					                        <div class="form-group col-md-6">
+					                            {{ form_label(form.actionReasonCode) }}
+					                            {{ form_errors(form.actionReasonCode) }}
+					                            {{ form_widget(form.actionReasonCode, { 'attr': {'class' : 'form-control', 'required' : "required" } }
+					                            ) }}
+					                        </div>		
+					                        
+					                       	<div  class="clearfix"></div>
+					                       	 
+
+
+					                        <div class="form-group col-md-6">
+					                            {{ form_label(form.transactionCode) }}
+					                            {{ form_errors(form.transactionCode) }}
+					                            {{ form_widget(form.transactionCode, { 'attr': {'class' : 'form-control', 'required' : "required" } }
+					                            ) }}
+					                        </div>						            
+										
+										{% endif %}
+
+										 <div class="form-group col-md-6">
+											 {{ form_label(form.problemFoundCode) }}
+											 {{ form_errors(form.problemFoundCode) }}
+											 {{ form_widget(form.problemFoundCode, { 'attr': {'class' : 'form-control', 'required' : "required" } }
+											 ) }}
+										 </div>
+
+									 <div class="clearfix"></div>
+										
+				                        <div class="form-group col-md-6">
+				                            {{ form_label(form.warrantyComment) }}
+				                            {{ form_errors(form.warrantyComment) }}
+				                            {{ form_widget(form.warrantyComment, { 'attr': {'class' : 'form-control' } }
+				                            ) }}
+				                        </div>	   
+				                        
+				                        <div class="form-group col-md-6">
+				                        	
+											<label class="required" for="repair_order_humidity">Rastro de Humedad</label>
+											<select id="repair_order_humidity" class="select2-search" name="repair_order[humidity]">
+												
+												<option {{ entity.repairOrder.humidity ? '' : 'selected="selected"'}}  value="0">No</option>
+												<option {{ entity.repairOrder.humidity ? 'selected="selected"' : ''}} value="1">Si</option>
+											</select>	                        	
+			
+				                            
+				                        </div>
+				                        				                                             
+				                        <div class="clearfix"></div>		
+										
+				                        <div class="form-group col-md-6">
+				                            {{ form_label(form.hasWarranty) }}
+				                            {{ form_errors(form.hasWarranty) }}
+				                            {{ form_widget(form.hasWarranty, { 'attr': {'class' : 'select2-search' } }
+				                            ) }}	                        	
+				                        	{#
+											<label for="repair_order_fix_hasWarranty">Tiene Garantía</label>
+											<select id="repair_order_fix_hasWarranty" name="repair_order_fix[hasWarranty]" class="select2-search" >
+												<option {{ entity.hasWarranty ? '' : 'selected="selected"'}}  value="0">No</option>
+												<option {{ entity.hasWarranty ? 'selected="selected"' : ''}} value="1">Si</option>
+											</select>	                        	
+				                        		
+											#}
+											<a id="changePrint" class="btn-warning" tabindex="0" aria-controls="dt_basic" href="#" data-toggle="modal" data-target="#myChangeModal">
+												<span>Boleta de Cambio</span>
+											</a>			                            	
+											
+				                            
+				                        </div>		                        	
+				                        	
+				                        {#
+				                        <div class="form-group col-md-6">
+				                            {{ form_label(form.warrantyComment) }}
+				                            {{ form_errors(form.warrantyComment) }}
+				                            {{ form_widget(form.warrantyComment, { 'attr': {'class' : 'form-control' } }
+				                            ) }}
+				                        </div>		                        
+				                        	
+				                        #}
+				                        
+				                        <div class="form-group col-md-6">
+				                            {{ form_label(form.fixDetail) }}
+				                            {{ form_errors(form.fixDetail) }}
+				                            {{ form_widget(form.fixDetail, { 'attr': {'class' : 'form-control' } }
+				                            ) }}
+				                        </div>
+				                        
+		                        	
+				
+				                        <div class="clearfix"></div>	                        
+				                        
+										<div class="form-group col-md-6" style="float: right">
+											<button class="btn btn-primary" onclick="sendToPendingStatus('{{entity.id}}');" type="button">Enviar a Pendiente por Repuesto</button>	
+										</div>										
+				                        
+										<div class="clearfix"></div>
+										<br>							
+										<div class="form-group col-md-6">
+											<button class="btn btn-primary" onclick="addFix();" type="button">Agregar Reparación</button>	
+										</div>
+										
+										<div class="form-group col-md-6">
+											
+											{% if(entity.orderConfirmation == 0) %}
+												
+												<button class="btn btn-primary" onclick="addReplacement();" type="button">Agregar Repuestos</button>
+												<button id="requestSAPButton" type="button" class="btn btn-info" onclick="requestSAP();">Consultar Repuestos y Costos</button>									
+												
+												
+												<!-- Button trigger modal -->
+												<button style="display: none"  id="repairmentConfirmation" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" onclick="requestSAP();">Confirmar compra de Repuestos</button>									
+												<button style="display: none"  id="repairmentConfirmationTMP" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal"></button>	
+												
+											{% endif %}
+											
+			
+										</div>
+																	
+										<div class="clearfix"></div>
+										<div class="form-group col-md-6">&nbsp;</div>
+										<div class="form-group col-md-6">
+											<div class="form-group col-sm-5">
+					                            {{ form_label(form.isStorehouse) }}
+					                            {{ form_errors(form.isStorehouse) }}
+					                            {{ form_widget(form.isStorehouse, { 'attr': {'class' : '', 'onClick' : 'requisitionDisplay()' } }
+					                            ) }}
+					                            
+												<div id="requisitionDiv">
+						                            {{ form_label(form.requisitionNumber) }}
+						                            {{ form_errors(form.requisitionNumber) }}
+						                            {{ form_widget(form.requisitionNumber, { 'attr': {'class' : '' } }
+						                            ) }}													
+												</div>
+											</div>										
+											
+										</div>
+										
+										<div class="form-group col-md-6">
+											<table id="fixTable">
+												<tbody>
+					
+													{% set fixCount = 0 %}
+													
+													{% for fix in fixes %}
+
+														{% set fixCount = fixCount + 1 %}
+														<tr id="tr_repair_order_fix_{{fixCount}}">
+															<td>
+																<label class="required" for="repair_order_fix">Reparación {{fixCount}}&nbsp;</label><span style="cursor:pointer" onclick="deleteFix({{fixCount}});" class="label label-danger arrowed arrow-left">Eliminar</span>
+																<select id="repair_order_fix_{{fixCount}}" name="fix[{{fixCount}}]" class="select2-search">
+																	<option value="{{fix.deviceFixType.id}}">{{fix.deviceFixType.name}} /Nivel-{{fix.deviceFixType.deviceFixLevel.name}}</option>							
+																</select>
+															</td>
+			
+														</tr>		
+
+													{% endfor %}
+													
+																								
+												</tbody>
+											</table>
+											
+										</div>		                        	                            
+				                        
+				                        
+										<div class="form-group col-md-6">
+											<table id="replacementTable">
+												<tbody>
+					
+													{% set replacementCount = 1 %}
+													{% set replacementAvailable = 1 %}
+													<script language="JavaScript">
+														var arrReplacements = {};
+													</script>
+													{% set replacementDisabled = entity.orderConfirmation ? 'disabled="disabled"' : ''%}
+													
+													
+													{% for replacement in replacements %}
+														{# ////GROUP BY TYPE IN SELECT #}
+														
+														<script>
+															arrReplacements['{{replacementCount}}'] = {};
+															arrReplacements['{{replacementCount}}']['id'] = '{{replacement.deviceReplacement.id}}';
+															arrReplacements['{{replacementCount}}']['quantity'] = '{{replacement.quantity}}'; 
+															
+														</script>
+														
+														
+														
+														<tr id="tr_repair_order_replacement_{{replacementCount}}">
+															<td>
+																<label class="required" for="">Repuesto {{replacementCount}}&nbsp;</label>{% if(entity.orderConfirmation == 0) %}<span style="cursor:pointer" onclick="deleteReplacement({{replacementCount}});" class="label label-danger arrowed arrow-left">Eliminar</span>{% endif%}
+																<select id="repair_order_replacement_{{replacementCount}}" name="replacement[{{replacementCount}}][id]" class="select2-search">
+																	<option value="{{replacement.deviceReplacement.id}}">{{replacement.deviceReplacement.name}} /Código {{replacement.deviceReplacement.replacementCode}}</option>						
+																</select>
+																<select id="repair_order_replacement_quantity_{{replacementCount}}" name="replacement[{{replacementCount}}][quantity]" class="select2-search">
+																	<option value="{{replacement.quantity}}">Cantidad = {{replacement.quantity}}</option>						
+																</select>													
+															</td>
+			
+															<td>
+																<div id="replacement_availability_{{replacementCount}}"></div>
+															</td>														
+														</tr>		
+														{% set replacementCount = replacementCount + 1 %}										
+													{% endfor %}
+													{% if(replacementCount > 1) %}
+														<script>
+															$("#requestSAPButton").show();
+														</script>
+													{% endif %}
+			
+													<tr>
+														<td colspan="4" align="right">&nbsp;</td>
+													</tr>
+													
+													<tr>
+														<td colspan="4" align="right" id="tdFixingPrice">
+															Total: <input {{replacementDisabled}} id="repair_order_fix_fixingPrice" name="repair_order_fix[fixingPrice]" value="{{entity.fixingPrice}}" />
+															<!-- Total: <input id="fixing_price" name="repair_order_fix[fixing_price]" /> -->
+														</td>
+													</tr>
+																								
+												</tbody>
+											</table>
+											
+										</div>	
+										<div class="clearfix"></div><br>
+										<div class="form-actions">
+											<a onclick="$('#modalBody').val('')" href="{{ path('solucel_admin_repairorderfix_index') }}" class="btn btn-default"> Cancelar </a>
+				
+											<button class="btn btn-primary">
+												<i class="fa fa-save"></i>
+												Guardar
+											</button>
+										</div>
+										
+										<div class="clearfix"></div>
+											                        
+				                        							        	
+							        </p>
+							    </div>
+							        <h3 class="accordion-header ui-accordion-header ui-helper-reset ui-state-default ui-accordion-icons ui-corner-all">
+							        <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"></span>
+							        Control de Calidad
+							    </h3>
+							     <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom">
+							        <p>
+                    	
+				                       
+										<div class="clearfix"></div>		
+										
+										{% if(objQualityControl != NULL) %}	
+											<div class="form-group col-md-6">		
+												<label>Comentario de Control de Calidad</label><br>
+												<span>{{objQualityControl.qaComment}}</span>
+											</div>							
+											<div class="clearfix"></div>
+											<div class="form-group col-md-6">
+						            			<!-- TECNICO-->
+												<table id="dt_basic" width="100%" class="table table-striped table-bordered table-hover"> 
+									                <thead>
+														<tr>
+									                    	<th style="text-align: center" colspan="4">Detalle de Control de Calidad</th>
+									                    </tr>	                	
+									                    <tr>
+									                    	<th width="70%" >&nbsp;</th>
+											                <th width="15%">Funciona</th>
+											                <th width="15%">NO Funciona</th>
+															<th width="15%">No Aplica</th>
+									                    </tr>
+									                </thead>
+									                <tbody>
+									                
+									                {% for group in arrGroups %}
+									                	<tr>
+									                		<td style="text-align: left" colspan="4"><b>{{group.name}}</b></td>
+									                	</tr>
+									                	{% for subgroup in group.subgroups %}
+									                		
+									                		{% if(arrRegisters[group.id][subgroup.id] is defined) %}
+										                		<tr>
+										                			<td><label style="margin-left:3em">{{subgroup.name}}</label></td>
+										                			<td>
+										                				<input disabled="disabled" type="radio"  {{ arrRegisters[group.id][subgroup.id]['check'] == 'true' ? 'checked="checked"' : '' }} />
+										                			</td>
+										                			<td>
+										                				<input  disabled="disabled"  type="radio" {{ arrRegisters[group.id][subgroup.id]['uncheck'] == 'true' ? 'checked="checked"' : '' }} />
+										                			</td>
+										                			<td>
+										                				<input  disabled="disabled" type="radio" {{ arrRegisters[group.id][subgroup.id]['not_apply'] == 'true' ? 'checked="checked"' : '' }}  />
+										                			</td>	                			
+										                		</tr>
+									                		
+									                		{% endif %}
+									                	
+									                	{% endfor %}
+									                {% endfor %}	
+									                	                
+									                
+									                </tbody>
+									            </table>										
+											</div>
+										{% endif %}
+										
+										
+										<div class="clearfix"></div>
+							        </p>
+							    </div>
+							</div>
+
+
+
+	                        <div class="hide">
+	                            {{ form_rest(form) }}
+	                        </div>
+
+						</fieldset>
+						<div class="clearfix"></div>
+						<br><br>
+						
+						<h2>Acciones</h2>
+						<div class="form-actions">
+							<a href="{{ path('solucel_admin_repairorderfix_finish', {id: entity.id}) }}" class="btn btn-success btn-lg"> Finalizar Reparación</a>
+							<a href="{{ path('solucel_admin_repairorderfix_unfix', {id: entity.id}) }}" class="btn btn-danger btn-lg"> IRREPARABLE</a>
+						</div>
+
+					<!--</form>-->
+					{{ form_end(form) }}					
+
+				</div>
+				<!-- end widget content -->
+				
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="closeModal">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">Confirmación de reparación</h4>
+                            </div>
+                            <div class="modal-body" id="modalBody"></div>
+                            <div class="modal-footer" id="modalFooter"></div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->								
+				
+                <!-- Modal BOLETA DE CAMBIO-->
+                <div class="modal fade" id="myChangeModal" tabindex="-1" role="dialog" aria-labelledby="myChangeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="closeModal">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">Boleta de Cambio - Datos del nuevo dispositivo </h4>
+                                
+                                
+                               
+                            </div>
+                            <div class="modal-body" id="modalChangeBody">
+                            	<form id="deviceChangeForm" action="{{ path('solucel_admin_repairorderfix_change', {'id' : entity.id}) }}" method="post">
+                            		<fieldset>
+				                        <div class="form-group col-sm-5">
+				                        	<label for="" class="required">IMEI</label>
+											<input required="required" class="search-form" name="repair_order[deviceChangeImei]" />
+				                        </div>
+										<div class="clearfix"></div>                                
+										<div class="form-group col-sm-5">
+											<label for="" class="required">Marca</label><br>
+											<select class="select2-choice" id="repair_order_deviceChangeBrand" name="repair_order[deviceChangeBrand]" onchange="changeModel();">
+												<option value="0" >---</option>
+												{% for brand in deviceBrand %}
+													<option value="{{brand.id}}">{{brand.name}}</option>
+												{% endfor %}
+											</select>
+										</div>
+										<div class="form-group col-sm-5">
+											<label for="" class="required">Modelo</label><br>
+											<select class="select2-choice" id="repair_order_deviceChangeModel" name="repair_order[deviceChangeModel]"></select>
+										</div>                             	
+                            			
+                            		</fieldset>
+                            	</form>
+                            </div>
+                            <div class="modal-footer" id="modalChangeFooter">
+                            	<button type="button" onclick="$('#deviceChangeForm').submit()" class="btn btn-default" data-dismiss="modal">Aceptar</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->								
+				
+
+			</div>
+			<!-- end widget div -->
+
+		</div>
+
+		
+
+
+<script type="text/javascript" language="Javascript">
+
+	
+	var fixCount = '{{fixCount}}';
+	var replacementCount = '{{replacementCount}}';
+	var warranty = parseInt('{{entity.hasWarranty}}') == 1 ? 1 : 0;
+	var clientRepairmentConfirmation = parseInt('{{entity.clientRepairmentConfirmation}}') == 1 ? 1 : 0;
+
+	var myFixes = parseInt(fixCount);
+	//alert(myFixes);
+
+	console.log(warranty+"warranty");
+	
+
+	$( document ).ready(function() {
+		
+		
+		
+		{% if show is defined %}
+			disableForms();
+		{% endif %}
+
+
+		//$("form[name='repair_order_fix']").validate();
+
+
+		$('[name="repair_order_fix"]').validate({
+			ignore: [],
+			submitHandler: function(form) {
+				// something to do when the form is valid
+				$('#pizote_spinner').show();
+
+				if(myFixes > 0){
+					return true;
+				}
+				else{
+					$('#pizote_spinner').hide();
+					alert("Debe de agregar al menos una reparación");
+					return false;
+				}
+
+
+			},
+
+			invalidHandler: function(event, validator) {
+				// something to do when validation fails
+				console.log("alert fails");
+
+				//validator.errorList contains an array of objects, where each object has properties "element" and "message".  element is the actual HTML Input.
+				for (var i=0;i<validator.errorList.length;i++){
+					console.log(validator.errorList[i]);
+				}
+
+				//validator.errorMap is an object mapping input names -> error messages
+				for (var i in validator.errorMap) {
+					console.log(i, ":", validator.errorMap[i]);
+				}
+				$('#pizote_spinner').hide();
+
+			}
+
+		});
+
+		//si hay garantia, si hay disponibilidad de repuestos
+		//mostrar boton de confirmacion
+		
+		{% if(replacementCount > 1 and entity.clientRepairmentConfirmation == 1)  and replacementAvailable == 1 %}		
+			$("#repairmentConfirmation").show();
+		{% endif %}
+		
+		
+		printChangeShow();		
+		
+		{% if checkRepairInsert == 1 %}
+			checkWarranty();	
+		{% endif %}
+		
+		
+		$("#repair_order_fix_hasWarranty").change(function(){
+			printChangeShow();
+		});
+		
+		{% if(replacementCount > 1 and entity.orderConfirmation == 0) %}		
+			requestSAP();		
+		{% endif %}		
+		
+		requisitionDisplay();
+
+		
+	});
+	
+
+
+	function requisitionDisplay(){
+		
+		isStorehouse = $("#repair_order_fix_isStorehouse");
+		
+		if(isStorehouse.prop( "checked" )){
+			
+			$("#requisitionDiv").show("slow");
+			$("#repair_order_fix_requisitionNumber").rules("add", {required:true});
+		}
+		else{
+			
+			$("#requisitionDiv").hide("slow");
+			$("#repair_order_fix_requisitionNumber").rules("add", {required:false});
+		}			
+				
+	}
+
+
+	
+	function changeModel(){
+		
+		if($("#repair_order_deviceChangeBrand").val() != ""){
+			
+			$.ajax({
+				type:"POST",
+				dataType:"json",
+				url:"{{ path('solucel_admin_repairorder_device_model') }}",
+				data:"device_brand_id="+$( "#repair_order_deviceChangeBrand" ).val(),
+				success:function(data){
+					
+					
+					var items = [];
+					  $.each( data, function( key, val ) {
+					    items.push( "<option value='" + key + "'>" + val + "</option>" );
+					  });
+										
+					$("#repair_order_deviceChangeModel").html(items);	
+				}
+			});	 
+		}
+	}		
+		
+
+	function printChangeShow(){
+		
+		if($("#repair_order_fix_hasWarranty").val() == 1){//con garantía
+			$("#changePrint").show();	
+		}
+		else{
+			$("#changePrint").hide();
+		}
+	}
+	
+	
+	
+
+    function addFix(){
+
+		if(myFixes >= 1){
+			alert("Solo puede agregar una reparación.");
+		}
+		else{
+			myFixes = myFixes+1;
+			console.log(myFixes);
+
+			$.ajax({
+				type:"POST",
+				dataType:"html",
+				url:"{{ path('solucel_admin_repairorderfix_addfix') }}",
+				data:"count="+fixCount,
+				success:function(data){
+
+					$("#fixTable tbody").append(data);
+					$("#repair_order_fix_"+fixCount).focus();
+					fixCount++;
+
+				}
+			});
+
+		}
+
+
+    }
+
+    function deleteFix(id){
+		$('#tr_repair_order_fix_'+id).remove();
+		myFixes =  myFixes-1;
+		console.log(myFixes);
+		    	
+    }
+
+	function changeTransactionCode(code){
+
+		{% if myDisplay %}
+
+			//alert("es mnotorola");
+			console.log($("#tc_"+code).val());
+			transactionCode = $("#tc_"+code).val();
+			if(transactionCode != 0){
+				$("#repair_order_fix_transactionCode").val(transactionCode);
+			}
+
+		{% endif  %}
+	}
+
+
+    
+    function deleteReplacement(id){
+    	
+		$('#tr_repair_order_replacement_'+id).remove();
+		$("#requestSAPButton").remove();
+		$("#repairmentConfirmation").remove();
+		//$("#repair_order_fix_fixingPrice").remove();
+		$("#tdFixingPrice").remove();
+    }	  	
+
+	var path = "{{ path('solucel_admin_repairorderfix_replacementfind', { 'brand': entity.repairOrder.deviceBrand.id|url_encode })  }}";
+	
+    function addReplacement(){
+
+		$('#pizote_spinner').show();
+		$.ajax({
+			type:"POST",
+			dataType:"html",
+			url:"{{ path('solucel_admin_repairorderfix_addreplacement') }}",
+			data:"count="+replacementCount,
+			async: false,
+			success:function(data){
+
+				$("#replacementTable tbody").append(data);	
+				$("#repair_order_replacement_"+replacementCount).focus();	
+				
+				$("#requestSAPButton").remove();
+				$("#repairmentConfirmation").remove();
+				//$("#repair_order_fix_fixingPrice").remove();
+				$("#tdFixingPrice").remove();
+				
+				
+				script = document.createElement("script");
+				script.innerHTML = '$( "#repair_order_replacement_'+replacementCount+'").autocomplete({'+
+					      'source: "'+path+'",'+
+					      'minLength: 2,'+    
+					      'select: function( event, ui ) {'+
+					      		'console.log(this.id);'+
+								'replacementID = ui.item.id;'+
+								'console.log(replacementID);'+
+								'$("#hidden_repair_order_replacement_'+replacementCount+'").val(replacementID)'+			
+							
+					      '},'+
+						    'change: function (event, ui) {'+
+						        'if (ui.item == null || ui.item == undefined) {'+
+						            '$( "#repair_order_replacement_'+replacementCount+'").val("");'+
+						         '}'+   
+						    '}'+					      
+					    '});';	
+				// Append
+				$("#replacementTable tbody").append(script);
+								
+				script = document.createElement("script");
+				script.innerHTML = '$("#repair_order_replacement_'+replacementCount+'").rules("add", "required")';
+				$("#replacementTable tbody").append(script);		
+
+				
+
+				
+				replacementCount++;	
+								
+			}
+		});
+
+		$('#pizote_spinner').hide();
+			                                	
+    }
+
+	function checkWarranty(){
+		
+		var orderID = '{{orderID}}';
+		
+		$.ajax({
+			type:"POST",
+			dataType:"html",
+			url:"{{ path('solucel_admin_repairorderfix_checkwarranty') }}",
+			data: {orderID: orderID},
+			//data: { code: code, userid: userid }
+			success:function(data){
+				console.log("warranty:"+data);
+				$("#repair_order_fix_hasWarranty").val(data);		
+			}
+		});  		
+  			
+	} 
+	
+	
+	
+	function disableForms(){
+		// this will disable all elements
+		
+		var elems = document.getElementsByTagName('input');
+		
+		var len = elems.length;
+		
+		for (var i = 0; i < len; i++) {
+		    elems[i].disabled = true;
+		}		
+		
+
+		$(".select2-search").prop('disabled', true);
+
+	}
+		
+    function requestSAP(){
+    	
+    	//IMPORTANTE si es 1 es consulta 
+    	//si es 0 es confirmacion
+    	//console.log('{{replacementCount}}');
+    	if('{{replacementCount}}' > 1){
+   	
+	    	$('#pizote_spinner').show();
+	    	
+	
+			var orderID = '{{orderID}}';
+			
+	
+			$.ajax({
+				
+				type:"POST",
+				//dataType:"html",
+				dataType:"json",
+				url:"{{ path('solucel_admin_repairorderfix_request_sap') }}",
+				data: {arrValues: arrReplacements, orderID: orderID, entityID: '{{entity.id}}'},
+				success:function(data){
+					console.log(data);
+					
+					//replacement_availability_
+					var replacementAvailability = 1;
+						//var items = [];
+						var globalTotal = 0; 
+				
+				
+				if(data == "false" ){//cheatest
+					alert("No se pudo generar consulta a SAP, intentar de nuevo.");
+					$("#repair_order_fix_fixingPrice").val("0.00");
+				}		
+				else{
+
+					  $.each( data.availability, function( key, val ) {
+					  	
+					  	
+					  	quantity = $("#repair_order_replacement_quantity_"+key).val();
+					  	globalTotal = globalTotal + (val.price*quantity);
+					  	if(val.availability == 1){
+					  		//alert("entra3");
+					  		$("#replacement_availability_"+key).html('<span class="label label-success arrowed arrow-left">DISPONIBLE</span>'+
+					  													'<input type="hidden" id="replacement_available_'+key+'" value="1" name="replacement['+key+'][available]" />');
+					  	}
+					  	else{
+					  		
+					  		//alert("entra4");
+					  		$("#replacement_availability_"+key).html('<span class="label label-warning arrowed arrow-left">NO DISPONIBLE</span>'+
+					  													'<input type="hidden" id="replacement_available_'+key+'" value="0" name="replacement['+key+'][available]" />');
+					  		replacementAvailability = 0;
+					  	}
+					  	
+
+					  	  
+					  });
+						  
+				    	//CON GARANTIA////
+				    	if(warranty == 1){					    	
+				    			console.log("entra1 mail no warranty");	
+				    			//disponibilidad de repuestos
+							  if(replacementAvailability == 1){
+							  		//alert("entra1");
+							  		$('#repairmentConfirmation').show();	
+						    		$("#modalBody").html("El dispositivo posee garantía y puede repararse sin confirmación del cliente.");
+									
+									$("#modalFooter").html('<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>'+
+						                                	'<button type="button" class="btn btn-primary" onclick="orderSAP()">Confirmar Orden</button>');    		
+
+
+	
+							  }
+							  else{
+							  	//no hay disponibilidad de repuestos
+							  	 getReplacementEmail();
+							  	 console.log("entra2 mail no warranty");
+							  	 $('#repairmentConfirmation').hide();
+							  		
+							  }
+				    		
+				    	}
+				    	else{//SIN GARANTIA//
+								
+								console.log("entra3 mail no warranty");
+								///si el cliente ya confirmó la reparación no muestra este mensaje
+								//alert(clientRepairmentConfirmation);
+								if(clientRepairmentConfirmation == 0){
+									console.log("clientRepairmentConfirmation == 0");
+									
+						    		$("#modalBody").html("El dispositivo no posee garantía, se envió un correo al cliente para la confirmación de la reparación con un costo estimado. "+ 
+						    								"Así mismo el call center será encargado de darle seguimiento al cliente para confirmar la reparación.");
+									
+									$("#modalFooter").html('<button type="button" class="btn btn-default" data-dismiss="modal">Aceptar</button>');
+									$("#repairmentConfirmationTMP").trigger('click');							                                	
+									
+								}
+								else{
+
+						    		$("#modalBody").html("El cliente confirmó la reparación del dispositivo y hay repuestos disponibles.");
+									
+									$("#modalFooter").html('<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>'+
+						                                	'<button type="button" class="btn btn-primary" onclick="orderSAP()">Confirmar Orden</button>');    		
+								  	
+								  	$('#repairmentConfirmation').show();
+									
+								}
+											    		
+				    			//disponibilidad de repuestos
+							  if(replacementAvailability == 1){
+
+
+							  }
+							  else{
+							  	
+							  	if(clientRepairmentConfirmation == 1){
+							  		getReplacementEmail();	
+							  	}
+							  	//no hay disponibilidad de repuestos
+							  	 
+							  	 $('#repairmentConfirmation').hide();
+							  		
+							  }				    		
+						    												    	
+				    	}
+				    						  
+				  
+						$("#repair_order_fix_fixingPrice").val(globalTotal.toFixed(2)); 					
+					
+				}
+					
+						
+						  
+				$('#pizote_spinner').hide();
+		
+									
+				}
+			}); 		
+	    	    		
+    	}
+    	else{
+    		alert("Deben existir repuestos guardados en la orden");
+    	}
+	 
+  		//calculateTotal();
+    	
+    }		
+		
+ 
+ 	function getReplacementEmail(){
+ 		
+		var orderID = '{{orderID}}';
+		var result = false;
+		
+		$.ajax({
+			type:"POST",
+			dataType:"html",
+			async: false, //blocks window close
+			//dataType:"json",
+			url:"{{ path('solucel_admin_repairorderfix_check_replacement_email') }}",
+			data: { id: '{{entity.id}}'},
+			//data: { code: code, userid: userid }
+			success:function(data){
+				console.log(data+"getReplacementEmail");
+				
+		  		if(data == 1){
+			  		alert("No existe disponibilidad de repuestos, se ha enviado un correo para solicitud de los mismos.\n"+
+							"La Orden se encuentra en 'Pendiente por Repuestos'");
+			  		
+			  		//document.location.reload(true);
+		  		}
+		  		else{
+		  			alert("No existe disponibilidad de repuestos, envío de correo de solicitud de repuestos fallido intentar de nuevo.")	
+		  		}
+		  		
+								
+			}
+		});  
+		
+				
+ 	}   
+    
+    function orderSAP(){
+    	
+    	console.log("orderSAP");
+    	//si todos los respuestos están en existencia
+    	$('#pizote_spinner').show();
+    	$("#closeModal").trigger( "click" );
+
+		var orderID = '{{orderID}}';
+		
+
+		$.ajax({
+			type:"POST",
+			//dataType:"html",
+			//async: true,
+			dataType:"json",
+			url:"{{ path('solucel_admin_repairorderfix_order_sap') }}",
+			data: {orderID: orderID, entityID: '{{entity.id}}'},
+			
+			//data: { code: code, userid: userid }
+			success:function(data){
+				
+				if(data == 1){
+					alert("Se ha generado orden de compra de los repuestos exitosamente.");
+					document.location.reload(true);
+					//$("#repairmentConfirmation").hide();	
+				}
+				else{
+					alert("No se pudo generar consulta a SAP, intentar de nuevo.");
+				}
+				
+				$('#pizote_spinner').hide();
+					
+								
+			}
+		});       	
+    	
+    	
+    }
+    
+    function sendToPendingStatus(id){
+    	$('#pizote_spinner').show();
+    	
+			$.ajax({
+				type:"POST",
+				dataType:"json",
+				async: false,
+				url:"{{ path('solucel_admin_repairorderfix_pendingstatus') }}",
+				data:"id="+id,
+				success:function(data){
+					
+					location.reload();
+				}
+			});	    	
+    		
+    		//location.reload();
+    }
+    
+	$(document).ready(function() {
+		
+	  $(window).keydown(function(event){
+	    if(event.keyCode == 13) {
+	      event.preventDefault();
+	      return false;
+	    }
+	  });
+	  
+		  
+		  
+		  
+		var headers = $('#accordion .accordion-header');
+		var contentAreas = $('#accordion .ui-accordion-content ').hide();
+		var expandLink = $('.accordion-expand-all');
+		
+		// add the accordion functionality
+		headers.click(function() {
+		    var panel = $(this).next();
+		    var isOpen = panel.is(':visible');
+		 
+		    // open or close as necessary
+		    panel[isOpen? 'slideUp': 'slideDown']()
+		        // trigger the correct custom event
+		        .trigger(isOpen? 'hide': 'show');
+		
+		    // stop the link from causing a pagescroll
+		    return false;
+		});
+		
+		// hook up the expand/collapse all
+		expandLink.click(function(){
+		    var isAllOpen = $(this).data('isAllOpen');
+		    
+		    contentAreas[isAllOpen? 'hide': 'show']()
+		        .trigger(isAllOpen? 'hide': 'show');
+		});
+		
+		// when panels open or close, check to see if they're all open
+		contentAreas.on({
+		    // whenever we open a panel, check to see if they're all open
+		    // if all open, swap the button to collapser
+		    show: function(){
+		        var isAllOpen = !contentAreas.is(':hidden');   
+		        if(isAllOpen){
+		            expandLink.text('Esconder todo')
+		                .data('isAllOpen', true);
+		        }
+		    },
+		    // whenever we close a panel, check to see if they're all open
+		    // if not all open, swap the button to expander
+		    hide: function(){
+		        var isAllOpen = !contentAreas.is(':hidden');
+		        if(!isAllOpen){
+		            expandLink.text('Ver Todo').data('isAllOpen', false);
+		        } 
+		    }
+		});	
+	    	  
+	  	expandLink.click();
+	  	
+	  	
+   
+    ////SVG SKETCHPAD PARA DIBUJAR
+	  
+	
+	
+	  var strokes = [{
+	    type:"path",
+	    path:'{{entity.repairOrder.sketchpadData}}',
+	    fill:"none", "stroke":"#ff0000",
+	    "stroke-opacity":1,
+	    "stroke-width":5,
+	    "stroke-linecap":"round",
+	    "stroke-linejoin":"round"
+	  }];
+	  
+	  var sketchpad = Raphael.sketchpad("editor", {
+	    width: 800,
+	    height: 475,
+	    strokes: strokes,
+	    editing: false
+		});
+		
+	  	
+	  	$("#editor").attr('style',  'width: 800px;cursor: crosshair;-moz-user-select: text;position:absolute; margin-top: -500px');
+	  
+	});
+	
+		
+	
+</script>

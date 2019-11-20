@@ -1,0 +1,69 @@
+Solucel\AdminBundle\Entity\DeviceModel:
+    type: entity
+    table: device_model
+    indexes:
+        device_brand_id:
+            columns:
+                - device_brand_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 128
+            options:
+                fixed: false
+                default: ''
+        isObsolete:
+            type: boolean
+            nullable: false
+            options:
+                default: false
+            column: is_obsolete
+        productCodeIn:
+            type: string
+            nullable: false
+            length: 16
+            options:
+                fixed: false
+                default: ''
+            column: product_code_in
+        productCodeOut:
+            type: string
+            nullable: false
+            length: 16
+            options:
+                fixed: false
+                default: ''
+            column: product_code_out            
+            
+                        
+        #style:
+        #    type: string
+        #    nullable: false
+        #    length: 128
+        #    options:
+        #        fixed: false
+        #        default: ''
+    manyToOne:
+        deviceBrand:
+            targetEntity: DeviceBrand
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_brand_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+    lifecycleCallbacks: {  }

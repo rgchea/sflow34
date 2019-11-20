@@ -1,0 +1,24 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    
+    {% if(app.session.get('user_role') == 'TECNICO REPARADOR' or app.session.get('user_role') == 'TECNICO AGENCIA') %}
+    	<li> <a href="{{ path('solucel_admin_repairorderfix_index') }}">Listado Ordenes de Reparación</a> </li>
+    {% else %}
+    	<li> <a href="{{ path('solucel_admin_repairorder_index') }}">Listado Ordenes de Reparación</a></li>
+    {% endif %}
+    
+    {% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:RepairOrder:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+
+	
+	
+
+{% endblock %}

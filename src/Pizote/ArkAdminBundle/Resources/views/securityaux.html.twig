@@ -1,0 +1,145 @@
+{% spaceless %}
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <title>
+        {% set _block_title = block('title') %}
+        {% if _block_title is not empty %}
+          {% block title %}{% endblock %} |
+        {% endif %}
+        Backend
+
+        </title>
+        <meta name="description" content="">
+        <meta name="author" content="">
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="{{ asset('bundles/pizotearkadmin/css/main.css') }}">
+        <!-- Basic Styles -->
+        <!--<link href="{{ asset('bundles/pizotearkadmin/css/bootstrap.css')  }}" rel="stylesheet" />--> 
+        <link rel="stylesheet" href="{{ asset('bundles/pizotearkadmin/bower_components/font-awesome/css/font-awesome.min.css') }}">
+	
+        <!-- SmartAdmin Styles : Please note (smartadmin-production.css) was created using LESS variables -->
+        <!--<link rel="stylesheet" type="text/css" media="screen" href="{{ asset('bundles/pizotearkadmin/css/ark.css') }}">-->
+        <!--<link rel="stylesheet" type="text/css" media="screen" href="{{ asset('bundles/pizotearkadmin/css/app.css') }}"> --> 
+
+        <!-- FAVICONS -->
+        <!-- <link rel="shortcut icon" href="{{ asset('bundles/wbcsmartadmin/img/favicon/favicon.ico') }}" type="image/x-icon"> -->
+        <!-- <link rel="icon" href="{{ asset('bundles/wbcsmartadmin/img/favicon/favicon.ico') }}" type="image/x-icon"> -->
+
+        <!-- GOOGLE FONT -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
+        	<link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.css" rel="stylesheet" type="text/css" />
+        	<link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css" rel="stylesheet" type="text/css" />
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.js"></script>
+        
+        
+        <script src="{{ asset('bundles/pizotearkadmin/js/jquery-validation-1.13.1/dist/jquery.validate.js')  }}"></script>
+
+
+        <style>
+
+        		
+            	.slick-next::before, .slick-prev::before {
+            		color: #000000 !important;
+            }
+            
+            body {
+        		background: #ffffff !important;
+            }
+        </style>
+
+    </head>
+    <body id="login" class="animated fadeInDown">
+        <!-- possible classes: minified, no-right-panel, fixed-ribbon, fixed-header, fixed-width-->
+        <header id="header">
+            <!--<span id="logo"></span>-->
+
+            <div id="logo-group">
+                
+                <!-- END AJAX-DROPDOWN -->
+            </div>
+
+
+        </header>
+
+        <div id="main" role="main">
+			
+            <!-- MAIN CONTENT -->
+            <div id="content" class="container">
+
+				{% block images_background %}
+                {% endblock %}
+                <div class="row">
+                    
+                    <div style="position: relative;left: 40%">
+                    	{#<img width="250px" src="{{ asset('bundles/wbcadministrator/images/Logo_Opera.png') }}" alt="">#}
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4" style="position: relative;left: 35%">
+                        <br><br><br>
+                        <div class="well no-padding">
+
+                            {% block fos_user_content %}
+                            {% endblock %}
+
+                        </div>                        
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!--================================================== -->  
+		{#
+        <!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
+        <script src="{{ asset('bundles/pizotearkadmin/js/pace/pace.min.js') }}"></script>
+
+        <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+        <script src="{{ asset('bundles/pizotearkadmin/js/jquery.min.js') }}"></script>
+
+        <script src="{{ asset('bundles/pizotearkadmin/js/jquery-ui.min.js') }}"></script>
+
+        <!-- BOOTSTRAP JS -->       
+        <script src="{{ asset('bundles/pizotearkadmin/js/bootstrap.min.js') }}"></script>
+
+        <!-- CUSTOM NOTIFICATION -->
+        <script src="{{ asset('bundles/pizotearkadmin/js/notification/SmartNotification.min.js') }}"></script>
+
+        <!-- JQUERY VALIDATE -->
+        <script src="{{ asset('bundles/pizotearkadmin/js/jquery-validate/jquery.validate.min.js') }}"></script>
+        
+        <!-- browser msie issue fix -->
+        <script src="{{ asset('bundles/pizotearkadmin/js/msie-fix/jquery.mb.browser.min.js') }}"></script>
+
+        			
+		#}
+
+        <!--[if IE 7]>
+            
+            <h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+            
+        <![endif]-->
+
+        <!-- MAIN APP JS FILE -->
+        
+
+
+    </body>
+    <script type="text/javascript">
+    var $jq = jQuery.noConflict();
+    
+    $jq(document).ready(function(){	
+            $jq(".single-item").slick({
+            		dots: true,
+            		autoplay: true,
+        		    autoplaySpeed: 2000,
+            });
+    });
+    </script>
+</html>
+{% endspaceless %}

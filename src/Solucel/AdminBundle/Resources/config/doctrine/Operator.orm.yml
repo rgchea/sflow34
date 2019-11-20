@@ -1,0 +1,59 @@
+Solucel\AdminBundle\Entity\Operator:
+    type: entity
+    table: operator
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 128
+            options:
+                fixed: false
+                default: ''
+        description:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+        enabled:
+            type: boolean
+            nullable: false
+            options:
+                default: true
+        createdAt:
+            type: datetime
+            nullable: false
+            options:
+                default: '2001-01-01 00:00:00'
+            column: created_at
+        daysToFixDevice:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                default: '1'
+            column: days_to_fix_device
+            
+        logoPath:
+            type: string
+            nullable: true
+            length: 128
+            options:
+                fixed: false
+            column: logo_path
+            
+    lifecycleCallbacks:
+        prePersist: [ preUpload ]
+        preUpdate:  [ preUpload ]
+        postPersist: [ upload ]
+        postUpdate: [ upload ]
+        postRemove: [ removeUpload ] 

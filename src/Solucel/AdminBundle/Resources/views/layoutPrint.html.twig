@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html >
+    <head>
+
+        <title>
+	      {% set _block_title = block('title') %}
+	      {% if _block_title is not empty %}
+	          {% block title %}{% endblock %} |
+	      {% endif %}
+	      Solucel        	
+        </title>
+        
+        
+    {% block metas %}    
+        <meta charset="utf-8" />
+        
+    {% endblock %}
+    {% block stylesheets %}
+		
+	
+	
+      
+    {% endblock %}        
+    <!--<script src="{{ asset('bundles/pizotearkadmin/js/libs/jquery-2.0.2.min.js') }}"></script> 
+    <script src="{{ asset('bundles/pizotearkadmin/js/libs/jquery-ui-1.10.3.min.js') }}"></script>-->
+
+	{% block javascripts %}
+        <!-- JS -->
+
+        
+	{% endblock %}    
+      
+
+    </head>
+    
+    <body>
+
+
+		{% block body %}
+		
+	
+		{% endblock %}
+		
+		
+
+
+    </body>
+</html>

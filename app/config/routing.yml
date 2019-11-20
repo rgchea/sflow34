@@ -1,0 +1,20 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+solucel_admin:
+    resource: "@SolucelAdminBundle/Resources/config/routing.yml"
+    prefix:   /
+
+fos_user_security:
+    resource: "@PizoteArkAdminBundle/Resources/config/routing/security.xml"
+    prefix: /auth
+
+fos_user_resetting:
+    resource: "@SolucelMyFOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /profile
+

@@ -1,0 +1,18 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+{{ parent() }}
+<li> <a href="{{ path('solucel_admin_devicefixlevel_index') }}">Listado de Niveles</a> </li>
+<li> <a href="{{ path('solucel_admin_devicefixlevel_edit', { 'id': entity.id }) }}">Editar Nivel</a> </li>
+{% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:DeviceFixLevel:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+    
+    
+
+{% endblock %}

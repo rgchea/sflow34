@@ -1,0 +1,112 @@
+Solucel\AdminBundle\Entity\Client:
+    type: entity
+    repositoryClass: Solucel\AdminBundle\Repository\ClientRepository
+    table: client
+    indexes:
+        state_id:
+            columns:
+                - state_id      
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        clientCode:
+            type: string
+            nullable: false
+            length: 16
+            options:
+                fixed: false
+                default: '0000'  
+            column: client_code
+        name:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+                default: ''
+        lastName:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+                default: ''
+            column: last_name
+        dpi:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+                default: '0'
+                
+        nit:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+                default: '0'  
+        email:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+                default: ''                              
+        phone:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+        contactPhone:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+                default: '0'
+            column: contact_phone
+        contactPhoneOther:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+                default: '0'
+            column: contact_phone_other
+        enabled:
+            type: boolean
+            nullable: false
+            options:
+                default: true
+        createdAt:
+            type: datetime
+            nullable: false
+            options:
+                default: '2001-01-01 00:00:00'
+            column: created_at
+        clientType:
+            type: string
+            nullable: true
+            length: 32
+            options:
+                fixed: false
+            column: client_type
+            
+    manyToOne:
+        state:
+            targetEntity: State
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                state_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true            
+    lifecycleCallbacks: {  }

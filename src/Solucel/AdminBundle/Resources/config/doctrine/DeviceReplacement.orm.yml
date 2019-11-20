@@ -1,0 +1,93 @@
+Solucel\AdminBundle\Entity\DeviceReplacement:
+    type: entity
+    table: device_replacement
+    repositoryClass: Solucel\AdminBundle\Repository\DeviceReplacementRepository
+    indexes:
+        device_replacement_type_id:
+            columns:
+                - device_replacement_type_id  
+        device_brand_id:
+            columns:
+                - device_brand_id
+        device_model_id:
+            columns:
+                - device_model_id                  
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        replacementCode:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+                default: '0000'  
+            column: replacement_code      
+        name:
+            type: string
+            nullable: false
+            length: 128
+            options:
+                fixed: false
+                default: ''   
+        strdatabase:
+            type: string
+            nullable: false
+            length: 128
+            options:
+                fixed: false
+                default: ''                               
+        description:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+    manyToOne:
+        deviceReplacementType:
+            targetEntity: DeviceReplacementType
+            cascade: { }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_replacement_type_id:
+                    referencedColumnName: id
+                    #onDelete: SET NULL
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+            
+        deviceBrand:
+            targetEntity: DeviceBrand
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_brand_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        deviceModel:
+            targetEntity: DeviceModel
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_model_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+            
+                            
+    lifecycleCallbacks: {  }

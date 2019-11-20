@@ -1,0 +1,31 @@
+{% extends 'OperaShipperBundle::layout_shipper.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li> <a href="{{ path('opera_shipper_notification') }}">Listado de Notificaciones</a> </li>
+    <li> <a href="{{ path('opera_shipper_notification_new') }}">Nueva Notificaci&oacute;n</a> </li>
+    {% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('OperaShipperBundle:Notification:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+    
+	$( document ).ready(function() {
+
+	  
+	});	
+	
+	function checkDates(){
+		if($('#wbc_administratorbundle_notification_registrationDate').val() == "" || $('#wbc_administratorbundle_notification_expirationDate').val() == ""){
+			return false;
+		}
+		else{
+			return false;
+		}
+		
+	}
+	
+{% endblock %}

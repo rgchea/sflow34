@@ -1,0 +1,256 @@
+<fieldset>
+	
+	<div class="form-group col-md-6">
+		<h3 class="text-info"><b></b>ESTADO-> {{order_status}}</b></h3>
+	</div>
+	<div class="form-group col-md-6">
+		<h3 class="text-info"><b></b>Técnico: {{entity.assignedTo.username}}</b></h3>
+	</div>
+
+	
+	
+		<div class="clearfix"></div>
+    
+		{% set myDisplay = entity.repairOrder.deviceBrand.name == "Motorola" ?  1 : 0 %}
+
+
+		<div class="form-group col-md-6">
+			<label for="device_imei_out">IMEI OUT</label>
+			<input type="text" name="repairomoto[device_imei_out]" id="device_imei_out" required="required" class="form-control" value="{{entity.repairOrder.deviceImeiOut}}">
+		</div>
+
+
+		<div class="form-group col-md-6">
+			<label for="device_imei2_out">IMEI 2 OUT</label>
+			<input type="text" name="repairomoto[device_imei2_out]" id="device_imei2_out" required="required" class="form-control" value="{{entity.repairOrder.deviceImei2Out}}">
+		</div>
+		<div class="clearfix"></div>
+
+		{% if myDisplay %}
+			
+
+
+			<div class="form-group col-md-6">
+		      <label for="device_msn_out">SERIAL NUMBER OUT</label>
+		      <input type="text" name="repairomoto[device_msn_out]" id="device_msn_out" required="required" class="form-control" value="{{entity.repairOrder.deviceMsnOut}}">
+			</div>											
+										
+           	<div  class="clearfix"></div>           	
+		
+		
+            <div class="form-group col-md-6">
+                {{ form_label(form.softwareOut) }}
+                {{ form_errors(form.softwareOut) }}
+                {{ form_widget(form.softwareOut, { 'attr': {'class' : 'form-control', 'required' : "required" } }
+                ) }}
+            </div>	  		
+            
+            <div class="form-group col-md-6">
+                {{ form_label(form.actionReasonCode) }}
+                {{ form_errors(form.actionReasonCode) }}
+                {{ form_widget(form.actionReasonCode, { 'attr': {'class' : 'form-control', 'required' : "required" } }
+                ) }}
+            </div>		
+            
+           	<div  class="clearfix"></div>
+
+
+            <div class="form-group col-md-6">
+                {{ form_label(form.transactionCode) }}
+                {{ form_errors(form.transactionCode) }}
+                {{ form_widget(form.transactionCode, { 'attr': {'class' : 'form-control', 'required' : "required" } }
+                ) }}
+            </div>						            
+		
+		{% endif %}
+
+		<div class="form-group col-md-6">
+			{{ form_label(form.problemFoundCode) }}
+			{{ form_errors(form.problemFoundCode) }}
+			{{ form_widget(form.problemFoundCode, { 'attr': {'class' : 'form-control', 'required' : "required" } }
+			) }}
+		</div>
+
+	<div class="clearfix"></div>
+    <div class="form-group col-md-6">
+        {{ form_label(form.hasWarranty) }}
+        {{ form_errors(form.hasWarranty) }}
+        {{ form_widget(form.hasWarranty, { 'attr': {'class' : 'select2-search' } }
+        ) }}	                        	
+    	{#
+		<label for="repair_order_fix_hasWarranty">Tiene Garantía</label>
+		<select id="repair_order_fix_hasWarranty" name="repair_order_fix[hasWarranty]" class="select2-search" >
+			<option {{ entity.hasWarranty ? '' : 'selected="selected"'}}  value="0">No</option>
+			<option {{ entity.hasWarranty ? 'selected="selected"' : ''}} value="1">Si</option>
+		</select>	                        	
+    		
+		#}
+		<a id="changePrint" class="btn-warning" tabindex="0" aria-controls="dt_basic" href="#" data-toggle="modal" data-target="#myChangeModal">
+			<span>Boleta de Cambio</span>
+		</a>			                            	
+		
+        
+    </div>		                        	
+    	
+    	
+
+    
+    <div class="clearfix"></div>
+    
+    <div class="form-group col-md-6">
+        {{ form_label(form.warrantyComment) }}
+        {{ form_errors(form.warrantyComment) }}
+        {{ form_widget(form.warrantyComment, { 'attr': {'class' : 'form-control' } }
+        ) }}
+    </div>		                        
+    
+    <div class="form-group col-md-6">
+        {{ form_label(form.fixDetail) }}
+        {{ form_errors(form.fixDetail) }}
+        {{ form_widget(form.fixDetail, { 'attr': {'class' : 'form-control' } }
+        ) }}
+    </div>
+    
+    <div class="form-group col-md-6">
+    	
+		<label class="required" for="repair_order_humidity">Rastro de Humedad</label>
+		<select id="repair_order_humidity" class="select2-search" name="repair_order[humidity]">
+			
+			<option {{ entity.repairOrder.humidity ? '' : 'selected="selected"'}}  value="0">No</option>
+			<option {{ entity.repairOrder.humidity ? 'selected="selected"' : ''}} value="1">Si</option>
+		</select>	                        	
+
+        
+    </div>		                        	
+
+    <div class="clearfix"></div>	                        
+    
+	
+	{#
+    <div class="form-group col-md-6">
+        {{ form_label(form.fixingPrice) }}
+        {{ form_errors(form.fixingPrice) }}
+        {{ form_widget(form.fixingPrice, { 'attr': {'class' : 'form-control' } }
+        ) }}
+    </div>								
+	#}
+    
+	<div class="clearfix"></div>
+	<br>							
+	<div class="form-group col-md-6">
+		<button class="btn btn-primary" type="button">Reparaciones</button>	
+	</div>
+	
+	<div class="form-group col-md-6">	
+		<button class="btn btn-primary" type="button">Repuestos</button>
+	</div>
+								
+	<div class="clearfix"></div>
+	
+	
+	<div class="form-group col-md-6">
+		<table id="fixTable">
+			<tbody>
+
+				{% set fixCount = 1 %}
+				
+				{% for fix in fixes %}
+					
+					<tr id="tr_repair_order_fix_{{fixCount}}">
+						<td>
+							<label class="required" for="repair_order_fix">Reparación {{fixCount}}&nbsp;</label>
+							<select id="repair_order_fix_{{fixCount}}"  class="select2-search">
+								<option value="{{fix.deviceFixType.id}}">{{fix.deviceFixType.name}} /Nivel-{{fix.deviceFixType.deviceFixLevel.name}}</option>							
+							</select>
+						</td>
+
+					</tr>		
+					{% set fixCount = fixCount + 1 %}										
+				{% endfor %}
+				
+															
+			</tbody>
+		</table>
+		
+	</div>		                        	                            
+    
+    
+	<div class="form-group col-md-6">
+		<table id="replacementTable">
+			<tbody>
+
+				{% set replacementCount = 1 %}
+				{% set replacementAvailable = 1 %}
+				
+				<script language="JavaScript">
+					var arrReplacements = {};
+				</script>
+				{% set replacementDisabled = entity.orderConfirmation ? 'disabled="disabled"' : ''%}
+				
+				{% if replacements is not empty %}
+					{% for replacement in replacements %}
+						{# ////GROUP BY TYPE IN SELECT #}					
+						
+						<tr id="tr_repair_order_replacement_{{replacementCount}}">
+							<td>
+								<label class="required" for="">Repuesto {{replacementCount}}&nbsp;</label>
+								<select id="repair_order_replacement_{{replacementCount}}" name="replacement[{{replacementCount}}][id]" class="select2-search">
+									<option value="{{replacement.deviceReplacement.id}}">{{replacement.deviceReplacement.name}} /Tipo {{replacement.deviceReplacement.DeviceReplacementType.name}}</option>						
+								</select>
+								<select id="repair_order_replacement_quantity_{{replacementCount}}" name="replacement[{{replacementCount}}][quantity]" class="select2-search">
+									<option value="{{replacement.quantity}}">Cantidad = {{replacement.quantity}}</option>						
+								</select>													
+								
+							</td>
+							<td>
+								Precio:<input type="number" step="any"  disabled="disabled" class="inputTotal" id="replacement_price_{{replacementCount}}" value="{{replacement.price }}" name="replacement[{{replacementCount}}][price]"/>
+							</td>
+							<td>
+								<!-- MANO DE OBRA-->
+								Mano de obra:<input type="number" step="any"   class="manoObra" id="replacement_cost_{{replacementCount}}" value="{{replacement.cost}}" name="replacement[{{replacementCount}}][cost]" />
+								
+								
+							</td>												
+							<td>
+								<div id="replacement_availability_{{replacementCount}}">
+									{% if(replacement.available == 1) %}
+										<span class="label label-success arrowed arrow-left">DISPONIBLE</span>
+										<input type="hidden" id="replacement_available_{{replacementCount}}" value="1" name="replacement[{{replacementCount}}][available]" />
+									{% else %}
+										<span class="label label-warning arrowed arrow-left">NO DISPONIBLE</span>
+										<input type="hidden" id="replacement_available_{{replacementCount}}" value="0" name="replacement[{{replacementCount}}][available]" />
+										{% set replacementAvailable = 0 %}
+									{% endif %}
+								</div>
+							</td>														
+						</tr>		
+						{% set replacementCount = replacementCount + 1 %}										
+					{% endfor %}				
+				{% endif %}
+
+				<tr>
+					<td colspan="4" align="right">&nbsp;</td>
+				</tr>
+				
+				<tr>
+					<td colspan="4" align="right" id="tdFixingPrice">
+						Total: <input disabled="disabled" id="repair_order_fix_fixingPrice" name="repair_order_fix[fixingPrice]" value="{{entity.fixingPrice}}" />
+						<!-- Total: <input id="fixing_price" name="repair_order_fix[fixing_price]" /> -->
+					</td>
+				</tr>
+															
+			</tbody>
+		</table>
+		
+	</div>		                        
+    
+	<div class="clearfix"></div>		
+
+	
+	<div class="clearfix"></div>
+</fieldset>
+	<br><br>
+	
+<script>
+	
+</script>

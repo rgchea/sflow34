@@ -1,0 +1,201 @@
+<style>
+
+@page  {
+size: 5.5in 8.5in; 
+margin:.5in .5in .5in .5in; 
+mso-header-margin:.5in; 
+mso-footer-margin:.5in; 
+mso-paper-source:0;
+}
+
+@page :first {
+
+}
+
+h1, h2, h3, h4, h5 {
+  page-break-after: avoid;
+}
+
+table, figure {
+  page-break-inside: avoid;
+}
+
+body {
+  counter-reset: chapternum figurenum;
+}
+
+  @media print {
+        html, body {
+            border: 1px solid white;
+            height: 99%;
+            page-break-after: avoid;
+            page-break-before: avoid;
+        }
+    }
+    
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}  
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #DADADA;
+    color: black;
+} 
+
+label{
+	font-weight: bold;
+}
+
+</style>
+
+<div >
+
+						<fieldset id="myFieldset">
+							
+							
+							<div class="form-group col-md-6">
+								<label class="required" for="repair_order_fix_status">Nota de Envío #{{entity.id}}</label>
+							</div>
+							
+	                        	
+							<div class="clearfix"></div>
+							
+	                        <div class="form-group col-md-6">
+	                        	<label>No de Boleta:</label>
+	                            {{ entity.repairOrder }}
+	                            
+	                        </div>																		
+			
+							<div class="clearfix"></div>
+							
+							<div class="form-group col-md-6">
+								<label>SGS:</label> {{ entity.id }}-{{ entity.repairOrder.id }}	
+								<br>								
+
+								
+								<label class="required">Estado de Entrega:</label>
+								<label class="required">{{entity.deliveryStatus}}</label>	
+								<br>								
+								<label class="required" for="operator">Operador:</label>
+								<label class="required" for="operator">{{entity.repairOrder.operator.name}}</label>
+								
+								<br>
+								
+								<label class="required">Agencia:</label>
+								<label class="required">{{entity.repairOrder.agency.name}}</label>								
+							</div>	
+							
+							<div class="form-group col-md-6">
+	                            <label>Fecha de envío:</label>
+	                            {{ entity.deliveryDateSent|date("Y/m/d") }}
+	                        </div>
+	                       				
+
+							<div class="clearfix"></div>	                        							
+							
+	                        <div class="form-group col-md-6">
+	                        	<label>Desde Agencia:</label>
+	                            {{ entity.deliveryFromAgency == null ? '--' : entity.deliveryFromAgency }}
+	                            
+	                        </div>	
+	                        <div class="form-group col-md-6">
+	                        	<label>Hacia Centro de Servicio:</label>
+	                            {{ entity.deliveryToServiceCenter == null ? '--' : entity.deliveryToServiceCenter}}
+	                            
+	                        </div>
+	                        <div class="clearfix"></div>	
+	                        <div class="form-group col-md-6">
+	                        	<label>Desde Centro de Servicio:</label>
+	                            {{ entity.deliveryFromServiceCenter == null ? '--' : entity.deliveryFromServiceCenter }}
+	                            
+	                        </div>	
+	                        <div class="form-group col-md-6">
+	                        	<label>Hacia Agencia:</label>
+	                            {{ entity.deliveryToAgency == null ? '--' : entity.deliveryToAgency }}
+	                            
+	                        </div>	
+		
+							<div class="clearfix"></div>
+							<br/>
+																								
+				            <table>
+				                <thead>
+				                    <tr>
+				                    	<th>Boleta</th>
+				                    	<th>Marca</th>
+				                    	<th>Cliente</th>
+				                    	<th>Modelo</th>
+				                    	<th>IMEI</th>
+				                    	<th>Teléfono</th>
+				                    </tr>
+				                </thead>
+				                <tbody>
+				                    <tr>
+				                        <td>{{ entity.id }}</td>
+				                        <td>{{ entity.repairOrder.deviceBrand.name }}</td>
+				                        <td>{{ entity.repairOrder.client.name }} {{ entity.repairOrder.client.lastName }}</td>
+				                        <td>{{ entity.repairOrder.deviceModel.name }}</td>
+				                        <td>{{ entity.repairOrder.deviceImei}}</td>
+				                        <td>{{ entity.repairOrder.client.phone}}</td>
+		
+				                    </tr>
+				                
+				                </tbody>
+				            </table>
+		               
+		               		<div class="clearfix"></div>
+		               		<br><br><br>
+	                        <div class="form-group col-md-6">
+	                        	<label>Recibido Por: ____________________________________</label>
+	                            
+	                        </div>	
+		
+							<div class="clearfix"></div>		               
+		               
+						</fieldset>
+						<br />
+
+
+
+</div>
+
+<script language="JavaScript" type="text/javascript">
+
+	
+	$( document ).ready(function() {
+
+	
+		
+		window.print();
+	});
+
+	
+	function disableForms(){
+		// this will disable all elements
+		
+		var elems = document.getElementsByTagName('input');
+		
+		var len = elems.length;
+		
+		for (var i = 0; i < len; i++) {
+		    elems[i].disabled = true;
+		}		
+		
+
+		$(".select2-search").prop('disabled', true);
+		
+
+	}
+	
+	
+
+</script>

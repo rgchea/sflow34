@@ -1,0 +1,18 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+{{ parent() }}
+<li> <a href="{{ path('solucel_admin_problemfoundcode_index') }}">Problem Found Code</a> </li>
+<li> <a href="{{ path('solucel_admin_problemfoundcode_edit', { 'id': entity.id }) }}">Edit Found Code</a> </li>
+{% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:ProblemFoundCode:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+    
+    
+
+{% endblock %}

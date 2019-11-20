@@ -1,0 +1,144 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    
+    {% endblock %}
+
+{% block title %}
+    Resumen Asignación
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/pizotearkadmin/js/plugin/Buttons-1.2.2/css/buttons.dataTables.css') }}">
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/jquery.dataTables-cust.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/Buttons-1.2.2/js/dataTables.buttons.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/Buttons-1.2.2/js/buttons.print.js') }}"></script>
+    
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ColReorder.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/FixedColumns.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ColVis.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ZeroClipboard.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/media/js/TableTools.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/DT_bootstrap.js') }}"></script>
+
+      
+    
+{% endblock %}
+
+
+{% block body -%}
+{{ parent() }}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+
+    </div>
+
+</div>
+
+<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+    <header>
+        <h2> Resumen de Asignación de Ordenes</h2>
+    </header>
+
+    <!-- widget div-->
+    <div>
+		<div class="progress progress-striped">
+			<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+				<span class="sr-only">100% Complete</span>
+			</div>
+		</div> 
+            
+            <fieldset>
+			
+
+				
+		        <!-- widget edit box -->
+		        <div class="jarviswidget-editbox">
+		            <!-- This area used as dropdown edit box -->
+		
+					<br />
+											
+		        </div>
+		        <!-- end widget edit box -->
+		
+		        <!-- widget content -->
+		        <div class="widget-body no-padding">
+		            <div class="widget-body-toolbar">
+		
+		            </div>
+		
+		            <table id="dt_basic" class="table table-striped table-bordered table-hover" width="50%" style="float: left">
+		                <thead>
+		                    <tr>
+		                    	<th>Técnico</th>
+		                    	<th>Orden</th>
+		                    </tr>
+		                </thead>
+		                <tbody>
+		                
+		                {% for entity in entities %}
+		                    <tr id="">
+		                        <td>{{ entity.tech }}</td>
+		                        <td>{{ entity.ticket }}</td>
+		                        
+		                    </tr>
+		                    
+		                {% endfor %}
+		                
+		                </tbody>
+		            </table>
+		
+		
+		        </div>
+		        <!-- end widget content -->
+				
+			</fieldset>
+        
+
+    </div>
+    <!-- end widget div -->
+</div>    
+
+
+
+<script>
+	
+	$( document ).ready(function() {
+	    
+	    
+	    
+	});
+		
+	
+</script>
+
+{% endblock %}
+
+
+{% block extrascripts %}
+
+
+    $('#dt_basic').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {extend: 'print', text: 'Imprimir', message: ''},
+            {extend: 'excel', text: 'Exportar Excel',message: ''}
+            
+        ],
+	    "sPaginationType" : "bootstrap_full",
+	    "aaSorting": [[ 0, "asc" ]],
+	    "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100,"Todos"] ],
+	    "iDisplayLength": -1,
+        "language": {
+            "url": "{{ asset('bundles/pizotearkadmin/js/plugin/datatables/dataTables.spanish.lang') }}"
+        },
+        	    
+    });
+    
+
+{% endblock %}
+

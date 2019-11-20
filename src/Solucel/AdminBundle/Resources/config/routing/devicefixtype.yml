@@ -1,0 +1,36 @@
+solucel_admin_devicefixtype_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:DeviceFixType:index" }
+    methods:  GET
+
+solucel_admin_devicefixtype_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:DeviceFixType:show" }
+    methods:  GET
+
+solucel_admin_devicefixtype_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:DeviceFixType:new" }
+    #methods:  [GET, POST]
+    
+solucel_admin_devicefixtype_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:DeviceFixType:create" }
+    requirements: { _method: post }
+
+
+solucel_admin_devicefixtype_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SolucelAdminBundle:DeviceFixType:edit" }
+    #methods:  [GET, POST]
+    
+
+solucel_admin_devicefixtype_update:
+    path:     /{id}/update
+    defaults: { _controller: "SolucelAdminBundle:DeviceFixType:update" }
+    requirements: { _method: post|put }     
+
+solucel_admin_devicefixtype_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:DeviceFixType:delete" }
+    #methods:  DELETE

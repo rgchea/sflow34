@@ -1,0 +1,37 @@
+Solucel\AdminBundle\Entity\DeviceDefect:
+    type: entity
+    table: device_defect
+    indexes:
+        device_defect_type_id:
+            columns:
+                - device_defect_type_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 128
+            options:
+                fixed: false
+                default: ''
+    manyToOne:
+        deviceDefectType:
+            targetEntity: DeviceDefectType
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_defect_type_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+    lifecycleCallbacks: {  }

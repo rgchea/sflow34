@@ -1,0 +1,36 @@
+solucel_admin_payer_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:Payer:index" }
+    methods:  GET
+
+solucel_admin_payer_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:Payer:show" }
+    methods:  GET
+
+solucel_admin_payer_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:Payer:new" }
+    #methods:  [GET, POST]
+    
+solucel_admin_payer_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:Payer:create" }
+    requirements: { _method: post }
+
+
+solucel_admin_payer_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SolucelAdminBundle:Payer:edit" }
+    #methods:  [GET, POST]
+    
+
+solucel_admin_payer_update:
+    path:     /{id}/update
+    defaults: { _controller: "SolucelAdminBundle:Payer:update" }
+    requirements: { _method: post|put }     
+
+solucel_admin_payer_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:Payer:delete" }
+    #methods:  DELETE

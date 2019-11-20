@@ -1,0 +1,47 @@
+solucel_admin_user_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:User:index" }
+    methods:  GET
+
+solucel_admin_user_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:User:show" }
+    methods:  GET
+
+solucel_admin_user_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:User:new" }
+    #methods:  [GET, POST]
+    
+solucel_admin_user_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:User:create" }
+    requirements: { _method: post }
+
+
+solucel_admin_user_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SolucelAdminBundle:User:edit" }
+    #methods:  [GET, POST]
+    
+
+solucel_admin_user_update:
+    path:     /{id}/update
+    defaults: { _controller: "SolucelAdminBundle:User:update" }
+    requirements: { _method: post|put }     
+
+solucel_admin_user_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:User:delete" }
+    #methods:  DELETE
+
+user_check_existence:
+    path:     /usercheckexistence
+    defaults: { _controller: "SolucelAdminBundle:User:checkExistence" }
+
+user_list_datatables:
+    path: /user/list/datatables
+    defaults:
+        _controller: SolucelAdminBundle:User:listDatatables
+
+  

@@ -1,0 +1,164 @@
+<style>
+    .input-group {
+        z-index: 0;
+    }
+</style>
+
+<div class="row">
+	<article class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
+
+		<div data-widget-editbutton="false" data-widget-colorbutton="false" id="wid-id-2" class="jarviswidget jarviswidget-sortable" style="" role="widget">
+
+			<header role="heading">
+				<h2>Formulario de Clientes</h2>
+
+				<span id="spinner" class="jarviswidget-loader" style="display: none"><i class="fa fa-refresh fa-spin"></i></span>
+			</header>
+
+			<!-- widget div-->
+			<div role="content">
+
+				<!-- widget edit box -->
+				<div class="jarviswidget-editbox">
+					<!-- This area used as dropdown edit box -->
+
+				</div>
+				<!-- end widget edit box -->
+
+				<!-- widget content -->
+				<div class="widget-body">
+
+					
+                    {{ form_start(form) }}
+                    	
+
+						<fieldset>
+							
+	                        <div class="form-group col-md-6">
+	                            {{ form_label(form.clientCode) }}
+	                            {{ form_errors(form.clientCode) }}
+	                            {{ form_widget(form.clientCode, { 'attr': {'class' : 'form-control' } }
+	                            ) }}
+	                        </div>		
+	                        <div class="form-group col-md-6">
+	                            {{ form_label(form.name) }}
+	                            {{ form_errors(form.name) }}
+	                            {{ form_widget(form.name, { 'attr': {'class' : 'form-control' } }
+	                            ) }}
+	                        </div>	
+	                        <div class="form-group col-md-6">
+	                            {{ form_label(form.lastName) }}
+	                            {{ form_errors(form.lastName) }}
+	                            {{ form_widget(form.lastName, { 'attr': {'class' : 'form-control' } }
+	                            ) }}
+	                        </div>	
+							<div class="clearfix"></div>
+							<div class="form-group col-md-6">
+	                            {{ form_label(form.dpi) }}
+	                            {{ form_errors(form.dpi) }}
+	                            {{ form_widget(form.dpi, { 'attr': {'class' : 'form-control' } }
+	                            ) }}
+	                        </div>
+	                        
+							<div class="form-group col-md-6">
+	                            {{ form_label(form.nit) }}
+	                            {{ form_errors(form.nit) }}
+	                            {{ form_widget(form.nit, { 'attr': {'class' : 'form-control' } }
+	                            ) }}
+	                        </div>	                        
+							<div class="clearfix"></div>
+	
+							<div class="form-group col-md-6">
+	                            {{ form_label(form.phone) }}
+	                            {{ form_errors(form.phone) }}
+	                            {{ form_widget(form.phone, { 'attr': {'class' : 'form-control' } }
+	                            ) }}
+								
+							</div>		
+							<div class="form-group col-md-6">
+	                            {{ form_label(form.contactPhone) }}
+	                            {{ form_errors(form.contactPhone) }}
+	                            {{ form_widget(form.contactPhone, { 'attr': {'class' : 'form-control' } }
+	                            ) }}
+								
+							</div>													
+							<div class="clearfix"></div>
+	
+							<div class="form-group col-md-6">
+	                            {{ form_label(form.email) }}
+	                            {{ form_errors(form.email) }}
+	                            {{ form_widget(form.email, { 'attr': {'class' : 'form-control' } }
+	                            ) }}
+								
+							</div>
+							
+	                        <div class="form-group col-md-12">
+	                            {{ form_label(form.clientType) }}
+	                            {{ form_errors(form.clientType) }}
+	                            {{ form_widget(form.clientType) }}
+	                            
+	                        </div> 							
+															
+	                        <div class="clearfix"></div>
+	                        <div class="form-group col-md-12">
+	                            {{ form_label(form.state) }}
+	                            {{ form_errors(form.state) }}
+	                            {{ form_widget(form.state) }}
+	                            
+	                        </div> 							
+	                        
+	                        	                        
+	                        <div class="form-group col-md-12">
+	                            {{ form_label(form.enabled) }}
+	                            {{ form_errors(form.enabled) }}
+	                            {{ form_widget(form.enabled) }}
+	                            
+	                        </div>                        
+	                        <div class="hide">
+	                            {{ form_rest(form) }}
+	                        </div>
+
+						</fieldset>
+
+						<div class="form-actions">
+							<a href="{{ path('solucel_admin_client_index') }}" class="btn btn-default"> Cancelar </a>
+
+							<button class="btn btn-primary">
+								<i class="fa fa-save"></i>
+								Guardar
+							</button>
+						</div>
+
+					<!--</form>-->
+					{{ form_end(form) }}					
+
+				</div>
+				<!-- end widget content -->
+
+			</div>
+			<!-- end widget div -->
+
+		</div>
+
+		<div class="clearfix"></div>
+
+	</article>
+</div>
+
+<script type="text/javascript" language="Javascript">
+	
+	
+	$( document ).ready(function() {
+		
+		$('[name="client"]').validate();
+		$("#client_email").rules("add", {required:true, email: true});
+		$("#client_phone").rules("add", {required:true, digits: true});
+		$("#client_contactPhone").rules("add", {required:true, digits: true});
+			
+	});
+	
+	  	
+
+	
+
+</script>

@@ -1,0 +1,362 @@
+{% extends "PizoteArkAdminBundle::security.html.twig" %}
+
+{% block title %}
+{{ parent() }}
+Registro
+{% endblock %}
+
+{% block fos_user_content %}
+
+{% set arrUrl = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params'))|split('/') %}
+
+{% if 'shipper' in arrUrl %}
+	{% set action = 'fos_user_registration_register_shipper' %}
+{% endif %} 
+
+{% if 'client' in arrUrl %}
+	{% set action = 'fos_user_registration_register_client' %}
+{% endif %}
+
+{% if 'agent' in arrUrl %}
+	{% set action = 'fos_user_registration_register_agent' %}
+{% endif %} 	
+ 	
+
+<style>
+	
+	.col-lg-4 {
+	    width: 80.3333% !important;
+	}	
+	
+.well {
+    background: none repeat scroll 0 0 #fbfbfb;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 1px #ececec;
+    position: relative;
+    left: -33% !important; 
+}
+</style>
+<form action="{{ path(action) }}" {{ form_enctype(form) }} method="POST" class="smart-form client-form" role="form" id="registerForm" name="registerForm">
+    <header style="background-color: #004B5E; color: #FFFFFF">
+    	<script src="{{ asset('bundles/wbcsmartadmin/js/libs/jquery-2.0.2.min.js') }}"></script>
+    	<script src="{{ asset('bundles/wbcsmartadmin/js/libs/jquery-ui-1.10.3.min.js') }}"></script>
+    	<script src="{{ asset('bundles/wbcsmartadmin/js/plugin/jquery-validate/jquery.validate.min.js') }}"></script>
+        Registrarse
+    </header>
+    <fieldset>
+	
+    	{{ form_errors(form) }}
+    
+    
+	        <section>
+	            <label for="email">Correo Electr&oacute;nico:</label>
+	            <label class="input"> <i class="icon-prepend fa fa-envelope-o"></i>
+	            	
+				{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+	            {% if form.email.vars.errors[0].message is defined %}
+	            <span class="help-block">
+	                {{ form.email.vars.errors[0].message }}
+	            </span>
+	            {% endif %}            	
+	        </section>    
+	    
+	    	{#
+	        <section>
+	            <label for="role">Rol:</label>
+	            <label class="input">
+	            {{ form_widget(form.role, {'attr': {'class': 'form-control'}}) }}
+	            {% if form.role.vars.errors[0].message is defined %}
+	            <span class="help-block">
+	                {{ form.role.vars.errors[0].message }}
+	            </span>
+	            {% endif %}
+	        </section>  
+	    		
+	    	#}
+	        
+	        <section id='section_username'>
+	            <label for="username">Usuario:</label>
+	            <label class="input"> <i class="icon-append fa fa-user"></i>
+	            	
+	            {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+	            {% if form.username.vars.errors[0].message is defined %}
+	            <span class="help-block">
+	                {{ form.username.vars.errors[0].message }}
+	            </span>
+	            {% endif %}
+	        </section>  
+	    	
+	    	
+	    	
+	    
+	        <section>
+	            <label for="password">Constrase&ntilde;a:</label>
+	            <label class="input"> <i class="icon-append fa fa-lock"></i>
+	            	
+	            {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+	            {% if form.plainPassword.first.vars.errors[0].message is defined %}
+	            <span class="help-block">
+	                {{ form.plainPassword.first.vars.errors[0].message }}
+	            </span>
+	            {% endif %}
+	        </section>      
+	        
+	        <section>
+	            <label for="password">Confirmar Constrase&ntilde;a:</label>
+	            <label class="input"> <i class="icon-append fa fa-lock"></i>
+	            	
+	            {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+	            {% if form.plainPassword.second.vars.errors[0].message is defined %}
+	            <span class="help-block">
+	                {{ form.plainPassword.second.vars.errors[0].message }}
+	            </span>
+	            {% endif %}
+	        </section>         
+    	</fieldset>
+    
+		<fieldset>
+			<div class="row">
+				<section class="col col-6">
+					<label class="input"> <i class="icon-prepend fa fa-user"></i>
+						<input id="fname" name="fname" placeholder="Nombre" type="text">
+					</label>
+				</section>
+				<section class="col col-6">
+					<label class="input"> <i class="icon-prepend fa fa-user"></i>
+						<input id="lname" name="lname" placeholder="Apellido" type="text">
+					</label>
+				</section>
+			</div>
+			<div class="row">
+				
+				<section class="col col-5">
+					<label for="country">Pa&iacute;s:</label>
+					<label class="select">
+						<select name="country" id="country">
+							<option value="0">--- </option>
+							{% for country in countries %}
+								<option value="{{ country.id }}">{{ country.name}} </option>
+							{% endfor %}
+						</select> <i></i> </label>
+				</section>
+				<section class="col col-5">
+					<label for="state">Departamento:</label>
+					<label class="select">
+						<select name="state" id="state">
+						</select> <i></i> </label>
+				</section>
+				<section class="col col-5">
+					<label for="town">Municipio:</label>
+					<label class="select">
+						<select name="town" id="town">
+
+						</select> <i></i> </label>
+				</section>								
+			</div>
+			
+			<div class="row">
+				<section class="col col-6">
+					<label class="input">
+						<input class="valid" id="address" name="address" placeholder="Direccion">
+					</label>
+				</section>
+			</div>
+
+			
+			<div class="row">
+				<section class="col col-6">
+					<label style="color: #0080FF" id="divCountryCode">()</label><label class="input"> <i class="icon-prepend fa fa-phone"></i>
+						<input class="valid" id="phone" name="phone" placeholder="Teléfono" data-mask="(999) 999-9999" type="tel">
+					</label>
+				</section>
+			</div>
+		</fieldset>
+
+		<fieldset>
+			<section>
+				<div class="inline-group">
+					<label class="radio">
+						<input name="radio-inline" checked="" type="radio">
+						<i></i>Visa</label>
+					<label class="radio">
+						<input name="radio-inline" type="radio">
+						<i></i>MasterCard</label>
+					<label class="radio">
+						<input name="radio-inline" type="radio">
+						<i></i>American Express</label>
+				</div>
+			</section>
+
+			<section>
+				<label class="input">
+					<input id="card_name" name="card_name" placeholder="Nombre en la Tarjeta" type="text">
+				</label>
+			</section>
+
+			<div class="row">
+				<section class="col col-10">
+					<label class="input state-error">
+						<input class="invalid" id="card" name="card" placeholder="Numero de Tarjeta" data-mask="9999-9999-9999-9999" type="text">
+					</label><em class="invalid" for="card">Por favor ingresar un n&uacute;mero v&aacute;lido de Tarjeta</em>
+				</section>
+				<section class="col col-2">
+					<label class="input state-error">
+						<input class="invalid" name="cvv" id="cvv" placeholder="CVV2" data-mask="999" type="text">
+					</label>
+				</section>
+			</div>
+			<div class="row">
+				<label class="label col col-4">Fecha de Expiraci&oacute;n de la tarjeta</label>
+			</div>
+			<div class="row">
+				<section class="col col-5">
+					<label for="card_month">Mes:</label>
+					<label class="select">
+						<select name="card_month" id="card_month">
+							<option value="1">Enero</option>
+							<option value="1">Febrero</option>
+							<option value="3">Marzo</option>
+							<option value="4">Abril</option>
+							<option value="5">Mayo</option>
+							<option value="6">Junio</option>
+							<option value="7">Julio</option>
+							<option value="8">Agosto</option>
+							<option value="9">Septiembre</option>
+							<option value="10">Octubre</option>
+							<option value="11">Noviembre</option>
+							<option value="12">Diciembre</option>
+						</select> <i></i> </label>
+				</section>
+				<section class="col col-3">
+					<label for="card_year">Año:</label>
+					<label class="input">
+						<input name="card_year" id="card_year" placeholder="Año" data-mask="2099" type="text">
+					</label>
+				</section>
+			</div>
+		</fieldset>
+		
+		<fieldset>
+			<div class="row">
+				<label class="label col col-4" for="">Tipo de Suscripci&oacute;n:</label>
+			</div>
+			<div class="row">
+				
+				<section class="col col-5">
+					<label class="select">
+						<select name="suscription_type" id="suscription_type">
+							<option value="1">Gratis por 15 d&iacute;as</option>
+							<option value="2">6 meses $250/mes ($1,500) </option>
+							<option value="3">12 meses $200/mes ($2,200) </option>
+						</select> <i></i> </label>
+				</section>
+				<input type="hidden" name="submit" />
+		</fieldset>
+							
+       
+
+	
+    <footer>
+        <button type="submit" class="btn btn-primary" onclick='setUserName()'>
+            {{ 'Registrarse'| trans({}, 'SolucelMyFOSUserBundle') }}
+        </button>
+    </footer>
+	
+    	
+{{ form_end(form) }}
+<script language="JavaScript" type="text/javascript" >
+	$("#section_username").hide();
+	$("[name='registerForm']").validate();
+	$("#fos_user_registration_form_plainPassword_first").rules("add", {required:true});
+	$("#fos_user_registration_form_plainPassword_second").rules("add", {required:true, equalTo:"#fos_user_registration_form_plainPassword_first"});
+	
+	$("#fname").rules("add", {required:true});
+	$("#lname").rules("add", {required:true});
+	$("#phone").rules("add", {required:true});
+	$("#card_name").rules("add", {required:true});
+	$("#card_year").rules("add", {required:true, digits:true});
+	$("#card").rules("add", {required:true});
+	$("#cvv").rules("add", {required:true, digits:true});
+
+	
+	function setUserName(){
+		email = $("#fos_user_registration_form_email").val();
+		$("#fos_user_registration_form_username").val(email);
+	}
+	
+	
+	
+	$( "#country" ).change(function() {
+		changeStates();
+		//changeTowns();
+	});			
+	
+	$( "#state" ).change(function() {
+		changeTowns();		
+		getCountryCode();
+	});
+	
+	//getCountryCode();
+	
+
+	
+	
+	function changeStates(){
+			$.ajax({
+				type:"POST",
+				dataType:"json",
+				url:"{{ path('mapcountry_states') }}",
+				data:"country_id="+$( "#country" ).val(),
+				success:function(data){
+					var items = [];
+					  $.each( data, function( key, val ) {
+					    items.push( "<option value='" + key + "'>" + val + "</li>" );
+					  });
+										
+					$("#state").html(items);	
+					changeTowns();
+					getCountryCode();				
+				}
+			});	 
+  		
+	}
+	
+	function changeTowns(){
+			//console.log("entra towns");
+			$.ajax({
+				type:"POST",
+				dataType:"json",
+				url:"{{ path('mapcountry_towns') }}",
+				data:"state_id="+$("#state").val(),
+				success:function(data){
+					var items = [];
+					  $.each( data, function( key, val ) {
+					    items.push( "<option value='" + key + "'>" + val + "</li>" );
+					  });
+										
+					$("#town").html(items);					
+				}
+			});	 
+ 
+	}
+	
+	function getCountryCode(){
+		//divCountryCode
+			//console.log("entra towns");
+			$.ajax({
+				type:"POST",
+				dataType:"json",
+				url:"{{ path('mapcountry_getcode') }}",
+				data:"stateid="+$("#state").val(),
+				success:function(data){
+					  $.each( data, function( key, val ) {
+					    $("#divCountryCode").html("("+val+")");
+					  });
+										
+				}
+			});	 
+	}	
+	
+</script>
+
+{% endblock fos_user_content %}

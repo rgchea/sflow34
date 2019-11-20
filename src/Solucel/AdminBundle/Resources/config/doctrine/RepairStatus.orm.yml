@@ -1,0 +1,30 @@
+Solucel\AdminBundle\Entity\RepairStatus:
+    type: entity
+    table: repair_status
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 128
+            options:
+                fixed: false
+                default: ''
+                
+        repairStatusCode:
+            type: string
+            nullable: false
+            length: 8
+            options:
+                fixed: false
+                default: ''   
+            column: repair_status_code              
+    lifecycleCallbacks: {  }

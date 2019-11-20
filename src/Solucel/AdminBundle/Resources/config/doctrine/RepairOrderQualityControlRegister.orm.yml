@@ -1,0 +1,95 @@
+Solucel\AdminBundle\Entity\RepairOrderQualityControlRegister:
+    type: entity
+    table: repair_order_quality_control_register
+    indexes:
+        repair_order_id:
+            columns:
+                - repair_order_quality_control_id
+        quality_control_group_id:
+            columns:
+                - quality_control_group_id                
+        quality_control_sub_group_id:
+            columns:
+                - quality_control_sub_group_id
+
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        technicianCheck:
+            type: boolean
+            nullable: false
+            options:
+                default: false     
+            column: technician_check
+        technicianUncheck:
+            type: boolean
+            nullable: false
+            options:
+                default: false     
+            column: technician_uncheck  
+              
+        qualityCheck:
+            type: boolean
+            nullable: false
+            options:
+                default: false     
+            column: quality_check
+        qualityUncheck:
+            type: boolean
+            nullable: false
+            options:
+                default: false     
+            column: quality_uncheck
+            
+        notApply:            
+            type: boolean
+            nullable: false
+            options:
+                default: false     
+            column: not_apply  
+              
+    manyToOne:
+        repairOrderQualityControl:
+            targetEntity: RepairOrderQualityControl
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                repair_order_quality_control_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        qualityControlGroup:
+            targetEntity: QualityControlGroup
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                quality_control_group_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+           
+        qualityControlSubGroup:
+            targetEntity: QualityControlSubGroup
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                quality_control_sub_group_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+    lifecycleCallbacks: {  }

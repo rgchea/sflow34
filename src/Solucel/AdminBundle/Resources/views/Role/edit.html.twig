@@ -1,0 +1,18 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+{{ parent() }}
+<li> <a href="{{ path('solucel_admin_role_index') }}">Listado de Roles</a> </li>
+<li> <a href="{{ path('solucel_admin_role_edit', { 'id': entity.id }) }}">Editar Rol</a> </li>
+{% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:Role:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+    
+    
+
+{% endblock %}

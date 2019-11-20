@@ -1,0 +1,44 @@
+solucel_admin_client_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:Client:index" }
+    methods:  GET
+
+solucel_admin_client_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:Client:show" }
+    methods:  GET
+
+solucel_admin_client_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:Client:new" }
+    #methods:  [GET, POST]
+    
+solucel_admin_client_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:Client:create" }
+    requirements: { _method: post }
+
+
+solucel_admin_client_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SolucelAdminBundle:Client:edit" }
+    #methods:  [GET, POST]
+    
+
+solucel_admin_client_update:
+    path:     /{id}/update
+    defaults: { _controller: "SolucelAdminBundle:Client:update" }
+    requirements: { _method: post|put }     
+
+solucel_admin_client_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:Client:delete" }
+    #methods:  DELETE
+    
+
+client_list_datatables:
+    path: /client/list/datatables
+    defaults:
+        _controller: SolucelAdminBundle:Client:listDatatables
+
+

@@ -1,0 +1,46 @@
+Solucel\AdminBundle\Entity\RepairOrderDeliveryDetail:
+    type: entity
+    table: repair_order_delivery_detail
+    indexes:
+        repair_order_delivery_id:
+            columns:
+                - repair_order_delivery_id
+        repair_order_id:
+            columns:
+                - repair_order_id                
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    manyToOne:
+        repairOrder:
+            targetEntity: RepairOrder
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                repair_order_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        repairOrderDelivery:
+            targetEntity: RepairOrderDelivery
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                repair_order_delivery_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+            
+            
+    lifecycleCallbacks: {  }

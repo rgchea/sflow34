@@ -1,0 +1,18 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+{{ parent() }}
+<li> <a href="{{ path('solucel_admin_devicefixtypecode_index') }}">Listado de Código de Tipo de Reparación</a> </li>
+<li> <a href="{{ path('solucel_admin_devicefixtypecode_edit', { 'id': entity.id }) }}">Editar Código de Tipo de Reparación</a> </li>
+{% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:DeviceFixTypeCode:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+    
+    
+
+{% endblock %}

@@ -1,0 +1,22 @@
+notification_count:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:Notification:notificationCount" }
+
+notification_index:
+    path:     /notificationindex
+    defaults: { _controller: "SolucelAdminBundle:Notification:index" }
+
+
+notification_load_ajax:    
+    path:     /notificationajax
+    defaults: { _controller: "SolucelAdminBundle:Notification:data" }
+    
+#opera_shipper_get_notification:
+#    path:     /shippergetnotification
+#    defaults: { _controller: "OperaShipperBundle:Notification:getNotification" }
+    
+    
+notification_read:
+    path:     /notificationread
+    defaults: { _controller: "SolucelAdminBundle:Notification:readNotification" }
+    

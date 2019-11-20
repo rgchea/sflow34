@@ -1,0 +1,18 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+{{ parent() }}
+<li> <a href="{{ path('solucel_admin_devicecolor_index') }}">Listado de Colores</a> </li>
+<li> <a href="{{ path('solucel_admin_devicecolor_edit', { 'id': entity.id }) }}">Editar Color</a> </li>
+{% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:DeviceColor:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+    
+    
+
+{% endblock %}

@@ -1,0 +1,254 @@
+Solucel\AdminBundle\Entity\RepairOrderFix:
+    type: entity
+    repositoryClass: Solucel\AdminBundle\Repository\RepairOrderFixRepository
+    table: repair_order_fix
+    indexes:
+        repair_order_id:
+            columns:
+                - repair_order_id
+        assigned_by:
+            columns:
+                - assigned_by
+        assigned_to:
+            columns:
+                - assigned_to
+        device_model_change_id:
+            columns:
+                - device_model_change_id
+        device_brand_change_id:
+            columns:
+                - device_brand_change_id
+                
+        action_reason_code_id:
+            columns:
+                - action_reason_code_id
+                
+        problem_found_code_id:
+            columns:
+                - problem_found_code_id
+                
+        transaction_code_id:
+            columns:
+                - transaction_code_id                                
+                
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        version:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                default: '0'
+        fixDetail:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+            column: fix_detail
+        deviceReceivedStatus:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+            column: device_received_status
+        hasWarranty:
+            type: boolean
+            nullable: false
+            options:
+                default: true     
+            column: has_warranty       
+        warrantyComment:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+            column: warranty_comment
+        fixingPrice:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 2
+            options:
+                default: '0.00'
+            column: fixing_price
+        imeiNewDeviceChange:
+            type: string
+            nullable: true
+            length: 32
+            options:
+                fixed: false
+                default: ''
+            column: imei_new_device_change
+        serialNumberChange:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: serial_number_change
+        clientRepairmentRequest:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                default: '0'
+            column: client_repairment_request
+        clientRepairmentConfirmation:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                default: '0'
+            column: client_repairment_confirmation
+        replacementEmail:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                default: '0'                      
+        orderConfirmation:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                default: '0'
+            column: order_confirmation
+        isStorehouse:
+            type: boolean
+            nullable: false
+            options:
+                default: true     
+            column: is_storehouse
+        requisitionNumber:
+            type: string
+            nullable: true
+            length: 32
+            options:
+                fixed: false
+                default: ''
+            column: requisition_number
+        softwareOut:
+            type: string
+            nullable: true
+            length: 128
+            options:
+                fixed: false
+                default: ''
+            column: software_out
+        updatedAt:
+            type: datetime
+            nullable: false
+            options:
+                default: '2001-01-01 00:00:00'
+            column: updated_at   
+
+            
+    manyToOne:
+        problemFoundCode:
+            targetEntity: ProblemFoundCode
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                problem_found_code_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+            
+        transactionCode:
+            targetEntity: TransactionCode
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                transaction_code_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true                  
+      
+        actionReasonCode:
+            targetEntity: ActionReasonCode
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                action_reason_code_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+      
+        deviceBrandChange:
+            targetEntity: DeviceBrand
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_brand_change_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        assignedBy:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                assigned_by:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        assignedTo:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                assigned_to:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        repairOrder:
+            targetEntity: RepairOrder
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                repair_order_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+
+        deviceModelChange:
+            targetEntity: DeviceModel
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_model_change_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+    lifecycleCallbacks: {  }

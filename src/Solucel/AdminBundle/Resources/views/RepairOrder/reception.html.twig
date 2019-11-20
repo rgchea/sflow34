@@ -1,0 +1,414 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    
+    {% endblock %}
+
+{% block title %}
+    Recepción en Taller
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+	<style>
+		input[type="radio"], .radio-inline input[type="radio"]  {
+			float:right !important;
+			margin-left: -20px !important;
+		}
+
+	</style>
+    <script>
+    	$("#pizote_spinner").show();
+    </script>     
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/jquery.dataTables-cust.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ColReorder.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/FixedColumns.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ColVis.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ZeroClipboard.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/media/js/TableTools.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/DT_bootstrap.js') }}"></script>
+    
+    
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/pizotearkadmin/js/plugin/Buttons-1.2.2/css/buttons.dataTables.css') }}">
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/Buttons-1.2.2/js/dataTables.buttons.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/Buttons-1.2.2/js/buttons.print.js') }}"></script>
+{% endblock %}
+
+
+{% block body -%}
+{{ parent() }}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+
+    </div>
+
+</div>
+
+<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+    <header>
+        <h2> Recepción en Taller</h2>
+    </header>
+
+    <!-- widget div-->
+    <div>
+
+        <!-- widget edit box -->
+        <div class="jarviswidget-editbox">
+            <!-- This area used as dropdown edit box -->
+            
+            <form id="filterForm" action="{{path('solucel_admin_repairorder_reception')}}" method="POST" name="solucel_admin_repairorder_reception" onsubmit="$('#pizote_spinner').show();">
+            	<input type="hidden" name="filter" value="true" />
+	            <fieldset>
+					<table width="90%">
+						<tbody>
+							<tr>
+								<td>
+									<label for="select_operator">Operador:</label><br />
+									<select id="select_operator" name="select_operator">
+										
+										{# evaluates to true if the foo variable is iterable #}
+										{% if operators is iterable %}
+											<option value="0">Todos</option>
+									   		{% for operator in operators %}
+										   		{% set selected = operator.id == select_operator ? ' selected="selected" ' : ''%}
+										        	<option value="{{operator.id}}" {{selected}}>{{ operator.name }}</option>
+										    	{% endfor %}										
+										{% else %}
+										    {# users is probably a single object #}
+										    <option value="{{operators.id}}">{{ operators.name }}</option>
+										{% endif %}										
+																				
+									</select>
+									
+								</td>
+								<td>
+									<label for="select_agency">Agencia:</label><br />
+									<select id="select_agency" name="select_agency"  >
+										<option value="0">Todos</option>
+									   {% for agency in agencies%}
+											{% set selected = agency.id == select_agency ? ' selected="selected" ' : ''%}	
+									        <option value="{{agency.id}}" {{selected}}>{{ agency.name }}</option>
+									    {% endfor %}										
+									</select>
+									
+								</td>								
+								<td>
+									<label for="select_service_center">Centro de Servicio:</label><br />
+									<select id="select_service_center" name="select_service_center" >
+										
+										{# evaluates to true if the foo variable is iterable #}
+										{% if service_centers is iterable %}
+											<option value="0">Todos</option>
+									   		{% for service_center in service_centers %}
+										   		{% set selected = service_center.id == select_service_center ? ' selected="selected" ' : ''%}
+										        	<option value="{{service_center.id}}" {{selected}}>{{ service_center.name }}</option>
+										    	{% endfor %}										
+										{% else %}
+										    {# users is probably a single object #}
+										    <option value="{{service_centers.id}}">{{ service_centers.name }}</option>
+										{% endif %}										
+										
+										
+									</select>
+									
+								</td>
+																					
+								<td>
+									<label for="select_brand">Marca:</label><br />
+									<select id="select_brand" name="select_brand" >
+										
+										{# evaluates to true if the foo variable is iterable #}
+										{% if brands is iterable %}
+											<option value="0">Todos</option>
+									   		{% for brand in brands %}
+										   		{% set selected = brand.id == select_brand ? ' selected="selected" ' : ''%}
+										        	<option value="{{brand.id}}" {{selected}}>{{ brand.name }}</option>
+										    	{% endfor %}										
+										{% else %}
+										    {# brands is probably a single object #}
+										    <option value="{{brands.id}}">{{ brands.name }}</option>
+										{% endif %}										
+										
+										
+									</select>
+									
+								</td>
+																														
+							</tr>
+							<tr>
+								<td>
+									<label for="select_status">Estado:</label><br />
+									<select id="select_status" name="select_status">
+										{#<option value="0">Todos</option>#}
+									   {% for status in repair_status%}
+									   		{% set selected = status.id == select_status ? ' selected="selected" ' : ''%}
+									        <option value="{{status.id}}" {{selected}}>{{ status.name }}</option>
+									    {% endfor %}											
+									</select>
+									
+								</td>																						
+								<td>
+									<label for="created_from">Ingresada del:</label><br />
+									<input readonly="readonly" id="created_from" name="created_from" type="text" class="form-control" value="{{filter_created_from}}" />									
+								</td>								
+								<td>
+									<label for="created_to">Ingresada al:</label><br />
+									<input readonly="readonly" id="created_to" name="created_to" type="text" class="form-control" value="{{filter_created_to}}" />									
+								</td>
+								<td>
+									<label for="filter_dates">Aplicar Fechas:</label><br />
+									<input id="filter_dates" name="filter_dates" type="checkbox" class="form-control" {{ filter_dates == 1 ? 'checked="checked"' : ''  }}  />									
+								</td>									
+							</tr>
+							<tr>
+								<td>
+									<label for="filter_client_name">Cliente (nombre/dpi/nit):</label><br />
+									<input id="filter_client_name" name="filter_client_name" type="text" class="form-control" value="{{filter_client_name}}" />									
+								</td>																						
+								<td>
+									<label for="filter_phone_number">Número de Télefono:</label><br />
+									<input id="filter_phone_number" name="filter_phone_number" type="text" class="form-control" value="{{filter_phone_number}}" />									
+								</td>								
+								<td>
+									<label for="filter_imei">IMEI:</label><br />
+									<input id="filter_imei" name="filter_imei" type="text" class="form-control" value="{{filter_imei}}" />									
+								</td>
+								<td>
+									<label for="filter_id">No. Boleta:</label><br />
+									<input id="filter_id" name="filter_id" type="text" class="form-control" value="{{filter_id}}" />									
+								</td>									
+							</tr>							
+							<tr>
+								<td colspan="4" align="left">
+									<button class="btn btn-primary">
+									<i class="fa fa-search"></i>
+									Filtrar
+									</button>									
+								</td>
+							</tr>
+							
+						</tbody>
+					</table>
+
+				</fieldset>
+			</form>
+			<br />
+									
+        </div>
+        <!-- end widget edit box -->
+        
+        <!-- widget content -->
+        <div class="widget-body no-padding">
+            <div class="widget-body-toolbar">
+
+            </div>
+			<form method="POST" action="{{ path('solucel_admin_repairorder_reception_save') }}" onsubmit="$('#pizote_spinner').show();">
+
+				<table id="dt_basic" class="table table-striped table-bordered table-hover" >
+					<thead>
+						<tr>
+							<th>Boleta #</th>
+							<th>Correlativo</th>
+							<th>Cliente</th>
+							<th>Operador</th>
+							<th>Agencia</th>
+
+							<th>Marca Dispositivo</th>
+							<th>Modelo</th>
+							<th>Ingresada</th>
+							<th>Estado</th>
+							<th width="200">Repuestos Solicitados</th>
+							<th width="75">Asignación </th>
+							<th width="150">Pendiente Papelería </th>
+						</tr>
+					</thead>
+					<tbody>
+
+						{% for entity in entities %}
+							{% if entity.ready_to_assign == 0 %}
+								<tr>
+									<td>{{ entity.ticket_number }}</td>
+									<td>{{ entity.id }}</td>
+									<td>{{ entity.client }}</td>
+									<td>{{ entity.operator }}</td>
+									<td>{{ entity.agency }}</td>
+
+									<td>{{ entity.brand }}</td>
+									<td>{{ entity.model }}</td>
+									<td>{{ entity.entry_date|date("d/m/Y") }}</td>
+									<td>{{ entity.repair_status }}</td>
+									<td>{{ entity.replacements }}</td>
+									<td style="text-align: right;">
+										<input type="radio" name="orders[{{ entity.id }}]" value="assign" checked="checked" />
+									</td>
+									<td style="text-align: right;">
+										<input type="radio" name="orders[{{ entity.id }}]" value="paperwork"/>
+									</td>
+
+								</tr>
+							{% endif %}
+
+						{% endfor %}
+					</tbody>
+				</table>
+				<br/>
+				<div class="form-group col-md-12">
+					<div class="col-md-11">&nbsp;</div>
+					<div class="col-md-1">
+						<button class="btn btn-primary">
+							<i class="fa fa-save"></i>
+							Guardar
+						</button>
+
+					</div>
+
+				</div>
+			</form>
+
+
+
+		</div>
+        <!-- end widget content -->
+
+        
+
+    </div>
+    <!-- end widget div -->
+</div>    
+
+
+<script type="text/javascript" language="JavaScript">
+	
+	function moveScroll(){
+	    var scroll = $(window).scrollTop();
+	    var anchor_top = $("#dt_basic").offset().top;
+	    var anchor_bottom = $("#bottom_anchor").offset().top;
+	    if (scroll>anchor_top && scroll<anchor_bottom) {
+	    clone_table = $("#clone");
+	    if(clone_table.length == 0){
+	        clone_table = $("#dt_basic").clone();
+	        clone_table.attr('id', 'clone');
+	        clone_table.css({position:'fixed',
+	                 'pointer-events': 'none',
+	                 top:0});
+	        clone_table.width($("#dt_basic").width());
+	        $("#table-container").append(clone_table);
+	        $("#clone").css({visibility:'hidden'});
+	        $("#clone thead").css({visibility:'visible', 'pointer-events':'auto'});
+	    }
+	    } else {
+	    $("#clone").remove();
+	    }
+	}
+	$(window).scroll(moveScroll);	
+	
+	
+	$( document ).ready(function() {
+		
+		agencyID = '{{select_agency}}';
+		
+		changeAgency();
+		
+		$( "#select_operator" ).change(function() {
+		  changeAgency();
+		});		
+		
+		$("#pizote_spinner").hide();	
+			
+	});	
+		
+		
+	function changeAgency(){
+		$('#pizote_spinner').show();
+
+		
+		if($("#select_operator").val() != 0){
+			$.ajax({
+				type:"POST",
+				dataType:"json",
+				async: false,
+				url:"{{ path('solucel_admin_repairorder_agency') }}",
+				data:"operator_id="+$( "#select_operator" ).val(),
+				success:function(data){
+					
+					
+					if (!isEmpty(data)){
+						
+						var items = [];
+							items.push( "<option value='0'>Todos</option>" );
+						  $.each( data, function( key, val ) {
+						  	selected = key == agencyID ? 'selected="selected"' : '';
+						    items.push( "<option "+selected+" value='" + key + "'>" + val + "</option>" );
+						  });
+											
+						$("#select_agency").html(items);	
+						
+					}
+					else{
+						$("#select_agency").html("<option value='0'>Todos</option>");
+					}
+					
+					
+					
+				}
+			});	 
+			
+		}
+		
+		$('#pizote_spinner').hide();
+  		
+	}	
+	
+	
+	function isEmpty(obj) {
+	    return Object.keys(obj).length === 0;
+	}
+
+	
+</script>
+
+{% endblock %}
+
+
+{% block extrascripts %}
+
+	$("#created_from").datepicker();
+	$("#created_to").datepicker();
+
+    $('#dt_basic').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {extend: 'print', text: 'Imprimir', message: ''},
+            {extend: 'excel', text: 'Exportar Excel',message: ''}
+            
+        ],
+	    "sPaginationType" : "bootstrap_full",
+	    "aaSorting": [[ 0, "asc" ]],
+	    "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100,"Todos"] ],
+	    "iDisplayLength": -1,
+        "language": {
+            "url": "{{ asset('bundles/pizotearkadmin/js/plugin/datatables/dataTables.spanish.lang') }}"
+        },
+        	    
+    });
+
+    $(document).on('click', '.btn-delete', function(e){
+	    e.preventDefault();
+	
+	    var url = $(this).attr('href'); 
+	    var c = confirm('Está seguro?');
+	
+	    if(c){
+	    	window.location = url;
+	    }else{
+	    	return false;
+	    }
+
+
+    });
+    
+
+{% endblock %}

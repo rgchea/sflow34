@@ -1,0 +1,37 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    
+    <li> <a href="{{ path('solucel_admin_client_index') }}">Listado de Clientes</a> </li>
+    <li> <a href="{{ path('solucel_admin_client_new') }}">Nuevo Cliente</a> </li>
+    {% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:Client:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+	
+	{#
+	$("[name='wbc_administratorbundle_user']").validate();
+	
+	$("#wbc_administratorbundle_user_username").rules("add", {required:false});
+	$("#wbc_administratorbundle_user_password").rules("add", {required:true});
+	$("#wbc_administratorbundle_user_email").rules("add", {required:true, email:true});
+	$("#wbc_administratorbundle_user_first_name").rules("add", {required:true});
+	$("#wbc_administratorbundle_user_last_name").rules("add", {required:true});
+	
+	$("#user_admin_username").hide();
+		
+		$( "#botton_user_admin_username" ).click(function() {
+			correo = $("#wbc_administratorbundle_user_email").val();
+			$("#wbc_administratorbundle_user_username").val(correo);
+		  	
+		});	
+		
+		
+	#}
+
+{% endblock %}

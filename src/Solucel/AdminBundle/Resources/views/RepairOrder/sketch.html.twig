@@ -1,0 +1,35 @@
+<script src="http://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="{{ asset('bundles/pizotearkadmin/js/jquery-ui.min.js')  }}"></script>
+
+<script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+<script type="text/javascript" src="{{ asset('bundles/pizotearkadmin/js/raphael-sketchpad-master/javascripts/raphael-2.0.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/pizotearkadmin/js/raphael-sketchpad-master/javascripts/json2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/pizotearkadmin/js/raphael-sketchpad-master/src/raphael.sketchpad.js') }}"></script>
+
+
+<div id="wrapper">
+    <img style="width:800px; z-index: -10" src="{{ asset('bundles/soluceladmin/img/phoneview.png')}}">    
+	<div  id="editor" style="width:800px;position: absolute: margin-top: -400px !important" ></div>	
+</div> 
+
+<script type="text/javascript" language="JavaScript">
+
+	  var strokes = [{
+	    type:"path",
+	    path:'{{sketch}}',
+	    fill:"none", "stroke":"#ff0000",
+	    "stroke-opacity":1,
+	    "stroke-width":5,
+	    "stroke-linecap":"round",
+	    "stroke-linejoin":"round"
+	  }];
+	  var sketchpad = Raphael.sketchpad("editor", {
+	    width: 800,
+	    height: 475,
+	    strokes: strokes,
+	    editing: false
+		});		
+		
+		$("#editor").attr('style',  'width: 800px;cursor: crosshair;-moz-user-select: text;position:absolute; margin-top: -500px');		
+		window.print();
+</script>

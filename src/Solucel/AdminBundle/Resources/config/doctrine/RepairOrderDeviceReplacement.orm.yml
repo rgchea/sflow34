@@ -1,0 +1,77 @@
+Solucel\AdminBundle\Entity\RepairOrderDeviceReplacement:
+    type: entity
+    table: repair_order_device_replacement
+    indexes:
+        repair_order_id:
+            columns:
+                - repair_order_id
+        device_replacement_id:
+            columns:
+                - device_replacement_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+                
+    fields:                
+        quantity:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                default: 1
+            column: quantity
+        price:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 2
+            options:
+                default: '0.00'
+            column: price            
+        cost:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 2
+            options:
+                default: '0.00'
+            column: cost
+        available:
+            type: boolean
+            nullable: false
+            options:
+                default: false            
+            
+                
+    manyToOne:
+        repairOrder:
+            targetEntity: RepairOrder
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                repair_order_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        deviceReplacement:
+            targetEntity: DeviceReplacement
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_replacement_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+    lifecycleCallbacks: {  }

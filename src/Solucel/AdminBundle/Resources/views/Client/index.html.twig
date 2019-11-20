@@ -1,0 +1,210 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li> <a href="{{ path('solucel_admin_client_index') }}">Listado de Clientes</a> </li>
+    {% endblock %}
+
+{% block title %}
+    Clientes
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/jquery.dataTables-cust.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ColReorder.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/FixedColumns.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ColVis.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ZeroClipboard.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/media/js/TableTools.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/DT_bootstrap.js') }}"></script>
+    
+    
+    
+
+{% endblock %}
+
+
+{% block body -%}
+{{ parent() }}
+
+    <style>
+        .dataTables_filter {
+            display: none;
+        }
+    </style>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+
+    </div>
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+        <a class="pull-right btn btn-primary btn-lg" href="{{ path('solucel_admin_client_new') }}">
+            Crear Nuevo Cliente
+        </a>
+    </div>
+</div>
+
+<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+    <header>
+        <h2> Listado de Clientes</h2>
+    </header>
+
+    <!-- widget div-->
+    <div>
+
+        <!-- widget edit box -->
+        <div class="jarviswidget-editbox">
+            <!-- This area used as dropdown edit box -->
+
+        </div>
+        <!-- end widget edit box -->
+
+        <!-- widget content -->
+        <div class="widget-body no-padding">
+            <div class="widget-body-toolbar">
+
+            </div>
+
+            <table id="dt_table" class="table table-striped  table-hover">
+                <tfoot class="dt_tfoot">
+                <tr>
+                    <th class="pizoteTableID">ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>DPI</th>
+                    <th>Teléfono</th>
+                    <th>Habilitado</th>
+                    <th></th>
+
+                </tr>
+                </tfoot>
+                <thead>
+                <tr>
+                    {# sorting of properties based on query components #}
+                    <th class="pizoteTableID">ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>DPI</th>
+                    <th>Teléfono</th>
+                    <th>Habilitado</th>
+                    <th style="width: 100px">Acciones</th>
+                </tr>
+
+                </thead>
+                <tbody></tbody>
+
+            </table>
+
+        </div>
+        <!-- end widget content -->
+
+    </div>
+    <!-- end widget div -->
+</div>
+
+    <script type="text/javascript">
+
+        var table;
+
+        function fetchData(){
+
+            table  = $('#dt_table').DataTable({
+                "columnDefs": [
+
+                    // These are the column name variables that will be sent to the server
+                    { "name": "id",   "targets": 0 },
+                    { "name": "name",  "targets": 1 },
+                    { "name": "lastName",  "targets": 2 },
+                    { "name": "dpi",  "targets": 3 },
+                    { "name": "phone",  "targets": 4 },
+                    { "name": "enabled",  "targets": 5 },
+                    { "name": "actions",  "targets": 6 },
+
+                ],
+                // Server-side parameters
+                "processing": true,
+                "serverSide": true,
+                // Ajax call
+                "ajax": {
+                    "url": "{{ path('client_list_datatables') }}",
+                    "type": "POST",
+                    //dataType: "html"
+                },
+                // Classic DataTables parameters
+                "paging" : true,
+                "info" : true,
+                "searching": true,
+                "pageLength": 10,
+                "order": [[0, 'asc']],
+                "language": {
+                    "url": "{{ asset('bundles/pizotearkadmin/js/plugin/datatables/dataTables.spanish.lang') }}"
+                }
+
+            });
+
+        }
+
+        $(document).ready(function(){
+
+            // Add a text input to each footer cell
+            var pos = 1;
+            $('#dt_table tfoot th').each( function () {
+                var title = $(this).text();
+                if(pos != 7){//columna Actions
+                    $(this).html( "<input id='input" + pos + "' type='text' class='form-control' style='font-family:Arial, FontAwesome; width:100%'/>" );
+                }
+
+                pos ++;
+            });
+
+
+            fetchData();
+
+            // Apply the search
+            pos = 1;
+            table.columns().every( function () {
+                var that = this;
+
+                $("#input"+pos).on( 'keyup change', function () {
+                    if ( that.search() !== this.value )
+                    {
+                        that.search( this.value ).draw();
+                    }
+                });
+                pos++;
+            });
+
+            $("#input6").remove();
+
+
+        });
+
+    </script>
+
+{% endblock %}
+
+
+{% block extrascripts %}
+
+	jQuery.ajax({ async: false});
+
+
+		
+    $(document).on('click', '.btn-delete', function(e){
+    	e.preventDefault();
+
+	    var url = $(this).attr('href'); 
+	    var c = confirm('¿Está seguro?');
+	
+	    if(c){
+	    	$('#spinner').show();
+	    	window.location = url;
+	    }else{
+	    	return false;
+	    }
+
+
+    });
+
+{% endblock %}

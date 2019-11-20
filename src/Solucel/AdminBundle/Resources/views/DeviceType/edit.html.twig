@@ -1,0 +1,18 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+{{ parent() }}
+<li> <a href="{{ path('solucel_admin_devicetype_index') }}">Listado de Tipos de Dispositivos</a> </li>
+<li> <a href="{{ path('solucel_admin_devicetype_edit', { 'id': entity.id }) }}">Editar Tipo de Dispositivo</a> </li>
+{% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:DeviceType:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+    
+    
+
+{% endblock %}

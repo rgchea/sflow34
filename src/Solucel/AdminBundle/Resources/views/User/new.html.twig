@@ -1,0 +1,27 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    
+    
+    {% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:User:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+	
+	{#
+	$("[name='user']").validate();
+	$("#user_password").rules("add", {required:true});
+	$("#user_email").rules("add", {required:true, email:true});
+		
+	#}
+
+		
+	
+		
+
+{% endblock %}

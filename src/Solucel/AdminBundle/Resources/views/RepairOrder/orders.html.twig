@@ -1,0 +1,55 @@
+<div style="float: right">
+	<input  type="checkbox" checked="checked" id="checkAll">Marcar Todos	
+</div>
+
+<table id="dt_basic" class="table table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+        	<th>Boleta</th>
+        	<th>Operador</th>
+        	<th>Agencia</th>
+        	<th>Centro de Servicio</th>
+        	<th>Marca dispositivo</th>
+        	<th>Ingresada</th>
+            <th>Estado</th>
+            <th>Seleccionar</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+    {% set orders_count = 0 %}
+    {% for entity in entities %}
+    
+        <tr>
+            <td>{{ entity.ticket_number }}</td>
+            <td>{{ entity.operator }}</td>
+            <td>{{ entity.agency }}</td>
+            <td>{{ entity.service_center }}</td>
+            <td>{{ entity.brand }}</td>
+            <td>{{ entity.entry_date|date("d/m/Y") }}</td>
+            <td>{{ entity.repair_status }}</td>
+            <td><input style="position: relative !important" type="checkbox" name="orders[{{entity.id}}]" id="order_{{entity.id}}" checked="checked"></td>
+
+        </tr>
+        {% set orders_count = orders_count + 1 %}
+        
+    {% endfor %}
+    {#orders_count#}
+     {% if(orders_count == 0) %}
+     	<script>
+     		$("#assignButton").hide();
+     	</script>
+     {% else %}
+     	<script>
+     		$("#assignButton").show();
+     	</script>     
+     {% endif %}
+    
+    </tbody>
+</table>
+<script language="JavaScript">
+	
+ $("#checkAll").click(function () {
+     $('input:checkbox').not(this).prop('checked', this.checked);
+ });	
+</script>

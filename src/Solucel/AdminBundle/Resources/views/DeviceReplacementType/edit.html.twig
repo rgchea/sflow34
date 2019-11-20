@@ -1,0 +1,18 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+{{ parent() }}
+<li> <a href="{{ path('solucel_admin_devicereplacementtype_index') }}">Listado de Tipos de Repuestos</a> </li>
+<li> <a href="{{ path('solucel_admin_devicereplacementtype_edit', { 'id': entity.id }) }}">Editar Tipo de Repuesto</a> </li>
+{% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:DeviceReplacementType:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+    
+    
+
+{% endblock %}

@@ -1,0 +1,36 @@
+solucel_admin_qualitycontrolsubgroup_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:QualityControlSubGroup:index" }
+    methods:  GET
+
+solucel_admin_qualitycontrolsubgroup_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:QualityControlSubGroup:show" }
+    methods:  GET
+
+solucel_admin_qualitycontrolsubgroup_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:QualityControlSubGroup:new" }
+    #methods:  [GET, POST]
+    
+solucel_admin_qualitycontrolsubgroup_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:QualityControlSubGroup:create" }
+    requirements: { _method: post }
+
+
+solucel_admin_qualitycontrolsubgroup_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SolucelAdminBundle:QualityControlSubGroup:edit" }
+    #methods:  [GET, POST]
+    
+
+solucel_admin_qualitycontrolsubgroup_update:
+    path:     /{id}/update
+    defaults: { _controller: "SolucelAdminBundle:QualityControlSubGroup:update" }
+    requirements: { _method: post|put }     
+
+solucel_admin_qualitycontrolsubgroup_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:QualityControlSubGroup:delete" }
+    #methods:  DELETE

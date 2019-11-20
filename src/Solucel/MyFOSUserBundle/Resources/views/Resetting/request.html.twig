@@ -1,0 +1,50 @@
+{% extends "PizoteArkAdminBundle::security.html.twig" %}
+
+{% block fos_user_content %}
+
+
+{% block title %}
+{{ parent() }}
+
+{% endblock %}
+
+
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+<form action="{{ path('my_fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+    <header>
+        <b>Restaurar Contraseña</b>
+    </header>
+    <fieldset>
+	
+    
+	    <div style="padding: 10px">
+	    	{#
+	    		
+	        {% if invalid_username is defined %}
+	            <p>{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}</p>
+	        {% endif %}
+	    		
+	    	<label for="username">{{ 'resetting.request.username'|trans }}</label>
+	    	#}
+	    	
+	        <label for="username">Correo del usuario:</label><br>
+	        <input type="text" id="username" name="username" required="required" />
+	    </div>
+    
+    	
+    </fieldset>
+	<br />
+    <footer>
+    	<div style="padding: 10px">
+    		<input type="submit" class="btn btn-primary" value="Enviar" />	
+    	</div>
+        
+
+
+    </footer>
+	
+    	
+</form>
+{% endblock fos_user_content %}

@@ -1,0 +1,82 @@
+Solucel\AdminBundle\Entity\RepairOrderQualityControl:
+    type: entity
+    table: repair_order_quality_control
+    repositoryClass: Solucel\AdminBundle\Repository\RepairOrderQualityControlRepository
+    indexes:
+        repair_order_id:
+            columns:
+                - repair_order_id
+        created_by:
+            columns:
+                - created_by                
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        version:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                default: '0'
+        qualityApproved:
+            type: boolean
+            nullable: false
+            options:
+                default: true     
+            column: quality_approved  
+        techComment:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+            column: tech_comment
+        qaComment:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+            column: qa_comment
+        createdAt:
+            type: datetime
+            nullable: false
+            options:
+                default: '2001-01-01 00:00:00'
+            column: created_at            
+
+    manyToOne:
+
+        repairOrder:
+            targetEntity: RepairOrder
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                repair_order_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+            
+        createdBy:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                created_by:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+            
+    lifecycleCallbacks: {  }

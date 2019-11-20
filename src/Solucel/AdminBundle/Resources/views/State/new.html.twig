@@ -1,0 +1,19 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    
+    <li> <a href="{{ path('solucel_admin_state_index') }}">Municpio</a> </li>
+    <li> <a href="{{ path('solucel_admin_state_new') }}">Nuevo Municpio</a> </li>
+    {% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:State:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+    
+
+
+{% endblock %}

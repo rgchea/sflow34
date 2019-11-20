@@ -1,0 +1,36 @@
+solucel_admin_companydepartment_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:CompanyDepartment:index" }
+    methods:  GET
+
+solucel_admin_companydepartment_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:CompanyDepartment:show" }
+    methods:  GET
+
+solucel_admin_companydepartment_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:CompanyDepartment:new" }
+    #methods:  [GET, POST]
+    
+solucel_admin_companydepartment_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:CompanyDepartment:create" }
+    requirements: { _method: post }
+
+
+solucel_admin_companydepartment_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SolucelAdminBundle:CompanyDepartment:edit" }
+    #methods:  [GET, POST]
+    
+
+solucel_admin_companydepartment_update:
+    path:     /{id}/update
+    defaults: { _controller: "SolucelAdminBundle:CompanyDepartment:update" }
+    requirements: { _method: post|put }     
+
+solucel_admin_companydepartment_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:CompanyDepartment:delete" }
+    #methods:  DELETE

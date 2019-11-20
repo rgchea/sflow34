@@ -1,0 +1,158 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    
+    {% endblock %}
+
+{% block title %}
+    Asignación
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/jquery.dataTables-cust.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ColReorder.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/FixedColumns.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ColVis.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ZeroClipboard.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/media/js/TableTools.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/DT_bootstrap.js') }}"></script>
+    
+{% endblock %}
+
+
+{% block body -%}
+{{ parent() }}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+
+    </div>
+
+</div>
+
+<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+    <header>
+        <h2> Listado de Ordenes de Reparación a asignar</h2>
+    </header>
+
+    <!-- widget div-->
+    <div>
+
+		<div class="progress progress-striped">
+			<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 33%;">
+				<span class="sr-only">33% Complete</span>
+			</div>
+		</div>            
+        <form id="filterForm" action="{{path('solucel_admin_repairorder_assigntec')}}" method="POST" name="solucel_admin_repairorder_index">
+        	<input type="hidden" name="assign" value="true" />
+        	<input type="hidden" name="service_center" value="{{service_center}}" />
+            <fieldset>
+				<select id="select_service_center" name="select_service_center" >	
+					{% if service_center == 0 %}
+						<option value="0">----</option>
+				   		{% for service_center in service_centers %}
+					   		
+					        	<option value="{{service_center.id}}">{{ service_center.name }}</option>
+					   {% endfor %}										
+					{% else %}
+					    {# users is probably a single object #}
+					    <option value="{{service_centers.id}}">{{ service_centers.name }}</option>
+					{% endif %}		
+				</select>			
+				<button style="display: none" class="btn btn-primary" onclick="" id="assignButton">Asignar</button>
+		        <!-- widget edit box -->
+		        <div class="jarviswidget-editbox">
+		            <!-- This area used as dropdown edit box -->
+		
+					<br />
+											
+		        </div>
+		        <!-- end widget edit box -->
+		
+		        <!-- widget content -->
+		        <div class="widget-body no-padding">
+		            <div class="widget-body-toolbar">
+		
+		            </div>
+		
+		            <div id="divTable"></div>
+		
+		
+		        </div>
+		        <!-- end widget content -->
+				
+			</fieldset>
+		</form>
+        
+
+    </div>
+    <!-- end widget div -->
+</div>    
+
+
+
+
+<script language="JavaScript">	
+
+
+	$( document ).ready(function() {
+		
+		changeOrders();
+		
+		$( "#select_service_center" ).change(function() {
+		  changeOrders();
+		});	
+		
+			
+	});	
+
+
+
+	function changeOrders(){
+		
+		$('#pizote_spinner').show();
+		
+		if($("#select_service_center").val() != 0){
+			$.ajax({
+				type:"POST",
+				dataType:"html",
+				async: false,
+				url:"{{ path('solucel_admin_repairorder_changeorders') }}",
+				data:"service_center_id="+$( "#select_service_center" ).val(),
+				success:function(data){
+					
+					//console.log("entra");
+					$("#divTable").html(data);	
+				    $('#dt_basic').dataTable({
+					    "sPaginationType" : "bootstrap_full",
+					    "aaSorting": [[ 0, "asc" ]],
+					    "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100,"Todos"] ],
+					    "iDisplayLength": -1,
+				        "language": {
+				            "url": "{{ asset('bundles/pizotearkadmin/js/plugin/datatables/dataTables.spanish.lang') }}"
+				        }	    
+				    });					
+				}
+			});			
+			
+		}
+
+		$('#pizote_spinner').hide();
+	}
+</script>
+
+{% endblock %}
+
+
+{% block extrascripts %}
+
+
+
+
+
+    
+
+{% endblock %}

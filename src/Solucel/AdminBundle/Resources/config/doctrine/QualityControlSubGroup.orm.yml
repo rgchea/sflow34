@@ -1,0 +1,42 @@
+Solucel\AdminBundle\Entity\QualityControlSubGroup:
+    type: entity
+    table: quality_control_sub_group
+    indexes:
+        quality_control_group_id:
+            columns:
+                - quality_control_group_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 128
+            options:
+                fixed: false
+                default: ''
+        enabled:
+            type: boolean
+            nullable: false
+            options:
+                default: true
+    manyToOne:
+        qualityControlGroup:
+            targetEntity: QualityControlGroup
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                quality_control_group_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+    lifecycleCallbacks: {  }

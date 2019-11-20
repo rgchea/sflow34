@@ -1,0 +1,4 @@
+services:
+#    solucel_my_fos_user.example:
+#        class: Opera\MyFOSUserBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

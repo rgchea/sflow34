@@ -1,0 +1,36 @@
+solucel_admin_servicecenter_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:ServiceCenter:index" }
+    methods:  GET
+
+solucel_admin_servicecenter_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:ServiceCenter:show" }
+    methods:  GET
+
+solucel_admin_servicecenter_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:ServiceCenter:new" }
+    #methods:  [GET, POST]
+    
+solucel_admin_servicecenter_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:ServiceCenter:create" }
+    requirements: { _method: post }
+
+
+solucel_admin_servicecenter_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SolucelAdminBundle:ServiceCenter:edit" }
+    #methods:  [GET, POST]
+    
+
+solucel_admin_servicecenter_update:
+    path:     /{id}/update
+    defaults: { _controller: "SolucelAdminBundle:ServiceCenter:update" }
+    requirements: { _method: post|put }     
+
+solucel_admin_servicecenter_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:ServiceCenter:delete" }
+    #methods:  DELETE

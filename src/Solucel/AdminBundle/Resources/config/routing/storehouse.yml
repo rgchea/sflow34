@@ -1,0 +1,36 @@
+solucel_admin_storehouse_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:Storehouse:index" }
+    methods:  GET
+
+solucel_admin_storehouse_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:Storehouse:show" }
+    methods:  GET
+
+solucel_admin_storehouse_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:Storehouse:new" }
+    #methods:  [GET, POST]
+    
+solucel_admin_storehouse_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:Storehouse:create" }
+    requirements: { _method: post }
+
+
+solucel_admin_storehouse_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SolucelAdminBundle:Storehouse:edit" }
+    #methods:  [GET, POST]
+    
+
+solucel_admin_storehouse_update:
+    path:     /{id}/update
+    defaults: { _controller: "SolucelAdminBundle:Storehouse:update" }
+    requirements: { _method: post|put }     
+
+solucel_admin_storehouse_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:Storehouse:delete" }
+    #methods:  DELETE

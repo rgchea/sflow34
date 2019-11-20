@@ -1,0 +1,22 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+{{ parent() }}
+<li> <a href="{{ path('solucel_admin_user_index') }}">Listado de Usuarios</a> </li>
+<li> <a href="{{ path('solucel_admin_user_edit', { 'id': entity.id }) }}">Editar Usuario</a> </li>
+{% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:User:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+    
+    
+    $("[name='user']").validate();
+    
+    $("#user_email").rules("add", {required:true, email:true});
+    
+
+{% endblock %}

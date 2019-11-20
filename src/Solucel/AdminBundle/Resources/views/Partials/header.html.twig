@@ -1,0 +1,35 @@
+<!-- HEAD NAV -->
+<div class="navbar navbar-default navbar-static-top navbar-main" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="{{ path('solucel_admin_homepage') }}">
+            <img style="width:120px; top: -10px" src="{{ asset('bundles/pizotearkadmin/img/logo/logoPrint.png')}}" alt="Solucel">
+            
+            
+        </a>
+    </div>
+    <ul class="nav navbar-nav navbar-left">
+        <li class="sidemenu-switch">
+            <a href="#">
+                <span class="sr-only">Cambiar Navegaci&oacute;n</span>
+                <i class="fa fa-bars"></i>
+            </a>
+        </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        <li class="visible-xs">
+            <a href="#" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar">
+                <span class="sr-only">Cambiar Navegaci&oacute;n</span>
+                <i class="fa fa-bars"></i>
+            </a>
+        </li>
+        
+        {{ include('SolucelAdminBundle:Partials:notification.html.twig') }}
+        {# include('SolucelAdminBundle:Partials:messages.html.twig') #}
+		{{ include('SolucelAdminBundle:Partials:user.html.twig') }}
+ 
+
+    </ul>
+
+</div>
+<div id="pizote_spinner" class="pizote-spinner" style="display:none; z-index: 999"></div>
+<!-- END: HEAD NAV -->

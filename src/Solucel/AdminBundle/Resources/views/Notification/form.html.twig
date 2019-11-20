@@ -1,0 +1,209 @@
+<div class="row">
+    <article class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
+
+        <div data-widget-editbutton="false" data-widget-colorbutton="false" id="wid-id-2" class="jarviswidget jarviswidget-sortable" style="" role="widget">
+
+            <header role="heading">
+                <h2>Formulario de Notificaci&oacute;n</h2>
+
+                <span class="jarviswidget-loader"><i class="fa fa-refresh fa-spin"></i></span></header>
+
+            <!-- widget div-->
+            <div role="content">
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+
+                </div>
+                <!-- end widget edit box -->
+
+		
+                <!-- widget content -->
+                <div class="widget-body">
+
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    <fieldset>
+						
+						<div class="clearfix"></div>
+						
+                        <div class="form-group col-md-6">
+                            {{ form_label(form.notificationType) }}
+                            {{ form_errors(form.notificationType) }}
+                            {{ form_widget(form.notificationType, { 'attr': {'class' : 'form-control' } }
+                            ) }}
+                        </div>
+                        <div class="form-group col-md-6">
+                            {{ form_label(form.name) }}
+                            {{ form_errors(form.name) }}
+                            {{ form_widget(form.name, { 'attr': {'class' : 'form-control' } }
+                            ) }}
+                        </div>
+                        
+                        <div class="form-group col-md-6">
+                            {{ form_label(form.registrationDate) }}
+                            {{ form_errors(form.registrationDate) }}
+                            {{ form_widget(form.registrationDate, { 'attr': {'class' : 'form-control' } }
+                            ) }}
+                        </div>                        
+                        <div class="form-group col-md-6">
+                            {{ form_label(form.expirationDate) }}
+                            {{ form_errors(form.expirationDate) }}
+                            {{ form_widget(form.expirationDate, { 'attr': {'class' : 'form-control' } }) }}
+                        </div>                                                 
+                        <div class="form-group col-md-6">
+                            {{ form_label(form.description) }}
+                            {{ form_errors(form.description) }}
+                            {{ form_widget(form.description, { 'attr': {'class' : 'form-control' } }
+                            ) }}
+                        </div>
+                        
+						<div class="clearfix"></div>
+						<hr />
+						
+                        <div class="form-group col-md-6">
+                            {{ form_label(form.sendToDepartment) }}
+                            {{ form_errors(form.sendToDepartment) }}
+                            {{ form_widget(form.sendToDepartment, { 'attr': {'class' : '' } }
+                            ) }}
+                        </div>
+                        <div class="clearfix"></div>
+						                        
+                       
+                        <div class="form-group col-md-6">
+                            {{ form_label(form.shipperStaffDepartment) }}
+                            {{ form_errors(form.shipperStaffDepartment) }}
+                            {{ form_widget(form.shipperStaffDepartment, { 'attr': {'class' : 'form-control' } }
+                            ) }}
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            {{ form_label(form.fosUser) }}
+                            {{ form_errors(form.fosUser) }}
+                            {{ form_widget(form.fosUser, { 'attr': {'class' : 'form-control' } }
+                            ) }}
+                        </div>
+
+						<div class="clearfix"></div>
+						
+                                            
+                        <div class="hide">
+                            {{ form_rest(form) }}
+                        </div>
+
+                    </fieldset>
+
+                    <div class="form-actions">
+                        <a href="{{ path('opera_shipperstaff') }}" class="btn btn-default">
+                            Cancelar
+                        </a>
+
+                        <button class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+
+        <div class="clearfix"></div>
+
+
+    </article>
+</div>
+
+<script type="text/javascript" language="Javascript">
+$( document ).ready(function() {
+		
+		changeStaff();
+				
+		$("[name='wbc_administratorbundle_notification']").validate();
+		
+		
+		$("[name='wbc_administratorbundle_notification']").on('submit', function() {
+			$('#spinner').show();
+			
+  			if(checkDates()){
+  				
+  				return true;
+  				
+  			}
+  			else{
+  				$('#spinner').hide();
+  				alert("Debe ingresar fecha de inicio y expiración de la notificación.");
+  				return false;
+  			}
+		});
+		
+	
+		$("#wbc_administratorbundle_notification_registrationDate").rules("add", {required:true});
+		$("#wbc_administratorbundle_notification_expirationDate").rules("add", {required:true});
+
+	
+		$('#wbc_administratorbundle_notification_registrationDate').datepicker({  
+		    buttonImageOnly: true, 
+		    changeMonth: true,
+		    changeYear: true,
+		    dateFormat: 'yy-mm-dd',
+		    yearRange: "-0:+1"  
+		});	
+
+
+		$('#wbc_administratorbundle_notification_expirationDate').datepicker({  
+		    buttonImageOnly: true, 
+		    changeMonth: true,
+		    changeYear: true,
+		    dateFormat: 'yy-mm-dd',
+		    yearRange: "-0:+1"  
+		});	
+		
+		$("#wbc_administratorbundle_notification_registrationDate").rules("add", {required:true});
+		$("#wbc_administratorbundle_notification_expirationDate").rules("add", {required:true});
+	
+		$( "#wbc_administratorbundle_notification_shipperStaffDepartment" ).change(function() {
+		  changeStaff();
+		});	
+	
+		
+	function changeStaff(){
+		$.ajax({
+			type:"POST",
+			dataType:"json",
+			url:"{{ path('opera_shipper_notification_staff') }}",
+			data:"department_id="+$( "#wbc_administratorbundle_notification_shipperStaffDepartment" ).val(),
+			success:function(data){
+				var items = [];
+				  $.each( data, function( key, val ) {
+				    items.push( "<option value='" + key + "'>" + val + "</li>" );
+				  });
+									
+				$("#wbc_administratorbundle_notification_fosUser").html(items);	
+			}
+		});	 
+  		
+	}
+		
+	function checkDates(){
+		if($('#wbc_administratorbundle_notification_registrationDate').val() == "" || $('#wbc_administratorbundle_notification_expirationDate').val() == ""){
+			return false;
+		}
+		else{
+			return true;
+		}
+		
+	}
+
+});	
+	
+
+</script>

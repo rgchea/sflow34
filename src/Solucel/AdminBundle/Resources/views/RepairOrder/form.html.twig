@@ -1,0 +1,1536 @@
+<style>
+    .input-group {
+        z-index: 0;
+    }
+    
+    .select2-dropdown{
+    	min-width: 250px !important;
+    }
+    
+	.select2{
+    	min-width: 250px !important;
+    }    
+
+
+</style>
+
+<script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+<script type="text/javascript" src="{{ asset('bundles/pizotearkadmin/js/raphael-sketchpad-master/javascripts/raphael-2.0.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/pizotearkadmin/js/raphael-sketchpad-master/javascripts/json2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/pizotearkadmin/js/raphael-sketchpad-master/src/raphael.sketchpad.js') }}"></script>
+
+
+<script>
+	$('#pizote_spinner').show();
+</script>
+<div class="row">
+	<article class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
+
+		<div data-widget-editbutton="false" data-widget-colorbutton="false" id="wid-id-2" class="jarviswidget jarviswidget-sortable" style="" role="widget">
+
+			<header role="heading">
+				<h2>Orden de Reparación #{{ edit is defined ? entity.ticketNumber : "" }}</h2>
+				<h3>Correlativo #{{ edit is defined ? entity.id : "" }}</h3>
+				<span id="spinner" class="jarviswidget-loader" style="display: none"><i class="fa fa-refresh fa-spin"></i></span>
+			</header>
+
+			<!-- widget div-->
+			<div role="content">
+
+				<!-- widget edit box -->
+				<div class="jarviswidget-editbox">
+					<!-- This area used as dropdown edit box -->
+
+				</div>
+				<!-- end widget edit box -->
+
+				<!-- widget content -->
+				<div class="widget-body" id="widgetBody">
+
+
+                    {{ form_start(form) }}
+                    	
+
+						<fieldset id="myFieldset">
+							
+							{% if edit is not defined %}
+								<div class="form-group col-md-4">
+									{#
+									<button class="btn btn-primary">
+										Ingreso por Lote
+									</button>												
+										
+									#}
+								</div>
+							
+							{% endif %}
+
+							<div class="clearfix"></div>
+	                        <div class="form-group col-md-4">
+	                            {{ form_label(form.ticketNumber) }}
+	                            {{ form_errors(form.ticketNumber) }}
+	                            {{ form_widget(form.ticketNumber, { 'attr': {'class' : 'select2-search' } }
+	                            ) }}
+	                        </div>
+
+	                        <div class="form-group col-md-4">
+	                            {{ form_label(form.guideIn) }}
+	                            {{ form_errors(form.guideIn) }}
+	                            {{ form_widget(form.guideIn, { 'attr': {'class' : 'select2-search' } }
+	                            ) }}
+	                        </div>
+	                        
+	                        {% if show is  defined %}
+	                        
+		                        <div class="form-group col-md-4">
+		                            {{ form_label(form.guideOut) }}
+		                            {{ form_errors(form.guideOut) }}
+		                            {{ form_widget(form.guideOut, { 'attr': {'class' : 'select2-search' } }
+		                            ) }}
+		                        </div>								
+	                        
+	                        {% endif %}
+
+							<div class="clearfix"></div>
+	                        <div class="form-group col-md-4">
+	                            {{ form_label(form.operator) }}
+	                            {{ form_errors(form.operator) }}
+	                            {{ form_widget(form.operator, { 'attr': {'class' : 'select2-search' } }
+	                            ) }}
+	                        </div>
+	                        <div class="form-group col-md-4">
+	                            {{ form_label(form.agency) }}
+	                            {{ form_errors(form.agency) }}
+	                            {{ form_widget(form.agency, { 'attr': {'class' : 'select2-search' } }
+	                            ) }}
+	                        </div>		                        	
+
+
+	                        
+	                        <div class="form-group col-md-4">
+	                            {{ form_label(form.serviceCenter) }}
+	                            {{ form_errors(form.serviceCenter) }}
+	                            {{ form_widget(form.serviceCenter, { 'attr': {'class' : 'select2-search' } }
+	                            ) }}
+	                        </div>			                        
+	                        
+	                        
+	                        {% if show is not defined %}
+		                        <div class="form-group col-md-4">
+		                            {{ form_label(form.entryDate) }}
+		                            {{ form_errors(form.entryDate) }}
+		                            {{ form_widget(form.entryDate, { 'attr': {'class' : 'form-control' } }
+		                            ) }}
+		                        </div>	
+		                        <div class="form-group col-md-4">
+		                            {{ form_label(form.estimatedDeliveryDate) }}
+		                            {{ form_errors(form.estimatedDeliveryDate) }}
+		                            {{ form_widget(form.estimatedDeliveryDate, { 'attr': {'class' : 'form-control' } }
+		                            ) }}
+		                        </div>	
+	                        
+	                       	{% endif %}
+	                        
+							
+							<div class="clearfix"></div>							
+							<div class="col-md-12">
+
+							</div>	
+
+							<ul class="nav nav-tabs">
+		                        <li class="active"><a href="#cliente" data-toggle="tab">Cliente</a></li>
+		                        <li class=""><a href="#dispositivo" data-toggle="tab">Dispositivo</a></li>
+		                        
+		                        {% if show is defined %}
+			                        <li class=""><a href="#reparacion" data-toggle="tab">Reparación</a></li>
+			                        <li class=""><a href="#control" data-toggle="tab">Control de Calidad</a></li>
+			                        <li class=""><a href="#cobro" data-toggle="tab">Entrega</a></li>
+								{% endif %}		                        
+							</ul>
+							<div class="tab-content">
+		                        <div class="tab-pane active" id="cliente">
+									
+									
+									<div class="clearfix"></div>
+									{% if show is not defined %}
+										<div class="form-group col-sm-5">
+											<label class="required" for="repair_order_client_find">Buscar</label>
+											
+											<i  class="fa fa-fw fa-times" style="cursor: pointer" onclick="resetSelectedClient();"></i>
+											<input id="repair_order_client_find" class="form-control" type="text" name="client[find]" />
+											
+											{% if edit is defined %}
+											 	<input id="repair_order_client_id" class="form-control" type="hidden" name="client[id]" value="{{client.id}}" />
+											 	
+											{% else %}	 
+												<input id="repair_order_client_id" class="form-control" type="hidden" name="client[id]" value="0" />    
+											{% endif %}										
+													
+										</div>
+									
+									{% endif %}
+									<div class="clearfix"></div>
+									
+									<div class="form-group col-sm-5">
+										<label class="required" for="repair_order_client_client_code">Código</label>
+										{% if edit is defined %}
+										 	<input id="repair_order_client_client_code" class="form-control" type="text" required="required" name="client[client_code]" value="{{client.clientCode}}" readonly="readonly">
+										 	
+										{% else %}	 
+											<input id="repair_order_client_client_code" class="form-control" type="text" required="required" name="client[client_code]">    
+										{% endif %}	
+										
+									</div>		
+									
+									<div class="clearfix"></div>									
+		                        	
+									<div class="form-group col-sm-5">
+										<label class="required" for="repair_order_client_name">Nombre</label>
+										{% if edit is defined %}
+										 	<input id="repair_order_client_name" class="form-control" type="text" required="required" name="client[name]" value="{{client.name}}" readonly="readonly">
+										 	
+										{% else %}	 
+											<input id="repair_order_client_name" class="form-control" type="text" required="required" name="client[name]">    
+										{% endif %}											
+										
+
+									</div>
+									<div class="form-group col-sm-5">
+										<label class="required" for="repair_order_client_last_name">Apellido</label>
+										{% if edit is defined %}
+										 	<input id="repair_order_client_last_name" class="form-control" type="text" required="required" name="client[last_name]" value="{{client.lastName}}" readonly="readonly">
+										 	
+										{% else %}	 
+											<input id="repair_order_client_last_name" class="form-control" type="text" required="required" name="client[last_name]">    
+										{% endif %}	
+										
+									</div>		
+									
+									<div class="clearfix"></div>
+									
+									<div class="form-group col-sm-5">
+										<label class="required" for="repair_order_client_dpi">DPI</label>
+										{% if edit is defined %}
+										 	<input id="repair_order_client_dpi" class="form-control" type="text" name="client[dpi]" value="{{client.dpi}}" readonly="readonly">
+										 	
+										{% else %}	 
+											<input id="repair_order_client_dpi" class="form-control" type="text" name="client[dpi]">    
+										{% endif %}	
+										
+									</div>
+									
+									<div class="form-group col-sm-5">
+										<label class="required" for="repair_order_client_nit">NIT</label>
+										{% if edit is defined %}
+										 	<input id="repair_order_client_nit" class="form-control" type="text" name="client[nit]" value="{{client.nit}}" readonly="readonly">
+										 	
+										{% else %}	 
+											<input id="repair_order_client_nit" class="form-control" type="text" name="client[nit]">    
+										{% endif %}	
+										
+									</div>
+
+									<div class="clearfix"></div>									
+									<div class="form-group col-sm-5">
+										<label class="required" for="repair_order_client_phone">Número de Teléfono (entregado)</label>
+										{% if edit is defined %}
+										 	<input id="repair_order_client_phone" class="form-control" type="text" required="required" name="client[phone]" value="{{client.phone}}" readonly="readonly">
+										 	
+										{% else %}	 
+											<input id="repair_order_client_phone" class="form-control" type="text" required="required" name="client[phone]">    
+										{% endif %}	
+										
+									</div>
+									<div class="form-group col-sm-5">
+										<label class="required" for="repair_order_client_contact_phone">Número para contacto</label>
+										{% if edit is defined %}
+										 	<input id="repair_order_client_contact_phone" class="form-control" type="text" required="required" name="client[contact_phone]" value="{{client.contactPhone}}" readonly="readonly">
+										 	
+										{% else %}	 
+											<input id="repair_order_client_contact_phone" class="form-control" type="text" required="required" name="client[contact_phone]">    
+										{% endif %}	
+										
+									</div>																					
+									<div class="clearfix"></div>
+									
+									<div class="form-group col-sm-5">
+										<label class="required" for="repair_order_client_email">Email</label>
+										{% if edit is defined %}
+										 	<input id="repair_order_client_email" class="form-control" type="text" required="required" name="client[email]" value="{{client.email}}" readonly="readonly">
+										 	
+										{% else %}	 
+											<input id="repair_order_client_email" class="form-control" type="text" required="required" name="client[email]">    
+										{% endif %}	
+										
+									</div>										
+									<div class="form-group col-sm-5">
+										<label class="required" for="repair_order_client_type">Tipo&nbsp;</label>
+										<select id="repair_order_client_type" name="client[type]" class="select2-search" {{ edit is defined ? 'disabled="disabled"' : ''}}>
+											
+											{% if edit is defined%}
+												<option value="Operador" {{ client.clientType == 'Operador' ? 'selected="selected"' : ''}} >Operador</option>
+												<option value="Distribuidor" {{ client.clientType == 'Distribuidor' ? 'selected="selected"' : ''}} >Distribuidor</option>
+												<option value="Proveedor" {{ client.clientType == 'Proveedor' ? 'selected="selected"' : ''}} >Proveedor</option>
+												<option value="Particular" {{ client.clientType == 'Particular' ? 'selected="selected"' : ''}} >Particular</option>
+											{% else %}
+												<option value="Operador">Operador</option>
+												<option value="Distribuidor">Distribuidor</option>
+												<option value="Proveedor">Proveedor</option>
+												<option value="Particular">Particular</option>			
+											{% endif %}
+										</select>
+									</div>		
+									
+									<div class="clearfix"></div>
+									
+									<div class="form-group col-sm-5">
+										<label class="required" for="repair_order_client_state">Municipio&nbsp;</label>
+										<select id="repair_order_client_state" name="client[state]" class="select2-search" {{ edit is defined ? 'disabled="disabled"' : ''}}>
+											
+											{% if edit is defined%}
+												{% for state in states %}
+													{% set selected = client.state.id == state.id ? 'selected="selected"' : '' %}
+												
+													<option value="{{state.id}}" {{selected}} >{{state.name}}</option>
+												{% endfor %}
+								
+											{% else %}
+											
+												{% for state in states %}
+													<option value="{{state.id}}" >{{state.name}}</option>
+												{% endfor%}			
+											{% endif %}
+										</select>
+									</div>																			
+																
+												                        	
+		                        </div>
+		                        <div class="tab-pane" id="dispositivo">
+									
+									<div class="form-group col-sm-5">
+			                            {{ form_label(form.deviceType) }}
+			                            {{ form_errors(form.deviceType) }}
+			                            {{ form_widget(form.deviceType, { 'attr': {'class' : 'select2-search' } }
+			                            ) }}	
+									</div>
+									
+									<div class="form-group col-sm-5">
+			                            {{ form_label(form.devicePlan) }}
+			                            {{ form_errors(form.devicePlan) }}
+			                            {{ form_widget(form.devicePlan, { 'attr': {'class' : 'select2-search' } }
+			                            ) }}	
+									</div>										
+									
+									<div class="clearfix"></div>
+									
+									
+									<div class="form-group col-sm-5">
+			                            {{ form_label(form.deviceBrand) }}
+			                            {{ form_errors(form.deviceBrand) }}
+			                            {{ form_widget(form.deviceBrand, { 'attr': {'class' : 'select2-search' } }
+			                            ) }}	
+									</div>
+									<div class="form-group col-sm-5">
+			                            {{ form_label(form.deviceModel) }}
+			                            {{ form_errors(form.deviceModel) }}
+			                            <br>
+			                            {{ form_widget(form.deviceModel, { 'attr': {'class' : 'select2-search s2' } }
+			                            ) }}	
+									</div>
+									<div class="clearfix"></div>
+									<div class="form-group col-sm-5">
+			                            {{ form_label(form.deviceColor) }}
+			                            {{ form_errors(form.deviceColor) }}
+			                            {{ form_widget(form.deviceColor, { 'attr': {'class' : 'select2-search' } }
+			                            ) }}	
+									</div>
+									
+									<div class="form-group col-sm-5">
+			                            {{ form_label(form.devicePurchaseDate) }}
+			                            {{ form_errors(form.devicePurchaseDate) }}
+			                            {{ form_widget(form.devicePurchaseDate, { 'attr': {'class' : 'form-control' } }
+			                            ) }}	
+									</div>									
+																		
+									<div class="clearfix"></div>
+									
+			                        <div class="form-group col-sm-5">
+			                            {{ form_label(form.phoneNumber) }}
+			                            {{ form_errors(form.phoneNumber) }}
+			                            {{ form_widget(form.phoneNumber, { 'attr': {'class' : 'form-control' } }
+			                            ) }}	
+			                        </div>																		
+												
+									
+									<div class="form-group col-sm-5" id="divManufactureDate" style="display: none">
+			                            {{ form_label(form.deviceManufactureDate) }}
+			                            {{ form_errors(form.deviceManufactureDate) }}
+			                            {{ form_widget(form.deviceManufactureDate, { 'attr': {'class' : 'form-control' } }
+			                            ) }}	
+									</div>																				
+												
+									<div class="clearfix"></div>			
+			                        <div class="form-group col-sm-5">
+			                            {{ form_label(form.deviceImei) }}
+			                            {{ form_errors(form.deviceImei) }}
+			                            {{ form_widget(form.deviceImei, { 'attr': {'class' : 'form-control' } }
+			                            ) }}	
+			                        </div>
+			                        
+			                        <div class="form-group col-sm-5">
+										<label class="required" for="repair_order_imei_check">IMEI verificación</label>
+										{% if edit is defined %}
+											<input id="repair_order_imei_check" class="form-control" type="text" required="required" value="{{entity.deviceImei}}" />
+										{% else %}
+											<input id="repair_order_imei_check" class="form-control"  type="text" required="required"  />
+										{% endif %}
+										
+			                        </div>			                        
+			                        
+			                        <div class="form-group col-sm-5">
+			                            {{ form_label(form.deviceImei2) }}
+			                            {{ form_errors(form.deviceImei2) }}
+			                            {{ form_widget(form.deviceImei2, { 'attr': {'class' : 'form-control' } }
+			                            ) }}	
+			                        </div>
+			                        		                        
+			                        			                        
+			                        <div class="clearfix"></div>
+			                        
+			                        
+			                        
+			                        
+			                        
+			                        <div class="form-group col-sm-5">
+			                            {{ form_label(form.deviceBorrowedImei) }}
+			                            {{ form_errors(form.deviceBorrowedImei) }}
+			                            {{ form_widget(form.deviceBorrowedImei, { 'attr': {'class' : 'form-control' } }
+			                            ) }}	
+			                        </div>
+			                        
+									<div class="form-group col-sm-5" id="divPayer" style="display: none">
+			                            {{ form_label(form.payer) }}
+			                            {{ form_errors(form.payer) }}
+			                            {{ form_widget(form.payer, { 'attr': {'class' : 'select2-search' } }
+			                            ) }}	
+									</div>				                        
+			                        
+			                        <div class="clearfix"></div>
+			                        
+									<div class="form-group col-sm-5">
+			                            {{ form_label(form.deviceMsn) }}
+			                            {{ form_errors(form.deviceMsn) }}
+			                            {{ form_widget(form.deviceMsn, { 'attr': {'class' : 'form-control' } }
+			                            ) }}	
+									</div>			                        
+
+									<div class="form-group col-sm-5">
+			                            {{ form_label(form.deviceXcvr) }}
+			                            {{ form_errors(form.deviceXcvr) }}
+			                            {{ form_widget(form.deviceXcvr, { 'attr': {'class' : 'form-control' } }
+			                            ) }}	
+									</div>			                        
+
+									<div class="clearfix"></div>
+									
+									<div class="form-group col-sm-5">
+			                            {{ form_label(form.deviceCodeFab) }}
+			                            {{ form_errors(form.deviceCodeFab) }}
+			                            {{ form_widget(form.deviceCodeFab, { 'attr': {'class' : 'form-control' } }
+			                            ) }}	
+									</div>			                    
+									
+									<div class="form-group col-sm-5">
+			                            {{ form_label(form.invoiceNumber) }}
+			                            {{ form_errors(form.invoiceNumber) }}
+			                            {{ form_widget(form.invoiceNumber, { 'attr': {'class' : 'form-control' } }
+			                            ) }}	
+									</div>
+																				
+									<div class="clearfix"></div>
+									
+									
+									<div class="form-group col-sm-5" id="divWarrantyFlag" style="display: none">
+			                            {{ form_label(form.warrantyFlag) }}
+			                            {{ form_errors(form.warrantyFlag) }}
+			                            {{ form_widget(form.warrantyFlag) }}	
+									</div>									
+									
+									<div class="clearfix"></div>
+									
+									<div class="form-group col-sm-5" id="divEntryType" >
+			                            {{ form_label(form.repairEntryType) }}
+			                            {{ form_errors(form.repairEntryType) }}
+			                            {{ form_widget(form.repairEntryType, { 'attr': {'class' : 'select2-search' } }
+			                            ) }}	
+									</div>									
+									
+									<div class="form-group col-sm-5">
+			                            {{ form_label(form.humidity) }}
+			                            <br />
+			                            {{ form_errors(form.humidity) }}
+			                            {{ form_widget(form.humidity, { 'attr': {'class' : '' } }
+			                            ) }}
+			                            
+										<a id="humidityPrint" class="btn-warning" tabindex="0" aria-controls="dt_basic" href="#">
+											<span>Imprimir descargo de responsabilidad</span>
+										</a>			                            	
+									</div>
+									<div class="clearfix"></div>
+									
+									<div class="clearfix"></div>
+									{% if show is not defined %}
+										<div class="form-group col-sm-5">
+											<button class="btn btn-primary" onclick="addDefect();" type="button">Agregar Falla</button>	
+										</div>
+									{% endif %}
+									<div class="clearfix"></div>
+																		
+									<div class="form-group col-sm-5">
+										<table id="defectTable">
+											<tbody>
+											{% set defectCount = 0 %}
+											{% if edit is defined %}
+
+												
+												{% for defect in defects %}
+
+													{% set defectCount = defectCount + 1 %}
+
+													<tr id="tr_repair_order_defect_{{defectCount}}">
+														<td>
+															<label class="required" for="repair_order_defect">Falla {{defectCount}}&nbsp;</label><span style="cursor:pointer" onclick="deleteDefect({{defectCount}});" class="label label-danger arrowed arrow-left">Eliminar</span>
+															<select id="repair_order_defect_{{defectCount}}" name="defect[{{defectCount}}]" class="select2-search">
+																<option value="{{defect.deviceDefect.id}}">{{defect.deviceDefect.name}}</option>							
+															</select>
+														</td>	
+													</tr>
+
+
+												{% endfor %}
+												
+											{% endif %}												
+											</tbody>
+										</table>
+										
+									</div>	
+									<div class="clearfix"></div>
+									<div class="form-group col-sm-5">
+			                            {{ form_label(form.deviceProblem) }}
+			                            {{ form_errors(form.deviceProblem) }}
+			                            {{ form_widget(form.deviceProblem, { 'attr': {'class' : 'form-control' } }
+			                            ) }}	
+									</div>									
+									<div class="form-group col-sm-5">
+			                            {{ form_label(form.deviceObservation) }}
+			                            {{ form_errors(form.deviceObservation) }}
+			                            {{ form_widget(form.deviceObservation, { 'attr': {'class' : 'form-control' } }
+			                            ) }}	
+									</div>	
+									<div class="clearfix"></div>
+									{% if show is not defined %}
+										<div class="form-group col-sm-5">
+											<button class="btn btn-primary" onclick="addAccessory();" type="button">Agregar Accesorio</button>	
+										</div>
+									{% endif %}		
+									<div class="clearfix"></div>															
+									<div class="form-group col-sm-5">
+										<table id="accessoryTable">
+											<tbody>
+												
+											{% if edit is defined %}
+												{% set accessoryCount = 1 %}
+												
+												{% for accessory in accessories %}
+													<tr id="tr_repair_order_accessory_{{accessoryCount}}">
+														<td>
+															<label class="required" for="repair_order_accessory">Accesorio {{accessoryCount}}&nbsp;</label><span style="cursor:pointer" onclick="deleteAccessory({{accessoryCount}});" class="label label-danger arrowed arrow-left">Eliminar</span>
+															<select id="repair_order_accessory_{{accessoryCount}}" name="accessory[{{accessoryCount}}]" class="select2-search">
+																<option value="{{accessory.deviceAccessory.id}}">{{accessory.deviceAccessory.name}}</option>							
+															</select>
+														</td>	
+													</tr>		
+													{% set accessoryCount = accessoryCount + 1 %}										
+												{% endfor %}
+												
+											{% endif %}													
+											</tbody>
+										</table>
+										
+									</div>	
+									<div class="clearfix"></div>
+									<br>
+									<div class="form-group col-sm-5">
+										<label>Señalización de daños u observaciones gráficas</label>
+									</div>
+									<div class="clearfix"></div>									
+									<div id="wrapper">
+									    <img style="width:800px; z-index: -10" src="{{ asset('bundles/soluceladmin/img/phoneview.png')}}">
+									    
+
+										{% if edit is defined %}
+
+											<div  id="editor" style="width:800px;position: absolute: margin-top: -400px" ></div>
+											<div class="widget_actions span-2 last">
+												
+											  <div id="editor_undo" class="btn btn-primary" style="cursor: pointer">Regresar</div>
+											  <div id="editor_redo" class="btn btn-primary" style="cursor: pointer">Re-Hacer</div>
+											  <div id="editor_clear" class="btn btn-primary" style="cursor: pointer">Limpiar</div>
+											</div>											
+											
+										{% elseif show is defined %}
+										
+										{% else %}	
+										
+											<div  id="editor" style="width:800px;position: absolute: margin-top: -400px" ></div>	
+											<div class="widget_actions span-2 last">
+											  <div id="editor_undo" class="btn btn-primary" style="cursor: pointer">Regresar</div>
+											  <div id="editor_redo" class="btn btn-primary" style="cursor: pointer">Re-Hacer</div>
+											  <div id="editor_clear" class="btn btn-primary" style="cursor: pointer">Limpiar</div>
+											</div>																					
+										{% endif %}
+																			    
+									      
+									</div>   
+																		
+									
+									{% if show is not defined %}
+										<input type="hidden" name="repair_order_sketchpadData" id="repair_order[sketchpadData]" />
+									{% endif %}		
+									
+									
+									<br><br><br><br>
+									<div>
+										
+										<button class="btn btn-primary" onclick="addField();" type="button">Agregar Datos</button>
+										<table id="fieldsTable">
+											<tbody>
+												
+												{% set fieldCount = 1 %}
+												
+												{% if edit is defined %}
+													{% for field in fields %}
+														{# ////GROUP BY TYPE IN SELECT #}
+														
+														
+														<tr id="tr_repair_order_field_{{fieldCount}}">
+															<td>
+																<label class="required" for="">{{field.name}}&nbsp;</label>{% if show is not defined %}<span style="cursor:pointer" onclick="deleteField({{fieldCount}});" class="label label-danger arrowed arrow-left">Eliminar</span>{% endif%}
+																<input type="text" id="repair_order_field_{{fieldCount}}" name="field[{{fieldCount}}][value]" class="form-control" value="{{field.value}}" />																							
+																<input type="hidden"  name="field[{{fieldCount}}][name]" class="form-control" value="{{field.name}}" />
+															</td>
+			
+														</tr>		
+														{% set fieldCount = fieldCount + 1 %}										
+													{% endfor %}
+												
+												{% endif %}
+																										
+											</tbody>
+										</table>										
+									</div>							
+																				
+		                        </div>
+		                        {% if show is defined %}
+			                        <div class="tab-pane" id="reparacion">
+			                         {#	{{ include('SolucelAdminBundle:RepairOrderFix:edit.html.twig') }} #}
+			                         	
+			                         	{% if hasFix == 1 %}
+			                         		{{ render(controller('SolucelAdminBundle:RepairOrderFix:show', { 'id': entity.id })) }}
+			                         	{% endif %}
+			                         	
+			                         
+			                        </div>
+			                        <div class="tab-pane" id="control">
+			                            {% if arrRegisters is not empty %}
+											{% if(objQualityControl != NULL) %}	
+												<div class="form-group col-md-6">		
+													<label>Comentario de Control de Calidad</label><br>
+													<span>{{objQualityControl.qaComment}}</span>
+												</div>							
+												<div class="clearfix"></div>
+												<div class="form-group col-md-6">
+							            			<!-- TECNICO-->
+													<table id="dt_basic" width="100%" class="table table-striped table-bordered table-hover"> 
+										                <thead>
+															<tr>
+										                    	<th style="text-align: center" colspan="4">Detalle de Control de Calidad</th>
+										                    </tr>	                	
+										                    <tr>
+										                    	<th width="70%" >&nbsp;</th>
+												                <th width="15%">Funciona</th>
+												                <th width="15%">NO Funciona</th>
+																<th width="15%">No Aplica</th>
+										                    </tr>
+										                </thead>
+										                <tbody>
+										                
+										                {% for group in arrGroups %}
+										                	<tr>
+										                		<td style="text-align: left" colspan="4"><b>{{group.name}}</b></td>
+										                	</tr>
+										                	{% for subgroup in group.subgroups %}
+										                		<tr>
+										                			<td><label style="margin-left:3em">{{subgroup.name}}</label></td>
+										                			<td>
+										                				<input disabled="disabled" type="radio"  {{ arrRegisters[group.id][subgroup.id]['check'] == 'true' ? 'checked="checked"' : '' }} />
+										                			</td>
+										                			<td>
+										                				<input  disabled="disabled"  type="radio" {{ arrRegisters[group.id][subgroup.id]['uncheck'] == 'true' ? 'checked="checked"' : '' }} />
+										                			</td>
+										                			<td>
+										                				<input  disabled="disabled" type="radio" {{ arrRegisters[group.id][subgroup.id]['not_apply'] == 'true' ? 'checked="checked"' : '' }}  />
+										                			</td>	                			
+										                		</tr>
+										                	{% endfor %}
+										                {% endfor %}	
+										                	                
+										                
+										                </tbody>
+										            </table>										
+												</div>
+											{% endif %}				                            
+			                            {% endif %}
+			                            
+					                            
+	                            
+			                        </div>
+			                        <div class="tab-pane" id="cobro">
+			                        	Historial 
+			                        	
+			                        	
+			                        	{% if orderHistory != NULL %}
+			                        		<ul>
+				                        		{% for history in orderHistory %}
+				                        			<li> {{history.created_at}}: {{history.status}}, por {{history.created_by}}</li>
+				                        			
+				                        		{% endfor %}
+			                        		</ul>
+			                        	{% endif %}
+			                        </div>
+								{% endif %}
+	                    	</div>                    
+	                        <div class="hide">
+	                            {{ form_rest(form) }}
+	                        </div>
+
+						</fieldset>
+						<br />
+						<div class="form-actions">
+							{% if show is not defined %}
+							<a href="{{ path('solucel_admin_homepage') }}" class="btn btn-default"> Cancelar </a>
+
+							<button class="btn btn-primary">
+								<i class="fa fa-save" onclick="$('#pizote_spinner').show();"></i>
+								Guardar
+							</button>
+							{% endif %}
+						</div>
+
+					<!--</form>-->
+					{{ form_end(form) }}					
+
+				</div>
+				<!-- end widget content -->
+
+			</div>
+			<!-- end widget div -->
+
+		</div>
+
+		<div class="clearfix"></div>
+
+	</article>
+</div>
+
+<script language="JavaScript" type="text/javascript">
+	//jQuery.ajaxSetup({async:false});
+	var daysToRepair = 0;
+
+	var defectCount = '{{defectCount}}';
+
+	var myDefects = parseInt(defectCount);
+	{% if edit is defined %}
+
+		var accessoryCount = '{{accessoryCount}}';
+		var clientID = '{{client.id}}';
+
+	{% else %}
+
+		var accessoryCount = 1;
+		var clientID = 0;		
+	{% endif %}
+	
+	
+
+	
+	
+	$( document ).ready(function() {
+		
+		
+		{% if edit is defined and entity.deviceBrand.name == "Motorola"%}
+		
+			$("#divManufactureDate").show();
+			$("#divPayer").show();
+			$("#divWarrantyFlag").show();
+		
+		{% else %}	
+			$("#divManufactureDate").hide();
+			$("#divPayer").hide();
+			$("#divWarrantyFlag").hide();
+		{% endif %}		
+
+		//it converts the select on a searchable select
+		//$('.s2').select2();
+			
+		$("#repair_order_devicePurchaseDate").datepicker();
+		
+		$("#repair_order_devicePurchaseDate").change(function() {
+			
+			
+			if($("#repair_order_devicePurchaseDate").val().trim() != ""){
+				
+				var today = new Date();
+				
+				dd = parseInt(today.getDate());
+				mm = today.getMonth()+1; //January is 0!			
+				yyyy = parseInt(today.getFullYear());
+				if(dd < 10){dd = "0"+dd;}
+				if(mm < 10){mm = "0"+mm;}
+							
+				dateCompare = $("#repair_order_devicePurchaseDate").val();
+				dateSplit = dateCompare.split("/");
+				
+				dds = dateSplit[0];
+				mms = dateSplit[1];
+				yyyys = dateSplit[2];
+				
+				
+			    var d1 = Date.parse(yyyy+"-"+mm+"-"+dd);//"2011-04-01"
+			    var d2 = Date.parse(yyyys+"-"+mms+"-"+dds);
+			    console.log(yyyy+"-"+mm+"-"+dd);
+			    console.log(yyyys+"-"+mms+"-"+dds);
+			    
+			    if (d2 > d1) {
+			    	alert ("Error! La fecha de compara no puede ser mayor al día de hoy.");
+			    	$("#repair_order_devicePurchaseDate").val("");
+			     }			
+	  			//console.log($("#repair_order_deviceType").val());				
+				
+			}
+
+		});			
+		
+
+		$("#repair_order_deviceManufactureDate").datepicker();
+		$("#repair_order_entryDate").datepicker();
+
+		$("#repair_order_humidity").change(function() {
+  			if(this.checked){
+  				$("#humidityPrint").show("slow");
+  			}
+  			else{
+  				$("#humidityPrint").hide("slow");
+  			}
+		});		
+		
+
+		$("#repair_order_entryDate").change(function() {
+  			getDaysToRepair();
+		});
+		
+		$("#repair_order_deviceType").change(function() {
+			checkEntryType();
+  			//console.log($("#repair_order_deviceType").val());
+		});		
+
+		
+		$('[name="repair_order"]').validate({
+			ignore: [],			
+		    submitHandler: function(form) {
+		        // something to do when the form is valid
+		        $('#pizote_spinner').show();
+		        var retorno = false;
+			 	if($("#repair_order_client_id").val() == 0 && $('[name="repair_order"]').valid()){
+			 		retorno = true;
+			 	}
+			 	else
+			 	 
+			 	if($("#repair_order_client_id").val() != 0){
+			 		retorno = true;
+			 		//console.log("entra uno");
+			 	}
+			 				 	
+			 	return retorno;
+
+		        
+		    },
+		    
+		    invalidHandler: function(event, validator) {
+		        // something to do when validation fails
+		        console.log("alert fails");
+		        
+			    //validator.errorList contains an array of objects, where each object has properties "element" and "message".  element is the actual HTML Input.
+			    for (var i=0;i<validator.errorList.length;i++){
+			        console.log(validator.errorList[i]);
+			    }
+			
+			    //validator.errorMap is an object mapping input names -> error messages
+			    for (var i in validator.errorMap) {
+			      console.log(i, ":", validator.errorMap[i]);
+			    }	
+			    $('#pizote_spinner').hide();	        
+
+		    }			
+		
+		});
+		
+		
+		$("#repair_order_imei_check").rules("add", {required:true, equalTo: "#repair_order_deviceImei"});
+		
+		
+		
+		$("#repair_order_client_dpi").rules("add", {required:true, digits: true});
+		$("#repair_order_client_phone").rules("add", {required:true, digits: true});
+		$("#repair_order_client_client_code").rules("add", {required:true});
+		$("#repair_order_client_email").rules("add", {required:true, email: true});
+		$("#repair_order_operator").rules("add", {required:true, min: 1});
+		$("#repair_order_agency").rules("add", {required:true, min: 1});
+		$("#repair_order_serviceCenter").rules("add", {required:true, min: 1});
+		$("#repair_order_deviceBrand").rules("add", {required:true, min: 1});
+		$("#repair_order_deviceImei2").rules("add", {minlength: 15});
+		
+		
+		$("#repair_order_deviceImei").rules("add", {minlength: 15, required:{
+	        depends: function(element) {
+	           if($("#repair_order_deviceType").val() == 1){
+	           		return true;
+	           }
+	           else{
+	           		return false;
+	           }
+	           
+	      }
+	      
+	      
+			
+		}});
+		
+		
+		$("#repair_order_imei_check").rules("add", {required:{
+	        depends: function(element) {
+	           if($("#repair_order_deviceType").val() == 1){
+	           		return true;
+	           }
+	           else{
+	           		return false;
+	           }
+	           
+	      }
+			
+		}});	
+		
+		$("#repair_order_deviceCodeFab").rules("add", {required:{
+	        depends: function(element) {
+	           if($("#repair_order_deviceType").val() != 1){
+	           		return true;
+	           }
+	           else{
+	           		return false;
+	           }
+	           
+	      }
+			
+		}});		
+			
+		
+		//console.log(); 
+			
+		changeAgency();
+
+		{% if edit is defined %}
+			changeModel();
+		{% endif %}
+
+		
+		getDaysToRepair();
+		
+		{% if edit is not defined %}
+			addDefect();
+		{% endif %}
+		
+		{% if show is defined %}
+			disableForms();
+		{% endif %}
+		//console.log(daysToRepair);
+		/*	
+		Date.prototype.addDays = function(days) {
+		    this.setDate(this.getDate() + parseInt(days));
+		    return this;
+		};
+		
+		var currentDate = new Date();
+		// to add 4 days to current date
+		test = currentDate.addDays(24);
+		console.log(test);	
+		*/
+		
+		$('#pizote_spinner').hide();
+		
+		$("#editor").attr('style',  'width: 800px;cursor: crosshair;-moz-user-select: text;position:absolute; margin-top: -500px');
+		
+	});
+	
+
+	$( "#repair_order_operator" ).change(function() {
+	  changeAgency();
+	});	
+	
+	$( "#repair_order_client_phone" ).change(function() {
+	   $("#repair_order_phoneNumber").val(this.value);
+	});		
+	
+
+	$( "#repair_order_deviceBrand" ).change(function() {
+	  changeModel();
+	  
+	  if( $( "#repair_order_deviceBrand  option:selected").text()  == "Motorola"){
+	  	$("#divManufactureDate").show();
+	  	$("#divPayer").show();
+	  	$("#divWarrantyFlag").show();
+	  	$("#repair_order_deviceManufactureDate").rules("add", {required:true});
+	  	$("#repair_order_payer").rules("add", {required:true});
+	  }
+	  else{
+	  	$("#divManufactureDate").hide();
+	  	$("#divPayer").hide();
+	  	$("#divWarrantyFlag").hide();
+	  	$("#repair_order_deviceManufactureDate").rules("add", {required:false});
+	  	$("#repair_order_payer").rules("add", {required:false});
+	  }
+	  	
+	});		
+	
+	
+		
+	function changeAgency(){
+		
+		if($("#repair_order_operator").val() != ""){
+			$.ajax({
+				type:"POST",
+				dataType:"json",
+				url:"{{ path('solucel_admin_repairorder_agency') }}",
+				data:"operator_id="+$( "#repair_order_operator" ).val(),
+				success:function(data){
+					
+
+					
+					getDaysToRepair();
+					var items = [];
+					  $.each( data, function( key, val ) {
+					  	selected = '';
+					  	{% if edit is defined %}
+					  		if(key == '{{entity.agency.id}}'){
+					  			selected = ' selected="selected" ';
+					  		}
+					  	{% endif %}										  	
+					  	
+					    items.push( '<option value="' + key + '"'+selected+'>' + val + '</option>' );
+					  });
+										
+					$("#repair_order_agency").html(items);	
+				}
+			});	 
+			
+		}
+  		
+	}	
+	
+	function sortlist()
+	{
+	    var cl = document.getElementById('repair_order_deviceModel');
+	    var clTexts = new Array();
+	
+	    for(i = 2; i < cl.length; i++)
+	    {
+	        clTexts[i-2] =
+	            cl.options[i].text.toUpperCase() + "," +
+	            cl.options[i].text + "," +
+	            cl.options[i].value;
+	    }
+	
+	    clTexts.sort();
+	
+	    for(i = 2; i < cl.length; i++)
+	    {
+	        var parts = clTexts[i-2].split(',');
+	        
+	        cl.options[i].text = parts[1];
+	        cl.options[i].value = parts[2];
+	    }
+	}
+	
+	
+	function changeModel(){
+
+		isEdit = 0;
+		{% if edit is defined %}
+			isEdit = 1;
+		{% endif %}
+		
+		if($("#repair_order_deviceBrand").val() != ""){
+			$('#pizote_spinner').show();
+
+
+			{% if edit is defined %}
+
+				$.ajax({
+					type:"POST",
+					async: false,
+					//dataType:"json",
+					dataType:"html",
+					url:"{{ path('solucel_admin_repairorder_device_model') }}",
+					data:{device_brand_id: $("#repair_order_deviceBrand").val(), device_model_id: '{{entity.deviceModel.id}}', isEdit: isEdit},
+					success:function(data){
+
+						$("#repair_order_deviceModel").html(data);
+
+						//sortlist();
+						$('#pizote_spinner').hide();
+					}
+
+				});
+
+
+			{% else %}
+
+				$.ajax({
+					type:"POST",
+					async: false,
+					//dataType:"json",
+					dataType:"html",
+					url:"{{ path('solucel_admin_repairorder_device_model') }}",
+					data:{device_brand_id: $("#repair_order_deviceBrand").val(), device_model_id: '0', isEdit: isEdit},
+					success:function(data){
+
+						$("#repair_order_deviceModel").html(data);
+
+						//sortlist();
+						$('#pizote_spinner').hide();
+					}
+
+				});
+
+
+			{% endif %}
+
+			$('#pizote_spinner').hide();
+
+		}
+		
+  		
+	}		
+	
+	function getDaysToRepair(){
+		
+		if($("#repair_order_operator").val()){
+			$.ajax({
+				type:"POST",
+				dataType:"json",
+				url:"{{ path('solucel_admin_repairorder_getdaystorepair') }}",
+				data:"operator_id="+$( "#repair_order_operator" ).val(),
+				async: false, //blocks window close
+				success:function(data){
+					console.log(data+"diasSuccess");
+					daysToRepair = data;
+					
+				}
+			});	 
+			var arrDate =  $("#repair_order_entryDate").val().split("/");
+			console.log(arrDate);
+			var someDate = new Date(arrDate[2]+"-"+arrDate[1]+"-"+arrDate[0]);
+			someDate.setDate(someDate.getDate() + parseInt(daysToRepair)); //number  of days to add, e.x. 15 days
+			console.log(someDate);
+			var dateFormated = someDate.toISOString().substr(0,10);
+			arrTemp = dateFormated.split("-"); 
+			var deliveryDate = arrTemp[2]+"/"+arrTemp[1]+"/"+arrTemp[0];
+			$("#repair_order_estimatedDeliveryDate").val(deliveryDate);
+			//console.log(dateFormated);				
+			
+		}
+		
+		
+  				
+	}
+	
+	
+	function resetSelectedClient(){
+		
+		$('#repair_order_client_find').val('').focus();		
+		clientID = 0;
+		$("#repair_order_client_id").val(0);
+		
+		$("#repair_order_client_client_code").val("").prop('readonly', false);
+		$("#repair_order_client_name").val("").prop('readonly', false);
+		$("#repair_order_client_last_name").val("").prop('readonly', false);
+		$("#repair_order_client_dpi").val("").prop('readonly', false);
+		$("#repair_order_client_phone").val("").prop('readonly', false);
+		$("#repair_order_client_nit").val("").prop('readonly', false);
+		$("#repair_order_client_type").val("Operador").prop('disabled', false);
+		$("#repair_order_client_state").val("1").prop('disabled', false);
+		
+		
+	}
+	
+	$( "#repair_order_client_find" ).autocomplete({
+      source: "{{ path('solucel_admin_repairorder_clientfind') }}",
+      minLength: 2,    
+      select: function( event, ui ) {
+        /*console.log( ui.item ?
+          "Selected: " + ui.item.value + " aka " + ui.item.id :
+          "Nothing selected, input was " + this.value );
+          */
+		clientID = ui.item.id;
+		$("#repair_order_client_id").val(ui.item.id);
+		$("#repair_order_client_client_code").val(ui.item.client_code).prop('readonly', true)
+		$("#repair_order_client_name").val(ui.item.name).prop('readonly', true)
+		$("#repair_order_client_last_name").val(ui.item.last_name).prop('readonly', true);
+		$("#repair_order_client_dpi").val(ui.item.dpi).prop('readonly', true);
+		$("#repair_order_client_phone").val(ui.item.phone).prop('readonly', true);
+		$("#repair_order_client_nit").val(ui.item.nit).prop('readonly', true);
+		$("#repair_order_client_type").val(ui.item.client_type).prop('disabled', true);
+		
+		$("#repair_order_client_state").val(ui.item.state_id).prop('disabled', true);
+		$("#repair_order_client_contact_phone").val(ui.item.contact_phone).prop('readonly', true);
+		$("#repair_order_client_email").val(ui.item.email).prop('readonly', true);
+		
+		
+		
+      }
+    });	
+    
+    function addDefect(){
+
+
+		if(myDefects >= 3){
+			alert("Solo puede agregar 3 fallas.");
+		}
+		else {
+
+			myDefects = myDefects+1;
+
+			$('#pizote_spinner').show();
+			$.ajax({
+				type: "POST",
+				dataType: "html",
+				url: "{{ path('solucel_admin_repairorder_adddefect') }}",
+				data: "count=" + defectCount,
+				async:false,
+				success: function (data) {
+
+					$("#defectTable tbody").append(data);
+					$("#repair_order_defect_" + defectCount).focus();
+					defectCount++;
+
+				}
+			});
+			$('#pizote_spinner').hide();
+
+		}
+    	
+			                                	
+    }
+
+
+    function addAccessory(){
+
+		$('#pizote_spinner').show();
+		$.ajax({
+			type:"POST",
+			dataType:"html",
+			url:"{{ path('solucel_admin_repairorder_addaccessory') }}",
+			data:"count="+accessoryCount,
+			async: false,
+			success:function(data){
+
+				$("#accessoryTable tbody").append(data);	
+				$("#repair_order_accessory_"+accessoryCount).focus();	
+				accessoryCount++;
+				
+								
+			}
+		});
+		$('#pizote_spinner').hide();
+    		                                	
+    }
+    
+    
+    function deleteDefect(id){
+		myDefects = myDefects-1;
+		$('#tr_repair_order_defect_'+id).remove();
+		    	
+    }	
+
+
+	function deleteAccessory(id){
+		$('#tr_repair_order_accessory_'+id).remove();
+		
+	}
+	
+	
+	////chequear el tipo del ingreso del dispositivo
+	$("#repair_order_deviceCodeFab").change(function() {
+		
+  		if($("#repair_order_deviceType").val() != 1){
+  			console.log("entraCode");
+			checkEntryType();
+  		}
+  		
+	});
+	
+	////chequear el tipo del ingreso del dispositivo
+	$("#repair_order_deviceImei").change(function() {
+  		if($("#repair_order_deviceType").val() == 1){
+  			console.log("entraIMEI");
+			checkEntryType();
+  		}  		
+
+	});	
+		
+		
+	function checkEntryType(){
+		
+  		if($("#repair_order_deviceType").val() == 1){
+	   		var deviceCode = $("#repair_order_deviceImei").val();
+  			
+  		}
+  		else{
+	   		var deviceCode = $("#repair_order_deviceCodeFab").val();
+	
+  		}
+  			
+  		var deviceType = $("#repair_order_deviceType").val();
+  		
+		$.ajax({
+			type:"POST",
+			dataType:"json",
+			url:"{{ path('solucel_admin_repairorder_checkentry') }}",
+			data: {code: deviceCode, type: deviceType, id: '{{entity.id}}' },
+			//data: { code: code, userid: userid }
+			success:function(data){
+				
+				//$('#repair_order_repairEntryType option:not(:selected)').prop('disabled', false);
+				$("#repair_order_repairEntryType").val(data.result);
+				if(data.result == 2){
+					$("#divEntryType").css( "background-color", "yellow" );
+					$("#repair_order_devicePurchaseDate").val(data.entry_date);
+					
+					
+				}
+				else{
+					$("#divEntryType").css( "background-color", "white" );
+					
+				}
+				//$('#repair_order_repairEntryType option:not(:selected)').prop('disabled', true);
+								
+			}
+		});  		
+  			
+	} 
+	
+	
+	function disableForms(){
+		// this will disable all elements
+		
+		var elems = document.getElementsByTagName('input');
+		
+		var len = elems.length;
+		
+		for (var i = 0; i < len; i++) {
+		    elems[i].disabled = true;
+		}		
+		
+
+		//$(".select2-search").prop('disabled', true);
+		
+		/*
+		 * //works but not with pestanias
+		 */
+		/*
+		var myFieldset = document.getElementById("myFieldset");
+		myFieldset.readOnly = true;
+		*/
+	}
+	
+	
+			
+  			//console.log($("#repair_order_deviceType").val());
+  			/*
+	function changeRequiredPhoneID(){
+		deviceType = $("#repair_order_deviceType").val();
+		
+		if(deviceType == 1){
+			$("[name='repair_order']").validate(); //sets up the validator
+			$("input[id*=Hours]").rules("add", "required");			
+		}
+		
+		
+	}
+	*/
+
+	var disclaimerContent = 'DIAGNOSTICO:<br>'+                                                                               
+							'Dañada por líquido.  Unidad cuenta con rastros de humedad.  '+
+							'Debido a la falla por humedad  que  presenta  la unidad,  no  es   posible   ofrecer  una   reparación que asegure  el  adecuado <br>'+ 
+							'funcionamiento  de  la  misma,  por  tal  motivo  el  diagnóstico  es: <br>'+
+							'Unidad No reparable <br> '+
+							'En  estas  situaciones,  un  intento de reparación  a  la  terminal  puede ocasionar  que  las  fallas  se  vuelvan a presentar posteriormente, por lo que no se ofrece reparación, inclusive con costo.';
+	
+    $(function(){
+        $('#humidityPrint').click(function(e){
+            e.preventDefault();
+            var w = window.open();
+            
+            //var printTwo = $('.termsToPrint').html();
+            w.document.write('<html><head><title>Descargo de Responsabilidad</title></head><body><h1>Descargo de Responsabilidad</h1><hr />' + '<hr />'  +disclaimerContent+ '</body></html>');
+            w.window.print();
+            w.document.close();
+            return false;
+        });
+    });
+    
+    
+    
+    
+    ////SVG SKETCHPAD PARA DIBUJAR
+	  
+		{% if edit is defined %}
+			
+			
+		
+		  var strokes = [{
+		    type:"path",
+		    path:'{{entity.sketchpadData}}',
+		    fill:"none", "stroke":"#ff0000",
+		    "stroke-opacity":1,
+		    "stroke-width":5,
+		    "stroke-linecap":"round",
+		    "stroke-linejoin":"round"
+		  }];
+		  
+		  var sketchpad = Raphael.sketchpad("editor", {
+		    width: 800,
+		    height: 475,
+		    strokes: strokes,
+		    editing: true
+			});
+			
+		{% elseif show is defined %}
+		
+			
+			  var strokes = [{
+			    type:"path",
+			    path:'{{entity.sketchpadData}}',
+			    fill:"none", "stroke":"#ff0000",
+			    "stroke-opacity":1,
+			    "stroke-width":5,
+			    "stroke-linecap":"round",
+			    "stroke-linejoin":"round"
+			  }];
+			  var sketchpad = Raphael.sketchpad("editor", {
+			    width: 800,
+			    height: 475,
+			    strokes: strokes,
+			    editing: false
+				});		
+				
+				
+		{% else %}	
+			  var sketchpad = Raphael.sketchpad("editor", {
+			    width: 800,
+			    height: 475,
+			    editing: true	    
+			  });				
+													
+		{% endif %}	 
+		
+	  
+		//var paper = sketchpad.paper();
+		var pen = sketchpad.pen();
+		// #ff0000 or #f00
+		pen.color("#ff0000");
+		
+		sketchpad.editing(true);
+				
+		sketchpad.clear();
+		sketchpad.redo();
+		sketchpad.redoable();
+		sketchpad.undo();
+		sketchpad.undoable();	  
+	  
+	  //sketchpad.attr({stroke:'#DB3934'});
+
+	  
+	function enable(element, enable) {
+      if (enable) {
+        $(element).removeClass("disabled");
+      } else {
+        $(element).addClass("disabled");
+      }
+    };
+
+    function select(element1, element2) {
+      $(element1).addClass("selected");
+      $(element2).removeClass("selected");
+    }
+
+    $("#editor_undo").click(function() {
+      sketchpad.undo();
+    });
+    $("#editor_redo").click(function() {
+      sketchpad.redo();
+    });
+    $("#editor_clear").click(function() {
+      sketchpad.clear();
+    });
+
+
+    function update_actions() {
+      enable("#editor_undo", sketchpad.undoable());
+      enable("#editor_redo", sketchpad.redoable());
+      enable("#editor_clear", sketchpad.strokes().length > 0);
+      $("#repair_order_sketchpadData").val(sketchpad.json());
+    }
+
+    sketchpad.change(update_actions);
+
+    update_actions();	  
+	  	   
+	  	   
+	var fieldCount = '{{fieldCount}}';  	   
+	///funcion campos adicionales
+	function addField(){
+    	
+		$.ajax({
+			type:"POST",
+			dataType:"html",
+			url:"{{ path('solucel_admin_repairorder_addfield') }}",
+			data:"count="+fieldCount,
+			success:function(data){
+
+				$("#fieldsTable tbody").append(data);	
+				$("#repair_order_field_"+fieldCount).focus();	
+				
+				fieldCount++;	
+								
+			}
+		});	 
+			                                	
+    }
+    
+    function deleteField(id){
+    	
+		$('#tr_repair_order_field_'+id).remove();
+    }	  	
+    
+	     
+</script>

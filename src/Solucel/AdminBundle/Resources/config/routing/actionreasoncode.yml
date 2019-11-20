@@ -1,0 +1,36 @@
+solucel_admin_actionreasoncode_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:ActionReasonCode:index" }
+    methods:  GET
+
+solucel_admin_actionreasoncode_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:ActionReasonCode:show" }
+    methods:  GET
+
+solucel_admin_actionreasoncode_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:ActionReasonCode:new" }
+    #methods:  [GET, POST]
+    
+solucel_admin_actionreasoncode_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:ActionReasonCode:create" }
+    requirements: { _method: post }
+
+
+solucel_admin_actionreasoncode_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SolucelAdminBundle:ActionReasonCode:edit" }
+    #methods:  [GET, POST]
+    
+
+solucel_admin_actionreasoncode_update:
+    path:     /{id}/update
+    defaults: { _controller: "SolucelAdminBundle:ActionReasonCode:update" }
+    requirements: { _method: post|put }     
+
+solucel_admin_actionreasoncode_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:ActionReasonCode:delete" }
+    #methods:  DELETE

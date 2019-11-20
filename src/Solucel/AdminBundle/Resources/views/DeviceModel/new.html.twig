@@ -1,0 +1,19 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    
+    <li> <a href="{{ path('solucel_admin_devicemodel_index') }}">Listado de Modelos</a> </li>
+    <li> <a href="{{ path('solucel_admin_devicemodel_new') }}">Nuevo Modelo</a> </li>
+    {% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:DeviceModel:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+    
+
+
+{% endblock %}

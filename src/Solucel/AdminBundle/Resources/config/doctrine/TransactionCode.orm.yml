@@ -1,0 +1,49 @@
+Solucel\AdminBundle\Entity\TransactionCode:
+    type: entity
+    table: transaction_code
+    
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        description:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+                default: ''
+
+        transactionCode:
+            type: string
+            nullable: false
+            length: 8
+            options:
+                fixed: false
+                default: ''
+            column: transaction_code            
+    
+        serviceRepair:
+            type: string
+            nullable: false
+            length: 4
+            options:
+                fixed: false
+                default: ''  
+            column: service_repair                
+                
+        description:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false                 
+                  
+      
+    lifecycleCallbacks: {  }

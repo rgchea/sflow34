@@ -1,0 +1,11 @@
+<table id="" class="table table-striped table-bordered table-hover">
+    <thead>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a {% if entity.already_read == 0 %}{{'style="color: #FF8000"'}}{% endif%} href="{{ path('opera_shipper_notification') }}">{{ entity.name }}</a> </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

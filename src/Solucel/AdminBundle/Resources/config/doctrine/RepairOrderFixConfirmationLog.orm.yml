@@ -1,0 +1,66 @@
+Solucel\AdminBundle\Entity\RepairOrderFixConfirmationLog:
+    type: entity
+    table: repair_order_fix_confirmation_log
+    indexes:
+        repair_order_fix_id:
+            columns:
+                - repair_order_fix_id
+        created_by:
+            columns:
+                - created_by
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        logComment:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+            column: log_comment
+        createdAt:
+            type: datetime
+            nullable: false
+            options:
+                default: '2001-01-01 00:00:00'
+            column: created_at             
+        clientConfirmation:
+            type: boolean
+            nullable: false
+            options:
+                default: true                     
+                    
+    manyToOne:
+        createdBy:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                created_by:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        repairOrderFix:
+            targetEntity: RepairOrderFix
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                repair_order_fix_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+
+    lifecycleCallbacks: {  }

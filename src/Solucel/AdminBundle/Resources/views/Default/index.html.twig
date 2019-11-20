@@ -1,0 +1,117 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+
+{% block body %}
+
+	<br /><br /><br /><br />
+	<center>
+	<table  width="70%" style="text-align: center">
+		<tr>
+			<td>
+				<a href="{{ path('solucel_admin_repairorder_new') }}">
+					<img class="min-img"  title="" src="{{ asset('bundles/soluceladmin/img/phone.png') }}" /><br/>
+					<label>Ingreso Boleta</label> 	
+				</a>
+			</td>
+			<td>
+				<img src="{{ asset('bundles/soluceladmin/img/arrow_right_small.png') }}" />
+			</td>
+			<td>
+				<a href="{{ path('solucel_admin_repairorder_index') }}">
+					<img class="min-img" title="" src="{{ asset('bundles/soluceladmin/img/document.png') }}" /><br/>
+					<label>Ordenes</label>
+				</a>
+
+			</td>
+			<td>
+				<img src="{{ asset('bundles/soluceladmin/img/arrow_right_small.png') }}" />
+			</td>
+			<td>
+				<a href="{{ path('solucel_admin_repairorder_reception') }}">
+					<img class="min-img" title="" src="{{ asset('bundles/soluceladmin/img/filter.png') }}" /><br/>
+					<label>Recepción en Taller</label>
+				</a>
+
+			</td>
+			<td>
+				<img src="{{ asset('bundles/soluceladmin/img/arrow_right_small.png') }}" />
+			</td>
+			<td>
+				<a href="{{ path('solucel_admin_repairorder_paperwork') }}">
+					<img class="min-img" title="" src="{{ asset('bundles/soluceladmin/img/folder.png') }}" /><br/>
+					<label>Pendiente de Papelería</label>
+				</a>
+
+			</td>
+			<td>
+				<img src="{{ asset('bundles/soluceladmin/img/arrow_right_small.png') }}" />
+			</td>			
+
+
+
+		</tr>
+		<tr>
+			<td>
+				<a href="{{ path('solucel_admin_repairorder_assign') }}">
+					<img  class="min-img" title="" src="{{ asset('bundles/soluceladmin/img/assign.png') }}" /><br/>
+					<label>Asignación</label>
+				</a>
+
+			</td>
+			<td>
+				<img src="{{ asset('bundles/soluceladmin/img/arrow_right_small.png') }}" />
+			</td>
+			<td>
+				<a href="{{ path('solucel_admin_repairorderfix_index') }}">
+					<img class="min-img" title="" src="{{ asset('bundles/soluceladmin/img/repair.png') }}" /><br/>
+					<label>Reparación</label>	
+				</a>
+			</td>
+			<td>
+				<img src="{{ asset('bundles/soluceladmin/img/arrow_right_small.png') }}" />
+			</td>
+			
+			<td>
+				<a href="{{ path('solucel_admin_repairorderqualitycontrol_index') }}">
+					<img class="min-img" title="" src="{{ asset('bundles/soluceladmin/img/control.png') }}" /><br/>
+					<label>Control de Calidad</label>	
+				</a>
+				
+			</td>
+			<td>
+				<img src="{{ asset('bundles/soluceladmin/img/arrow_right_small.png') }}" />
+			</td>
+			{#
+			<td>
+				<a href="">
+					<img class="min-img" title="" src="{{ asset('bundles/soluceladmin/img/cash.png') }}" /><br/>
+					<label>Pago</label>	
+				</a>
+				
+			</td>
+				
+			
+			<td>
+				<img src="{{ asset('bundles/soluceladmin/img/arrow_right_small.png') }}" />
+			</td>
+			#}
+			<td>
+				<a href="{{ path('solucel_admin_repairorder_finish') }}">
+					<img class="min-img" title="" src="{{ asset('bundles/soluceladmin/img/profile.png') }}" /><br/>
+					<label>Entrega</label>	
+				</a>
+				
+			</td>
+					
+			
+		</tr>
+	</table>			
+	</center>
+				
+
+{% endblock %}
+
+{% block extrascripts %}
+
+
+{% endblock %}

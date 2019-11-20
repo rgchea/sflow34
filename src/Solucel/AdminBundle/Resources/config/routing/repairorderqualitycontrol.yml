@@ -1,0 +1,47 @@
+solucel_admin_repairorderqualitycontrol_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderQualityControl:index" }
+    methods:  GET
+
+solucel_admin_repairorderqualitycontrol_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderQualityControl:show" }
+    methods:  GET
+
+solucel_admin_repairorderqualitycontrol_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderQualityControl:new" }
+    #methods:  [GET, POST]
+
+solucel_admin_repairorderqualitycontrol_edit_tech:
+    path:     /{id}/editTech
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderQualityControl:editTech" }
+    #methods:  [GET, POST]
+
+solucel_admin_repairorderqualitycontrol_edit_qualitycontrol:
+    path:     /{id}/editQA
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderQualityControl:editQualityControl" }
+    #methods:  [GET, POST]
+
+    
+solucel_admin_repairorderqualitycontrol_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderQualityControl:create" }
+    requirements: { _method: post }
+    
+solucel_admin_repairorderqualitycontrol_update_tech:
+    path:     /{id}/updateTech
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderQualityControl:updateTech" }
+    requirements: { _method: post|put }     
+
+solucel_admin_repairorderqualitycontrol_update_qa:
+    path:     /{id}/updateQA
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderQualityControl:updateQualityControl" }
+    requirements: { _method: post|put }     
+
+
+solucel_admin_repairorderqualitycontrol_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderQualityControl:delete" }
+    #methods:  DELETE
+

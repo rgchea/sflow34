@@ -1,0 +1,317 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    
+    {% endblock %}
+
+{% block title %}
+    Re-ingreso y Reparaciones por Técnico
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/pizotearkadmin/js/plugin/Buttons-1.2.2/css/buttons.dataTables.css') }}">
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/jquery.dataTables-cust.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/Buttons-1.2.2/js/dataTables.buttons.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/Buttons-1.2.2/js/buttons.print.js') }}"></script>
+    
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ColReorder.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/FixedColumns.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ColVis.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ZeroClipboard.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/media/js/TableTools.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/DT_bootstrap.js') }}"></script>
+    
+{% endblock %}
+
+
+{% block body -%}
+{{ parent() }}
+
+<script>
+	$('#pizote_spinner').show();
+</script>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+
+    </div>
+
+</div>
+
+<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+    <header>
+        <h2> Re-ingreso y Reparaciones por Técnico</h2>
+    </header>
+
+    <!-- widget div-->
+    <div>
+
+        <!-- widget edit box -->
+        <div class="jarviswidget-editbox">
+            <!-- This area used as dropdown edit box -->
+									
+        </div>
+        <!-- end widget edit box -->
+
+        <!-- widget content -->
+        <div class="widget-body no-padding">
+            <div class="widget-body-toolbar">
+
+            </div>
+            <form id="filterForm" action="{{path('solucel_admin_repairorderreport_reentry_repairment_by_tech')}}" method="POST" name="solucel_admin_repairorderreport_reentry_repairment_by_tech">
+            	<input type="hidden" name="filter" value="true" />
+	            <fieldset>
+                        <table width="90%">
+                                <tbody>
+                                        <tr>
+                                                <td>
+                                                        <label for="select_operator">Operador:</label><br />
+                                                        <select id="select_operator" name="select_operator">
+
+                                                                {# evaluates to true if the foo variable is iterable #}
+                                                                {% if operators is iterable %}
+                                                                        <option value="0">Todos</option>
+                                                                        {% for operator in operators %}
+                                                                                {% set selected = operator.id == select_operator ? ' selected="selected" ' : ''%}
+                                                                                <option value="{{operator.id}}" {{selected}}>{{ operator.name }}</option>
+                                                                        {% endfor %}										
+                                                                {% else %}
+                                                                    {# users is probably a single object #}
+                                                                    <option value="{{operators.id}}">{{ operators.name }}</option>
+                                                                {% endif %}										
+
+                                                        </select>
+
+                                                </td>
+                                                <td>
+                                                        <label for="select_agency">Agencia:</label><br />
+                                                        <select id="select_agency" name="select_agency"  >
+                                                                <option value="0">Todos</option>
+                                                           {% for agency in agencies%}
+                                                                        {% set selected = agency.id == select_agency ? ' selected="selected" ' : ''%}	
+                                                                <option value="{{agency.id}}" {{selected}}>{{ agency.name }}</option>
+                                                            {% endfor %}										
+                                                        </select>
+
+                                                </td>								
+                                                <td>
+                                                        <label for="select_service_center">Centro de Servicio:</label><br />
+                                                        <select id="select_service_center" name="select_service_center" >
+
+                                                                {# evaluates to true if the foo variable is iterable #}
+                                                                {% if service_centers is iterable %}
+                                                                        <option value="0">Todos</option>
+                                                                        {% for service_center in service_centers %}
+                                                                                {% set selected = service_center.id == select_service_center ? ' selected="selected" ' : ''%}
+                                                                                <option value="{{service_center.id}}" {{selected}}>{{ service_center.name }}</option>
+                                                                        {% endfor %}										
+                                                                {% else %}
+                                                                    {# users is probably a single object #}
+                                                                    <option value="{{service_centers.id}}">{{ service_centers.name }}</option>
+                                                                {% endif %}										
+
+
+                                                        </select>
+
+                                                </td>
+
+                                                <td>
+                                                        <label for="select_brand">Marca:</label><br />
+                                                        <select id="select_brand" name="select_brand" >
+
+                                                                {# evaluates to true if the foo variable is iterable #}
+                                                                {% if brands is iterable %}
+                                                                        <option value="0">Todos</option>
+                                                                        {% for brand in brands %}
+                                                                                {% set selected = brand.id == select_brand ? ' selected="selected" ' : ''%}
+                                                                                <option value="{{brand.id}}" {{selected}}>{{ brand.name }}</option>
+                                                                        {% endfor %}										
+                                                                {% else %}
+                                                                    {# brands is probably a single object #}
+                                                                    <option value="{{brands.id}}">{{ brands.name }}</option>
+                                                                {% endif %}										
+
+
+                                                        </select>
+
+                                                </td>
+
+                                        </tr>
+                                        <tr>
+																					
+                                                <td>
+                                                        <label for="created_from">Ingresada del:</label><br />
+                                                        <input readonly="readonly" id="created_from" name="created_from" type="text" class="form-control" value="{{filter_created_from}}" />									
+                                                </td>								
+                                                <td>
+                                                        <label for="created_to">Ingresada al:</label><br />
+                                                        <input readonly="readonly" id="created_to" name="created_to" type="text" class="form-control" value="{{filter_created_to}}" />									
+                                                </td>
+                                                <td>
+                                                        <label for="filter_dates">Aplicar Fechas:</label><br />
+                                                        <input id="filter_dates" name="filter_dates" type="checkbox" class="form-control" {{ filter_dates == 1 ? 'checked="checked"' : ''  }}  />									
+                                                </td>									
+                                        </tr>
+                                        <tr>
+                                                <td colspan="4" align="left">
+                                                        <button class="btn btn-primary">
+                                                        <i class="fa fa-search"></i>
+                                                        Filtrar
+                                                        </button>									
+                                                </td>
+                                        </tr>
+
+                                </tbody>
+                        </table>
+
+                </fieldset>
+            </form>
+            <br />
+            <table id="dt_basic" class="table table-striped table-bordered table-hover" >
+                <thead>
+                    <tr>
+                    	<th>Técnico</th>
+                    	<th>Reparaciones</th>
+                        <th>Retorno Control de Calidad</th>
+                        <th>Reparacion Real</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	
+               	{% set fix =  0 %}
+               	{% set fixReturn =  0 %}
+               	{% set realFix =  0 %}
+               	
+                {% for entity in entities %}
+					
+					
+                    <tr>
+                    	<td>{{entity.username}}</td>
+                    	{% set fix =  fix + entity.fix %}
+                    	<td>{{entity.fix}}</td>
+
+                    	<td>{{entity.returnQA}}</td>
+                    	{% set fixReturn =  fixReturn + entity.returnQA %}
+						
+						{% set rFix = entity.fix - entity.returnQA %}
+                    	<td>{{ rFix }}</td>
+						{% set realFix = realFix + rFix %}
+						
+                    </tr>
+                    
+                {% endfor %}
+                	<tr>
+                		<td>-- TOTAL --</td>
+                		<td>{{fix}}</td>
+                		<td>{{fixReturn}}</td>
+                		<td>{{realFix}}</td>
+                	</tr>
+                
+                </tbody>
+            </table>
+        </div>
+        <!-- end widget content -->
+
+
+    </div>
+    <!-- end widget div -->
+</div>    
+
+
+<script type="text/javascript" language="JavaScript">
+	
+	
+	$( document ).ready(function() {
+		agencyID = '{{select_agency}}';
+		changeAgency();
+		
+		$( "#select_operator" ).change(function() {
+		  changeAgency();
+		});			
+		
+		$('#pizote_spinner').hide();
+			
+	});	
+		
+		
+	function changeAgency(){
+		
+		$('#pizote_spinner').show();
+		
+		if($("#select_operator").val() != 0){
+			$.ajax({
+				type:"POST",
+				dataType:"json",
+				async: false,
+				url:"{{ path('solucel_admin_repairorder_agency') }}",
+				data:"operator_id="+$( "#select_operator" ).val(),
+				success:function(data){
+					
+					
+					if (!isEmpty(data)){
+						
+						var items = [];
+							items.push( "<option value='0'>Todos</option>" );
+						  $.each( data, function( key, val ) {
+						  	selected = key == agencyID ? 'selected="selected"' : '';
+						    items.push( "<option "+selected+" value='" + key + "'>" + val + "</option>" );
+						  });
+											
+						$("#select_agency").html(items);	
+						
+					}
+					else{
+						$("#select_agency").html("<option value='0'>Todos</option>");
+					}
+					
+					
+					
+				}
+			});	 
+			
+		}
+		else{
+			$("#select_agency").html("<option value='0'>Todos</option>");
+		}
+		
+		$('#pizote_spinner').hide();		
+  		
+	}	
+	
+	
+	function isEmpty(obj) {
+	    return Object.keys(obj).length === 0;
+	}
+
+	
+</script>
+
+{% endblock %}
+
+
+{% block extrascripts %}
+
+    $("#created_from").datepicker();
+    $("#created_to").datepicker();
+
+    $('#dt_basic').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {extend: 'print', text: 'Imprimir', message: ''},
+            {extend: 'excel', text: 'Exportar Excel',message: ''}
+            
+        ],
+	    "sPaginationType" : "bootstrap_full",
+	    "aaSorting": [[ 0, "desc" ]],
+	    "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100,"Todos"] ],
+	    "iDisplayLength": -1,
+        "language": {
+            "url": "{{ asset('bundles/pizotearkadmin/js/plugin/datatables/dataTables.spanish.lang') }}"
+        },
+        	    
+    });
+
+{% endblock %}

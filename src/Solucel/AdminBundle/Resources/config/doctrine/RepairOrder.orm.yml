@@ -1,0 +1,478 @@
+Solucel\AdminBundle\Entity\RepairOrder:
+    type: entity
+    repositoryClass: Solucel\AdminBundle\Repository\RepairOrderRepository
+    table: repair_order
+    indexes:
+        repair_entry_type_id:
+            columns:
+                - repair_entry_type_id
+        operator_id:
+            columns:
+                - operator_id
+        agency_id:
+            columns:
+                - agency_id
+        client_id:
+            columns:
+                - client_id
+        device_brand_id:
+            columns:
+                - device_brand_id
+        device_model_id:
+            columns:
+                - device_model_id
+        service_center_id:
+            columns:
+                - service_center_id
+        created_by:
+            columns:
+                - created_by
+        repair_status_id:
+            columns:
+                - repair_status_id      
+        device_change_brand_id:
+            columns:
+                - device_change_brand_id
+        device_change_model_id:
+            columns:
+                - device_change_model_id
+        payer_id:
+            columns:
+                - payer_id
+                          
+                
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        ticketNumber:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+                default: ''
+            column: ticket_number                
+      
+        devicePlan:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+                default: Prepago
+            column: device_plan
+        phoneNumber:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+                default: 
+            column: phone_number
+            
+            
+        deviceChangeImei:
+            type: string
+            nullable: true
+            length: 16
+            options:
+                fixed: false
+                default: ''
+            column: device_change_imei                     
+        deviceImei:
+            type: string
+            nullable: true
+            length: 16
+            options:
+                fixed: false
+                default: ''
+            column: device_imei
+            
+        deviceImei2:
+            type: string
+            nullable: true
+            length: 16
+            options:
+                fixed: false
+                default: null
+            column: device_imei2            
+
+        deviceImeiOut:
+            type: string
+            nullable: true
+            length: 16
+            options:
+                fixed: false
+                default: null
+            column: device_imei_out              
+        deviceImei2Out:
+            type: string
+            nullable: true
+            length: 16
+            options:
+                fixed: false
+                default: null
+            column: device_imei2_out            
+        deviceMsn:
+            type: string
+            nullable: true
+            length: 32
+            options:
+                fixed: false
+            column: device_msn
+        deviceMsnOut:
+            type: string
+            nullable: true
+            length: 32
+            options:
+                fixed: false
+            column: device_msn_out
+        deviceXcvr:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+                default: ''
+            column: device_xcvr
+        deviceCodeFab:
+            type: string
+            nullable: true
+            length: 64
+            options:
+                fixed: false
+                default: ''
+            column: device_code_fab
+        paperworkComment:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+                default: ''
+            column: paperwork_comment
+        deviceProblem:
+            type: text
+            nullable: false
+            length: 65535
+            options:
+                fixed: false
+            column: device_problem
+        deviceObservation:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+            column: device_observation
+        deviceBorrowedImei:
+            type: string
+            nullable: false
+            length: 16
+            options:
+                fixed: false
+                default: N/A
+            column: device_borrowed_imei
+        invoiceNumber:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+                comment: 'factura'
+                default: ''
+            column: invoice_number
+        price:
+            type: float
+            nullable: false
+            precision: 10
+            scale: 2
+            options:
+                comment: 'Datos Unidades con Costo'
+                default: '0.00'
+        deposit:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+                comment: ''
+                default: N/A
+        devicePurchaseDate:
+            type: date
+            nullable: false
+            options:
+                default: '2001-01-01'
+            column: device_purchase_date
+            
+        deviceManufactureDate:
+            type: date
+            nullable: true
+            options:
+                default: '2001-01-01'
+            column: device_manufacture_date
+            
+        estimatedDeliveryDate:
+            type: date
+            nullable: false
+            column: estimated_delivery_date
+        entryDate:
+            type: datetime
+            nullable: false
+            options:
+                default: '2001-01-01 00:00:00'
+            column: entry_date            
+        createdAt:
+            type: datetime
+            nullable: false
+            options:
+                default: '2001-01-01 00:00:00'
+            column: created_at
+        updatedAt:
+            type: datetime
+            nullable: false
+            options:
+                default: '2001-01-01 00:00:00'
+            column: updated_at            
+            
+        finishedAt:
+            type: datetime
+            nullable: false
+            options:
+                default: '2001-01-01 00:00:00'
+            column: finished_at
+        readyToAssign:
+            type: boolean
+            nullable: false
+            options:
+                default: false
+        humidity:
+            type: boolean
+            nullable: true
+            options:
+                default: false            
+        enabled:
+            type: boolean
+            nullable: false
+            options:
+                default: true
+        warrantyFlag:
+            type: boolean
+            nullable: true
+            options:
+                default: true                
+            column: warranty_flag
+        dispatchPhotoPath:
+            type: string
+            nullable: false
+            length: 512
+            options:
+                fixed: false
+                default: ''
+            column: dispatch_photo_path
+        sketchpadData:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+            column: sketchpad_data 
+        guideIn:
+            type: string
+            nullable: true
+            length: 32
+            options:
+                fixed: false
+                comment: 'guia entrada'
+                default: ''
+            column: guide_in
+        guideOut:
+            type: string
+            nullable: true
+            length: 32
+            options:
+                fixed: false
+                comment: 'guia salida'
+                default: ''
+            column: guide_out                     
+                            
+    manyToOne:
+      
+   
+      
+        createdBy:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                created_by:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        repairEntryType:
+            targetEntity: RepairEntryType
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                repair_entry_type_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        operator:
+            targetEntity: Operator
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                operator_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        agency:
+            targetEntity: Agency
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                agency_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        client:
+            targetEntity: Client
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                client_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        deviceBrand:
+            targetEntity: DeviceBrand
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_brand_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        deviceModel:
+            targetEntity: DeviceModel
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_model_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        deviceChangeBrand:
+            targetEntity: DeviceBrand
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_change_brand_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        deviceChangeModel:
+            targetEntity: DeviceModel
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_change_model_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+               
+        deviceType:
+            targetEntity: DeviceType
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_type_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+     
+        deviceColor:
+            targetEntity: DeviceColor
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_color_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+                     
+        serviceCenter:
+            targetEntity: ServiceCenter
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                service_center_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        repairStatus:
+            targetEntity: RepairStatus
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                repair_status_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+            
+        payer:
+            targetEntity: Payer
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                payer_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true            
+                   
+    lifecycleCallbacks: {  }

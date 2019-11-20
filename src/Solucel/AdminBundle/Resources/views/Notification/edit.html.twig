@@ -1,0 +1,23 @@
+{% extends 'OperaClientBundle::layout_client.html.twig' %}
+
+{% block breadcrumb %}
+{{ parent() }}
+<li> <a href="{{ path('opera_client_notification') }}">Listado de Notificaciones</a> </li>
+{#<li> <a href="{{ path('opera_client_notification_edit', { 'id': entity.id }) }}">Editar Empleado</a> </li>#}
+{% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('OperaClientBundle:Notification:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+
+	$( document ).ready(function() {
+		
+		$("[name='wbc_administratorbundle_clientstaff']").validate();
+		$("#opera_clientbundle_clientstaff_email").rules("add", {required:true, email:true});
+	  
+	});
+    
+{% endblock %}

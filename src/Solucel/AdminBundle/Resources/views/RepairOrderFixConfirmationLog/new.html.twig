@@ -1,0 +1,17 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    
+    <li> <a href="{{ path('solucel_admin_repairorderfixconfirmationlog_index') }}">Listado de Ordenes pendientes de confirmación de costo</a> </li>
+    {% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:RepairOrderFixConfirmationLog:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+
+
+{% endblock %}

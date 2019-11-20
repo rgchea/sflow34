@@ -1,0 +1,36 @@
+solucel_admin_devicecolor_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:DeviceColor:index" }
+    methods:  GET
+
+solucel_admin_devicecolor_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:DeviceColor:show" }
+    methods:  GET
+
+solucel_admin_devicecolor_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:DeviceColor:new" }
+    #methods:  [GET, POST]
+    
+solucel_admin_devicecolor_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:DeviceColor:create" }
+    requirements: { _method: post }
+
+
+solucel_admin_devicecolor_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SolucelAdminBundle:DeviceColor:edit" }
+    #methods:  [GET, POST]
+    
+
+solucel_admin_devicecolor_update:
+    path:     /{id}/update
+    defaults: { _controller: "SolucelAdminBundle:DeviceColor:update" }
+    requirements: { _method: post|put }     
+
+solucel_admin_devicecolor_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:DeviceColor:delete" }
+    #methods:  DELETE

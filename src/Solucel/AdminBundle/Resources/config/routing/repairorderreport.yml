@@ -1,0 +1,59 @@
+solucel_admin_repairorderreport_assigned:    
+    path:     /assignedorders
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderReport:assignedOrders" }
+    
+solucel_admin_repairorderreport_ebbm:
+    path:     /entryByBrandModel
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderReport:entryByBrandModel" }
+    #methods:  [GET, POST]
+    
+solucel_admin_repairorderreport_out_date:    
+    path:     /outDate
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderReport:outDate" }
+    
+solucel_admin_repairorderreport_pending_status:    
+    path:     /pendingStatus
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderReport:pendingStatus" }
+    
+
+solucel_admin_repairorderreport_response_time:    
+    path:     /responseTime
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderReport:responseTime" }
+
+solucel_admin_repairorderreport_ebyo:    
+    path:     /entryByYearOperations
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderReport:entryByYearOperations" }
+        
+solucel_admin_repairorderreport_tech_work:    
+    path:     /techWork
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderReport:techWork" }
+
+solucel_admin_repairorderreport_tech_work_by_level:    
+    path:     /techWorkByLevel
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderReport:techWorkByLevel" }
+
+
+solucel_admin_repairorderreport_reentry_repairment_by_tech:
+    path:     /reEntryRepairmentByTech
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderReport:reEntryRepairmentByTech" }
+
+solucel_admin_repairorderreport_reentry_by_user:
+    path:     /reEntryByUser
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderReport:reEntryByUser" }
+
+solucel_admin_repairorderreport_consolidated_report:
+    path:     /consolidatedReport
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderReport:consolidatedReport" }
+
+
+solucel_admin_repairorderreport_sales:    
+    path:     /sales
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderReport:sales" }
+
+solucel_admin_repairorderreport_entry_type:    
+    path:     /entryType
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderReport:entryType" }
+
+solucel_admin_repairorderreport_motorola:
+    path:     /motorola
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderReport:motorola" }

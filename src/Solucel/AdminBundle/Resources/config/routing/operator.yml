@@ -1,0 +1,36 @@
+solucel_admin_operator_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:Operator:index" }
+    methods:  GET
+
+solucel_admin_operator_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:Operator:show" }
+    methods:  GET
+
+solucel_admin_operator_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:Operator:new" }
+    #methods:  [GET, POST]
+    
+solucel_admin_operator_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:Operator:create" }
+    requirements: { _method: post }
+
+
+solucel_admin_operator_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SolucelAdminBundle:Operator:edit" }
+    #methods:  [GET, POST]
+    
+
+solucel_admin_operator_update:
+    path:     /{id}/update
+    defaults: { _controller: "SolucelAdminBundle:Operator:update" }
+    requirements: { _method: post|put }     
+
+solucel_admin_operator_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:Operator:delete" }
+    #methods:  DELETE

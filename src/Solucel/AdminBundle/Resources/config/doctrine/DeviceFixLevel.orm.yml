@@ -1,0 +1,19 @@
+Solucel\AdminBundle\Entity\DeviceFixLevel:
+    type: entity
+    table: device_fix_level
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+    lifecycleCallbacks: {  }

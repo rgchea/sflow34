@@ -1,0 +1,338 @@
+<style media="all" rel="stylesheet">
+
+.tableTitle{
+	background-color: #000000; 
+	color: #FFFFFF; 
+	font-size: 14pt;	
+}
+
+.tableInput{
+	border: 1px solid black;
+	
+}
+
+th, td {
+    padding: 1px;
+    text-align: left;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 3px 3px;
+    font-family: 'Open Sans', Arial, sans-serif;
+    font-size: 9pt;
+}
+
+
+.tab { display:inline-block; 
+       margin-left: 40px; }
+</style>
+
+<script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+<script type="text/javascript" src="{{ asset('bundles/pizotearkadmin/js/raphael-sketchpad-master/javascripts/raphael-2.0.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/pizotearkadmin/js/raphael-sketchpad-master/javascripts/json2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/pizotearkadmin/js/raphael-sketchpad-master/src/raphael.sketchpad.js') }}"></script>
+
+
+<table width="100%">
+	<tbody>
+		<tr>
+			<td colspan="2">
+				
+				{% if entity.operator.logoPath %}
+					<img style="width:50px !important;" src="{{ app.request.schemeAndHttpHost }}/sflow/web/uploads/operator_logos/{{entity.operator.logoPath}}" />
+				{% else %}
+					<img style="width:50px !important;" src="{{ asset('bundles/pizotearkadmin/img/logo/logoPrint.png')}}" alt="Solucel">
+				{% endif %}
+				
+				
+			</td>
+			<td colspan="2">
+				<h1>Boleta de recepción de Equipos</h1>
+			</td>
+		</tr>		
+		
+		<!--TABLE TITLE -->
+		<tr class="tableTitle">
+			<td colspan="4">Información de Boleta</td>
+		</tr>
+		<tr>
+			<td width="100px">
+				<label>Boleta:</label>
+			</td>
+			
+			<td width="150px" class="tableInput">{{entity.ticketNumber}}</td>
+			<td width="100px">
+				<label>Status:</label>
+			</td>
+			<td width="150px" class="tableInput">{{entity.repairStatus.name}}</td>
+			
+		</tr>
+		<tr>
+			<td>
+				<label>Fecha:</label>
+			</td>
+			
+			<td  class="tableInput">{{ 'now'|date('d - m -Y') }}</td>
+			
+			<td  style="font-size: 16pt">
+				<label>Original:</label>
+			</td>
+			
+			<td  class="tableInput"></td>
+			
+		</tr>	
+		<tr>
+			<td >
+				<label>Operador:</label>
+			</td>
+			<td  class="tableInput">{{entity.operator.name}}</td>
+			<td colspan="2"></td>
+		</tr>				
+		<tr>
+			<td >
+				<label>Cliente:</label>
+			</td>
+			
+			<td class="tableInput">{{entity.client}}</td>
+			<td colspan="2"></td>
+		</tr>							
+		<tr>
+			<td >
+				<label>Teléfono:</label>
+			</td>
+			
+			<td  class="tableInput">{{entity.client.phone}} / {{entity.client.contactPhone}}</td>
+			
+			<td >
+				<label>IMEI:</label>
+			</td>
+			
+			<td  class="tableInput">{{entity.deviceImei}}</td>
+			
+		</tr>
+		<tr>
+			<td >
+				<label>Marca:</label>
+			</td>
+			<td  class="tableInput">{{entity.deviceBrand}}</td>
+			<td >
+				<label>Garantía:</label>
+			</td>
+			<td  class="tableInput">
+				{{hasWarranty ? "Si" : "No"}}
+			</td>
+			
+		</tr>		
+		<tr>
+			<td >
+				<label>Modelo:</label>
+			</td>
+			<td  class="tableInput">{{entity.deviceModel}}</td>
+			<td >
+				<label>Fecha de Compra:</label>
+			</td>
+			<td  class="tableInput">{{entity.devicePurchaseDate|date("d-m-Y")}}</td>
+			
+		</tr>		
+		<tr>
+			<td >
+				<label>Problema:</label>
+			</td>
+			<td  class="tableInput">{{entity.deviceProblem}}</td>
+			<td >
+				<label>Casos:</label>
+			</td>
+
+			<td  class="tableInput"></td>
+			
+		</tr>	
+		
+		<tr>
+			<td >
+				<label>Agencia:</label>
+			</td>
+			<td  class="tableInput">{{entity.agency}}</td>
+		</tr>					
+		
+		<!--TABLE TITLE -->
+		<tr class="tableTitle">
+			<td colspan="7">Estado de la Reparación</td>
+		</tr>
+
+		<tr>
+			<td >
+				<label>Fecha de Ingreso:</label>
+			</td>
+			<td  class="tableInput">{{entity.entryDate|date("d-m-Y")}}</td>
+			<td >
+				<label>Estado:</label>
+			</td>
+			<td  class="tableInput">{{entity.repairStatus.name}}</td>
+			
+		</tr>	
+		<tr>
+			<td>
+			
+				<label>Reparación:</label>
+			
+			</td>
+			
+			<td  class="tableInput">
+				{{fixDetail}}
+			</td>
+			
+			<td colspan="4"></td>
+		</tr>		
+		
+		<tr>
+		
+			<td>
+			
+				<label>Hora de Entrega:</label>
+			
+			</td>
+			<td  class="tableInput">
+			
+			{{deliveryHour}}
+			
+			</td>
+			
+			<td colspan="2"></td>
+		
+		</tr>
+		
+		<tr>
+		
+			<td>
+				<label>Fecha de Reparación:</label>
+			</td>
+			
+			<td  class="tableInput">
+				{{repairmentHour}}
+			</td>
+			
+			<td>
+				<label>Accesorios:</label>
+			</td>
+			
+			<td  class="tableInput">
+
+				{{strAccessories}}			
+			</td>
+		
+		
+		</tr>	
+		
+		<!--TABLE TITLE -->
+		
+		<tr class="tableTitle">
+		
+			<td colspan="7">Estado de la Reparación</td>
+			
+		</tr>
+
+		<tr>
+			
+			<td>
+				<label>Costo:</label>
+			</td>
+
+			<td  class="tableInput">			
+				{{fixingPrice}}
+			</td>
+			<td colspan="2"></td>
+			
+		
+		</tr>
+
+		<tr>
+		
+			<td >
+			
+				<label>Observaciones:</label>
+			
+			</td>
+		
+			<td colspan="3"></td>
+		
+		</tr>
+		
+
+		<tr>
+			<td colspan="4"></td>
+		</tr>
+		<tr>
+			<td colspan="4"></td>
+		</tr>
+		<tr>
+			<td colspan="4"></td>
+		</tr>
+		
+		<tr>
+		
+			<td colspan="7" style="font-size: 8pt">
+			
+				<p>
+				
+				a.	Términos y condiciones<br>
+				
+				b. La garantía de fábrica se pierde automáticamente cuando los equipos presentan lo siguiente:
+				
+				<p>
+				    i. Golpes evidentes<br> 
+				
+				    ii. Indicios de Humedad o daños causados por contacto con líquidos<br>
+				
+				    iii. Se encuentren insectos o restos de ellos dentro de las terminales<br>
+				
+				    iv. Intento de reparación por terceros y/o uso de accesorios genéricos<br>
+				
+				    v. Fecha de compra expiró
+				
+				</p>
+				
+				c. Todas las reparaciones  tienen una garantía de 90 días sobre la reparación efectuada. <br>				
+				d. Los teléfonos en préstamo son responsabilidad del cliente, si estos son dañados, el cliente se hace responsable por pagar la reparación del mismo y si se pierde o es robado, el cliente tiene que pagar un 75% del precio vigente del modelo.<br>
+				e. Tenga en cuenta que algunos de sus ajustes personales, descargas u otra información se puede perder cuando su producto sea reparado. {{entity.operator.name}} no asume ninguna responsabilidad por cualquier pérdida información de ningún tipo y no realizará reembolso alguno por dicha pérdida.<br>
+				f. El cliente debe realizar copias de seguridad de toda la información almacenada en su producto. como descargas, calendario y contactos, antes de entregar su producto para su reparación o reemplazo. EL TALLER NO SE HACE RESPONSABLE DE LA INFORMACION.<br>
+				g. SOLUCIONES CELULARES, S.A. no se hace responsable por teléfono que no sea recogidos por el cliente después de 30 días. Si este no se recoge en el tiempo establecido, será utilizado por {{entity.operator.name}} para darla como préstamo a otros clientes y se le cobrará la reparación de la misma en la próxima factura.<br>
+				h. El cliente se hace responsable de pagar los daños o perdidas realizados al teléfono entregado en préstamo.
+				
+				</p>
+			
+			</td>
+		
+		</tr>
+		<tr>
+			<td colspan="4"></td>
+		</tr>
+		<tr>
+			<td colspan="4"></td>
+		</tr>
+		<tr>
+			<td colspan="4"></td>
+		</tr>
+				
+		<tr>
+		
+			<td colspan="2"></td>
+			
+			<td colspan="2">______________________________________</td>
+			
+		</tr>
+		
+						
+		<tr>
+		
+			<td colspan="2"></td>
+			
+			<td colspan="2">Firma Cliente</td>
+		
+		</tr>
+
+		
+	</tbody>
+
+</table>
+

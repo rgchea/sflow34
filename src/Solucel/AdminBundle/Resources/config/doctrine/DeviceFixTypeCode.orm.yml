@@ -1,0 +1,52 @@
+Solucel\AdminBundle\Entity\DeviceFixTypeCode:
+    type: entity
+    table: device_fix_type_code
+    indexes:
+        device_fix_type_id:
+            columns:
+                - device_fix_type_id
+        device_brand_id:
+            columns:
+                - device_brand_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        fixTypeCode:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+                default: ''
+            column: fix_type_code
+    manyToOne:
+        deviceFixType:
+            targetEntity: DeviceFixType
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_fix_type_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+        deviceBrand:
+            targetEntity: DeviceBrand
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_brand_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+    lifecycleCallbacks: {  }

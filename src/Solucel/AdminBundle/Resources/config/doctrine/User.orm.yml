@@ -1,0 +1,87 @@
+Solucel\AdminBundle\Entity\User:
+    type: entity
+    repositoryClass: Solucel\AdminBundle\Repository\UserRepository
+    table: user
+    indexes:
+        role_id:
+            columns:
+                - role_id
+        service_center_id:
+            columns:
+                - service_center_id                
+    uniqueConstraints:
+        UNIQ_8D93D64992FC23A8:
+            columns:
+                - username_canonical
+        UNIQ_8D93D649A0D96FBF:
+            columns:
+                - email_canonical
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+
+        name:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+                default: ''
+        lastName:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+                default: ''
+            column: last_name
+    manyToOne:
+        role:
+            targetEntity: Role
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                role_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        serviceCenter:
+            targetEntity: ServiceCenter
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                service_center_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        deviceBrand:
+            targetEntity: DeviceBrand
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_brand_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        operator:
+            targetEntity: Operator
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                operator_id:
+                    referencedColumnName: id
+            orphanRemoval: false                        
+            
+    lifecycleCallbacks: {  }

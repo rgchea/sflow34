@@ -1,0 +1,16 @@
+solucel_admin_moduleaccess:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:ModuleAccess:index" }
+
+solucel_admin_moduleaccess_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:ModuleAccess:new" }
+
+solucel_admin_moduleaccess_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:ModuleAccess:create" }
+    requirements: { _method: post }
+
+solucel_admin_moduleaccess_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:ModuleAccess:delete" }

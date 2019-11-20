@@ -1,0 +1,34 @@
+Solucel\AdminBundle\Entity\Country:
+    type: entity
+    table: country
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 64
+            options:
+                fixed: false
+                default: ''
+        code:
+            type: string
+            nullable: false
+            length: 8
+            options:
+                fixed: false
+                default: ''
+        areaCode:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: area_code
+    lifecycleCallbacks: {  }

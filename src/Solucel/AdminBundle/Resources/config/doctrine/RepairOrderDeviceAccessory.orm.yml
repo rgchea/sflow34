@@ -1,0 +1,45 @@
+Solucel\AdminBundle\Entity\RepairOrderDeviceAccessory:
+    type: entity
+    table: repair_order_device_accessory
+    indexes:
+        repair_order_id:
+            columns:
+                - repair_order_id
+        device_accessory_id:
+            columns:
+                - device_accessory_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    manyToOne:
+        repairOrder:
+            targetEntity: RepairOrder
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                repair_order_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        deviceAccessory:
+            targetEntity: DeviceAccessory
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_accessory_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+    lifecycleCallbacks: {  }

@@ -1,0 +1,51 @@
+solucel_admin_repairorderdelivery_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderDelivery:index" }
+    methods:  GET
+
+solucel_admin_repairorderdelivery_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderDelivery:show" }
+    methods:  GET
+
+solucel_admin_repairorderdelivery_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderDelivery:new" }
+    #methods:  [GET, POST]
+
+solucel_admin_repairorderdelivery_send:
+    path:     /send
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderDelivery:send" }
+
+
+solucel_admin_repairorderdelivery_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderDelivery:edit" }
+    #methods:  [GET, POST]
+
+solucel_admin_repairorderdelivery_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderDelivery:delete" }
+    #methods:  DELETE
+    
+solucel_admin_repairorderdelivery_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderDelivery:create" }
+    requirements: { _method: post }
+    
+
+solucel_admin_repairorderdelivery_update:
+    path:     /{id}/update
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderDelivery:update" }
+    requirements: { _method: post|put }     
+    
+
+solucel_admin_repairorderdelivery_print:
+    path:     /{id}/print
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderDelivery:print" }
+    
+    
+solucel_admin_repairorderdelivery_receive:
+    path:     /{id}/receive
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderDelivery:receive" }
+    

@@ -1,0 +1,19 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    
+    <li> <a href="{{ path('solucel_admin_qualitycontrolgroup_index') }}">Listado de Grupos de CC</a> </li>
+    <li> <a href="{{ path('solucel_admin_qualitycontrolgroup_new') }}">Nuevo Grupo de CC</a> </li>
+    {% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:QualityControlGroup:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+    
+
+
+{% endblock %}

@@ -1,0 +1,125 @@
+solucel_admin_repairorder_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:index" }
+    methods:  [GET, POST]
+
+solucel_admin_repairorder_reception:
+    path:     /reception
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:reception" }
+    methods:  [GET, POST]
+
+solucel_admin_repairorder_reception_save:
+    path:     /receptionsave
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:receptionsave" }
+    #methods:  [GET, POST]
+
+solucel_admin_repairorder_paperwork:
+    path:     /paperwork
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:paperwork" }
+    methods:  [GET, POST]
+
+solucel_admin_repairorder_paperwork_save:
+    path:     /paperworksave
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:paperworksave" }
+
+
+solucel_repairorder_load_ajax:    
+    path:     /orderlistajax
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:data" }    
+    
+
+solucel_admin_repairorder_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:show" }
+    methods:  GET
+
+solucel_admin_repairorder_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:new" }
+    #methods:  [GET, POST]
+    
+solucel_admin_repairorder_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:create" }
+    requirements: { _method: post }
+
+
+solucel_admin_repairorder_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:edit" }
+    #methods:  [GET, POST]
+    
+
+solucel_admin_repairorder_update:
+    path:     /{id}/update
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:update" }
+    requirements: { _method: post|put }     
+
+solucel_admin_repairorder_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:delete" }
+    #methods:  DELETE
+    
+solucel_admin_repairorder_agency:
+    path:     /agency
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:agency" }
+    #methods:  GET
+    
+solucel_admin_repairorder_getdaystorepair:
+    path:     /getrepairdays
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:getRepairDays" }
+
+solucel_admin_repairorder_clientfind:
+    path:     /searchclient
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:clientFind" }
+   
+solucel_admin_repairorder_adddefect:
+    path:     /adddefect
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:addDefect" }
+
+solucel_admin_repairorder_addaccessory:
+    path:     /addaccessory
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:addAccessory" }
+  
+solucel_admin_repairorder_checkentry:
+    path:     /checkentry
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:checkEntry" }
+  
+solucel_admin_repairorder_device_model:
+    path:     /device_model
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:deviceModel" }
+        
+solucel_admin_repairorder_assign:    
+    path:     /assign
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:assign" }
+
+solucel_admin_repairorder_assigntec:    
+    path:     /assigntec
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:assignTec" }
+    
+solucel_admin_repairorder_changeorders:
+    path:     /changeorders
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:changeOrders" }
+    
+solucel_admin_repairorder_print:
+    path:     /{id}/print
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:print" }
+    methods:  [GET, POST]
+
+solucel_admin_repairorder_finish:
+    path:     /finish
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:finishOrder" }
+       
+solucel_admin_repairorder_addfield:
+    path:     /addfield
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:addField" }
+    
+solucel_admin_repairorder_sketch:
+    path:     /{id}/sketch
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:sketch" }
+    
+solucel_admin_repairorder_reassign:
+    path:     /{id}/reassign
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:reassignTec" }
+  
+  

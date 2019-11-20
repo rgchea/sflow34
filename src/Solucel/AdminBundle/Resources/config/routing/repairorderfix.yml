@@ -1,0 +1,78 @@
+solucel_admin_repairorderfix_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:index" }
+    methods:  GET
+
+solucel_admin_repairorderfix_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:show" }
+    methods:  GET
+
+solucel_admin_repairorderfix_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:new" }
+    #methods:  [GET, POST]
+
+solucel_admin_repairorderfix_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:edit" }
+    #methods:  [GET, POST]
+
+solucel_admin_repairorderfix_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:delete" }
+
+solucel_admin_repairorderfix_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:create" }
+    requirements: { _method: post }
+    
+solucel_admin_repairorderfix_update:
+    path:     /{id}/update
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:update" }
+    requirements: { _method: post|put }     
+    
+solucel_admin_repairorderfix_addfix:
+    path:     /addfix
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:addFix" }
+    
+solucel_admin_repairorderfix_addreplacement:
+    path:     /addreplacement
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:addReplacement" }
+    
+solucel_admin_repairorderfix_checkwarranty:
+    path:     /checkwarranty
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:checkWarranty" }
+    
+solucel_admin_repairorderfix_request_sap:
+    path:     /requestSAP
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:requestSAP" }
+    
+solucel_admin_repairorderfix_order_sap:
+    path:     /orderSAP
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:orderSAP" }
+    
+solucel_admin_repairorderfix_check_replacement_email:    
+    path:     /checkReplacementEmail
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:checkReplacementEmail" }
+    
+solucel_admin_repairorderfix_finish:
+    path:     /{id}/finish
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:finishRepairment" }
+
+solucel_admin_repairorderfix_unfix:
+    path:     /{id}/unfix
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:unfixRepairment" }
+
+solucel_admin_repairorderfix_change:
+    path:     /{id}/changedevice
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:changeDeviceRepairment" }
+    
+solucel_admin_repairorderfix_replacementfind:
+    path:     /{brand}/searchreplacement
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:replacementFind" }
+    
+solucel_admin_repairorderfix_pendingstatus:
+    path:     /pendingStatus
+    defaults: { _controller: "SolucelAdminBundle:RepairOrderFix:pendingStatus" }
+    

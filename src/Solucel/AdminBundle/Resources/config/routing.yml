@@ -1,0 +1,177 @@
+solucel_admin_homepage:
+    path:     /
+    defaults: { _controller: SolucelAdminBundle:Default:index }
+    
+solucel_admin_moduleaccess:
+    resource: "@SolucelAdminBundle/Resources/config/routing/moduleaccess.yml"
+    prefix:   /moduleaccess
+    
+solucel_admin_role:
+    resource: "@SolucelAdminBundle/Resources/config/routing/role.yml"
+    prefix:   /role    
+        
+solucel_admin_agency:
+    resource: "@SolucelAdminBundle/Resources/config/routing/agency.yml"
+    prefix:   /agency
+    
+solucel_admin_operator:
+    resource: "@SolucelAdminBundle/Resources/config/routing/operator.yml"
+    prefix:   /operator
+
+solucel_admin_servicecenter:
+    resource: "@SolucelAdminBundle/Resources/config/routing/servicecenter.yml"
+    prefix:   /servicecenter
+    
+solucel_admin_companydepartment:
+    resource: "@SolucelAdminBundle/Resources/config/routing/companydepartment.yml"
+    prefix:   /companydepartment
+    
+solucel_admin_country:
+    resource: "@SolucelAdminBundle/Resources/config/routing/country.yml"
+    prefix:   /country
+    
+solucel_admin_client:
+    resource: "@SolucelAdminBundle/Resources/config/routing/client.yml"
+    prefix:   /client
+    
+solucel_admin_deviceaccessory:
+    resource: "@SolucelAdminBundle/Resources/config/routing/deviceaccessory.yml"
+    prefix:   /deviceaccessory
+    
+solucel_admin_devicebrand:
+    resource: "@SolucelAdminBundle/Resources/config/routing/devicebrand.yml"
+    prefix:   /devicebrand
+    
+solucel_admin_devicecolor:
+    resource: "@SolucelAdminBundle/Resources/config/routing/devicecolor.yml"
+    prefix:   /devicecolor
+    
+solucel_admin_devicecondition:
+    resource: "@SolucelAdminBundle/Resources/config/routing/devicecondition.yml"
+    prefix:   /devicecondition
+    
+solucel_admin_devicedefecttype:
+    resource: "@SolucelAdminBundle/Resources/config/routing/devicedefecttype.yml"
+    prefix:   /devicedefecttype
+    
+solucel_admin_devicedefect:
+    resource: "@SolucelAdminBundle/Resources/config/routing/devicedefect.yml"
+    prefix:   /devicedefect
+    
+solucel_admin_devicedefectcode:
+    resource: "@SolucelAdminBundle/Resources/config/routing/devicedefectcode.yml"
+    prefix:   /devicedefectcode
+    
+solucel_admin_devicefixlevel:
+    resource: "@SolucelAdminBundle/Resources/config/routing/devicefixlevel.yml"
+    prefix:   /devicefixlevel    
+
+solucel_admin_devicefixtype:
+    resource: "@SolucelAdminBundle/Resources/config/routing/devicefixtype.yml"
+    prefix:   /devicefixtype
+
+solucel_admin_devicefixtypecode:
+    resource: "@SolucelAdminBundle/Resources/config/routing/devicefixtypecode.yml"
+    prefix:   /devicefixtypecode
+    
+solucel_admin_devicelocation:
+    resource: "@SolucelAdminBundle/Resources/config/routing/devicelocation.yml"
+    prefix:   /devicelocation
+    
+solucel_admin_devicemodel:
+    resource: "@SolucelAdminBundle/Resources/config/routing/devicemodel.yml"
+    prefix:   /devicemodel
+    
+solucel_admin_devicereplacementtype:
+    resource: "@SolucelAdminBundle/Resources/config/routing/devicereplacementtype.yml"
+    prefix:   /devicereplacementtype
+    
+solucel_admin_devicereplacement:
+    resource: "@SolucelAdminBundle/Resources/config/routing/devicereplacement.yml"
+    prefix:   /devicereplacement    
+    
+solucel_admin_devicetype:
+    resource: "@SolucelAdminBundle/Resources/config/routing/devicetype.yml"
+    prefix:   /devicetype
+    
+solucel_admin_qualitycontrolgroup:
+    resource: "@SolucelAdminBundle/Resources/config/routing/qualitycontrolgroup.yml"
+    prefix:   /qualitycontrolgroup    
+    
+solucel_admin_qualitycontrolsubgroup:
+    resource: "@SolucelAdminBundle/Resources/config/routing/qualitycontrolsubgroup.yml"
+    prefix:   /qualitycontrolsubgroup
+        
+            
+solucel_admin_repairentrytype:
+    resource: "@SolucelAdminBundle/Resources/config/routing/repairentrytype.yml"
+    prefix:   /repairentrytype
+
+solucel_admin_repairstatus:
+    resource: "@SolucelAdminBundle/Resources/config/routing/repairstatus.yml"
+    prefix:   /repairstatus
+    
+solucel_admin_user:
+    resource: "@SolucelAdminBundle/Resources/config/routing/user.yml"
+    prefix:   /user    
+
+solucel_admin_repairorder:
+    resource: "@SolucelAdminBundle/Resources/config/routing/repairorder.yml"
+    prefix:   /repairorder
+       
+solucel_admin_repairorderfix:
+    resource: "@SolucelAdminBundle/Resources/config/routing/repairorderfix.yml"
+    prefix:   /repairorderfix
+    
+solucel_admin_storehouse:
+    resource: "@SolucelAdminBundle/Resources/config/routing/storehouse.yml"
+    prefix:   /storehouse
+    
+solucel_admin_repairorderdelivery:
+    resource: "@SolucelAdminBundle/Resources/config/routing/repairorderdelivery.yml"
+    prefix:   /repairorderdelivery
+
+solucel_admin_repairorderfixconfirmationlog:
+    resource: "@SolucelAdminBundle/Resources/config/routing/repairorderfixconfirmationlog.yml"
+    prefix:   /repairorderfixconfirmationlog
+
+solucel_admin_repairorderqualitycontrol:
+    resource: "@SolucelAdminBundle/Resources/config/routing/repairorderqualitycontrol.yml"
+    prefix:   /repairorderqualitycontrol
+
+notification:  
+    resource: "@SolucelAdminBundle/Resources/config/routing/notification.yml"
+    prefix:   /notification
+    
+solucel_admin_repairorderreport:
+    resource: "@SolucelAdminBundle/Resources/config/routing/repairorderreport.yml"
+    prefix:   /repairorderreport
+
+solucel_repair_tracking:
+    path:     /repairtracking
+    defaults: { _controller: SolucelAdminBundle:RepairOrder:repairTracking }
+    requirements: { _method: post }
+
+solucel_repair_trackingcheck:
+    path:     /repairtrackingcheck
+    defaults: { _controller: SolucelAdminBundle:RepairOrder:repairTrackingCheck }
+    
+solucel_admin_transactioncode:
+    resource: "@SolucelAdminBundle/Resources/config/routing/transactioncode.yml"
+    prefix:   /transactioncode
+
+solucel_admin_state:
+    resource: "@SolucelAdminBundle/Resources/config/routing/state.yml"
+    prefix:   /state
+
+solucel_admin_actionreasoncode:
+    resource: "@SolucelAdminBundle/Resources/config/routing/actionreasoncode.yml"
+    prefix:   /actionreasoncode
+
+solucel_admin_problemfoundcode:
+    resource: "@SolucelAdminBundle/Resources/config/routing/problemfoundcode.yml"
+    prefix:   /problemfoundcode
+
+solucel_admin_payer:
+    resource: "@SolucelAdminBundle/Resources/config/routing/payer.yml"
+    prefix:   /payer

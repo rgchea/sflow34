@@ -1,0 +1,36 @@
+solucel_admin_devicedefecttype_index:
+    path:     /
+    defaults: { _controller: "SolucelAdminBundle:DeviceDefectType:index" }
+    methods:  GET
+
+solucel_admin_devicedefecttype_show:
+    path:     /{id}/show
+    defaults: { _controller: "SolucelAdminBundle:DeviceDefectType:show" }
+    methods:  GET
+
+solucel_admin_devicedefecttype_new:
+    path:     /new
+    defaults: { _controller: "SolucelAdminBundle:DeviceDefectType:new" }
+    #methods:  [GET, POST]
+    
+solucel_admin_devicedefecttype_create:
+    path:     /create
+    defaults: { _controller: "SolucelAdminBundle:DeviceDefectType:create" }
+    requirements: { _method: post }
+
+
+solucel_admin_devicedefecttype_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SolucelAdminBundle:DeviceDefectType:edit" }
+    #methods:  [GET, POST]
+    
+
+solucel_admin_devicedefecttype_update:
+    path:     /{id}/update
+    defaults: { _controller: "SolucelAdminBundle:DeviceDefectType:update" }
+    requirements: { _method: post|put }     
+
+solucel_admin_devicedefecttype_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SolucelAdminBundle:DeviceDefectType:delete" }
+    #methods:  DELETE

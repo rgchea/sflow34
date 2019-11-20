@@ -1,0 +1,48 @@
+Solucel\AdminBundle\Entity\State:
+    type: entity
+    table: state
+    indexes:
+        country_id:
+            columns:
+                - country_id
+    
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+                default: ''
+
+        zipCode:
+            type: string
+            nullable: false
+            length: 8
+            options:
+                fixed: false
+                default: ''
+            column: zip_code
+    manyToOne:
+        country:
+            targetEntity: Country
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                country_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+      
+    lifecycleCallbacks: {  }

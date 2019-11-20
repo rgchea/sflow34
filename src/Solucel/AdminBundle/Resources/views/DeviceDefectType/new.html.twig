@@ -1,0 +1,19 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    
+    <li> <a href="{{ path('solucel_admin_devicedefecttype_index') }}">Listado de Tipos de Defecto</a> </li>
+    <li> <a href="{{ path('solucel_admin_devicedefecttype_new') }}">Nuevo Tipo de Defecto</a> </li>
+    {% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:DeviceDefectType:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+    
+
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<style>
+	#fos_user_resetting_form_plainPassword_first, #fos_user_resetting_form_plainPassword_second{
+	    background-color: transparent;
+	    color: #000000;
+	    outline: none;
+	    outline-style: none;
+	    border-top: none;
+	    border-left: none;
+	    border-right: none;
+	    border-bottom: solid #eeeeee 1px;
+	    padding: 3px 10px;		
+	    margin-bottom: 5px;
+	    width: 100%;
+	    float:left;
+	}
+	
+</style>
+
+
+<form id="resetForm" style="padding: 10px" action="{{ path('fos_user_resetting_reset_new', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="fos_user_resetting_reset">
+    {{ form_widget(form) }}
+    <div>
+        <input type="submit" value="Aceptar" />
+    </div>
+</form>
+
+	<script type="text/javascript">
+		
+		$( document ).ready(function() {
+			
+		  // Handler for .ready() called.
+			$( "#resetForm" ).validate();	
+			
+			$("#fos_user_resetting_form_plainPassword_first").rules("add", {required:true});
+			$("#fos_user_resetting_form_plainPassword_second").rules("add", {equalTo: "#fos_user_resetting_form_plainPassword_first"});
+		  
+		});		
+		
+		
+	</script>

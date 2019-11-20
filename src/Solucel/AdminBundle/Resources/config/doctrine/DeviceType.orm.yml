@@ -1,0 +1,29 @@
+Solucel\AdminBundle\Entity\DeviceType:
+    type: entity
+    table: device_type
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 64
+            options:
+                fixed: false
+                default: ''
+        code:
+            type: string
+            nullable: false
+            length: 4
+            options:
+                fixed: false
+                default: ''                
+                
+    lifecycleCallbacks: {  }

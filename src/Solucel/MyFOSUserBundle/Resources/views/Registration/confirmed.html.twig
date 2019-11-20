@@ -1,0 +1,24 @@
+{% extends "PizoteArkAdminBundle::security.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+	<section style="padding: 10px">
+    <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
+    {% if app.session is not empty %}
+        {% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}
+        {% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>{% endif %}
+    {% endif %}
+    <button type="button" onclick="goToLogin()" class="btn btn-primary">Ingresar</button>
+    </section>
+	
+	<script type="text/javascript">
+		function goToLogin() {
+		    var x = window.location.href;
+		    var com = x.indexOf("register");
+		    //alert(x.substring(0, com));
+		    document.location.href = x.substring(0, com);
+		}		
+	</script>    
+{% endblock fos_user_content %}
+

@@ -1,0 +1,65 @@
+Solucel\AdminBundle\Entity\RepairOrderStatus:
+    type: entity
+    table: repair_order_status
+    indexes:
+        repair_order_id:
+            columns:
+                - repair_order_id
+        repair_status_id:
+            columns:
+                - repair_status_id                
+        created_by:
+            columns:
+                - created_by
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        createdAt:
+            type: datetime
+            nullable: false
+            column: created_at
+    manyToOne:
+        createdBy:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                created_by:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        repairOrder:
+            targetEntity: RepairOrder
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                repair_order_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        repairStatus:
+            targetEntity: RepairStatus
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                repair_status_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+            
+    lifecycleCallbacks: {  }

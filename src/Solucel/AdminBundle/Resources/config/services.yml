@@ -1,0 +1,4 @@
+services:
+#    solucel_admin.example:
+#        class: Solucel\AdminBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]

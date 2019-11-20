@@ -1,0 +1,10 @@
+{# extends "FOSUserBundle::layout.html.twig" #}
+{% extends "PizoteArkAdminBundle::security.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+
+    <section style="padding: 10px">{{ 'registration.check_email'|trans({'%email%': user.email}) }}</section>
+    
+{% endblock fos_user_content %}

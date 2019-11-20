@@ -1,0 +1,46 @@
+Solucel\AdminBundle\Entity\RepairOrderDeviceFixType:
+    type: entity
+    table: repair_order_device_fix_type
+    indexes:
+        device_fix_type_id:
+            columns:
+                - device_fix_type_id
+        repair_order_fix_id:
+            columns:
+                - repair_order_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+
+    manyToOne:
+        deviceFixType:
+            targetEntity: DeviceFixType
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_fix_type_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        repairOrder:
+            targetEntity: RepairOrder
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                repair_order_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+    lifecycleCallbacks: {  }

@@ -1,0 +1,59 @@
+Solucel\AdminBundle\Entity\DeviceFixType:
+    type: entity
+    table: device_fix_type
+    indexes:
+        device_fix_level_id:
+            columns:
+                - device_fix_level_id
+        transaction_code_id:
+            columns:
+                - transaction_code_id
+
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+        description:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+    manyToOne:
+        deviceFixLevel:
+            targetEntity: DeviceFixLevel
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_fix_level_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+        transactionCode:
+            targetEntity: TransactionCode
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                transaction_code_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+
+    lifecycleCallbacks: {  }
