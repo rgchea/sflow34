@@ -1610,15 +1610,17 @@ class RepairOrderController extends Controller
 		$response["result"] = $result["result"];
 		if($result["result"] == 2) //re ingreso
 		{
-			
 			//2018-08-29
 			$response["entry_date"] = implode("/", array_reverse(explode("-", $result["date"])) );
-			 
 			//var_dump($date);die;
-			
+
+            $response["count"] = $result["count"];
+            $response["history"] = $result["history"];
+            $response["imei"] = $result["imei"];
 		}
-		
-		//$response["result"] = $result["result"];
+
+
+
 		   	
 		return new JsonResponse($response);
 						

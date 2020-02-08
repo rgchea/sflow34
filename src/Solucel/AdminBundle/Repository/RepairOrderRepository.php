@@ -52,52 +52,108 @@ class RepairOrderRepository extends \Doctrine\ORM\EntityRepository
 	public function checkEntryType($code, $type){
 
 		if($type == 1){
-			$sql = "	SELECT 	id, DATE(entry_date) fecha_entrada
-						FROM	repair_order
-						WHERE	device_imei = '{$code}'
-						AND		enabled = 1
-						LIMIT 1";
+			$sql = "	SELECT 	ro.id, ro.device_imei, DATE(ro.entry_date) fecha_entrada, rof.fix_detail
+						FROM	repair_order ro
+						    LEFT JOIN repair_order_fix rof ON (rof.repair_order_id = ro.id)
+						WHERE	ro.device_imei = '{$code}'
+						AND		ro.enabled = 1
+						";
+			//LIMIT 1
 			
 		}//phone
 		else{
-			$sql = "	SELECT 	id, DATE(entry_date) fecha_entrada
-						FROM	repair_order
-						WHERE	device_code_fab = '{$code}'
-						AND		enabled = 1
-						LIMIT 1";
+			$sql = "	SELECT 	ro.id, ro.device_imei, DATE(ro.entry_date) fecha_entrada, rof.fix_detail
+						FROM	repair_order ro
+						    LEFT JOIN repair_order_fix rof ON (rof.repair_order_id = ro.id)
+						WHERE	ro.device_code_fab = '{$code}'
+						AND		ro.enabled = 1
+						";
+			//LIMIT 1
 			
 		}
-		
-					 
-		   
+
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 	    $stmt->execute();
 		
-	    $execute = $stmt->fetchAll();		   
+	    $execute = $stmt->fetchAll();
 
 		$return = empty($execute) ? 1 : 2;
 		//1 - ingreso
 		//2 - re ingreso
 		$returnTMP = array();
 		if($return == 1){
-			
 			$returnTMP["result"] = 1;
 			//$returnTMP["date"] = $return[0]["fecha_entrada"];
-			 
-				
-			
 		}
 		else{
-			
 			$returnTMP["result"] = 2;
-			$returnTMP["date"] = $execute[0]["fecha_entrada"];
-			
-		}
-		
-		$return = $returnTMP;		
-		
-		return $return;
+			//$returnTMP["date"] = $execute[0]["fecha_entrada"];
+            $returnTMP["count"] = count($execute);
+            $returnTMP["imei"] = $execute[0]["device_imei"];
 
+            //862654035419168
+            $returnTMP["history"] = array();
+
+			foreach ($execute as $key => $value){
+			    $id = $value["id"];
+                $entryDate = $value["fecha_entrada"];
+                $returnTMP["date"] = $entryDate;
+
+                ////DEFECTOS
+                $sqlHistory = " SELECT 	dd.name
+                                FROM	repair_order_device_defect rdd
+                                    INNER JOIN device_defect dd ON(rdd.device_defect_id = dd.id)
+                                WHERE	rdd.repair_order_id	= {$id}";
+
+                $stmt = $this->getEntityManager()->getConnection()->prepare($sqlHistory);
+                $stmt->execute();
+
+                $executeHistory = $stmt->fetchAll();
+
+                $returnTMP["history"][$id] = array();
+                $returnTMP["history"][$id]["date"] = $entryDate;
+                $returnTMP["history"][$id]["fix_detail"] = $value["fix_detail"];
+                $returnTMP["history"][$id]["defects"] = "N/A";
+                $returnTMP["history"][$id]["replacements"] = "N/A";
+
+                if(!empty($executeHistory)){
+                    $strDefects = "";
+                    foreach ($executeHistory as $key => $defect) {
+                        $strDefects .= $strDefects == "" ? $defect["name"] : " - ".$defect["name"];
+                    }
+                    $returnTMP["history"][$id]["defects"] = $strDefects;
+                }
+
+                //REPUESTOS
+                $sqlHistory = " SELECT 	dr.name
+                                FROM	repair_order_device_replacement rdr
+                                    INNER JOIN device_replacement dr
+                                WHERE	rdr.repair_order_id	= {$id}";
+
+                $stmt = $this->getEntityManager()->getConnection()->prepare($sqlHistory);
+                $stmt->execute();
+
+                $executeHistory = $stmt->fetchAll();
+
+                if(!empty($executeHistory)){
+                    $strReplacements = "";
+                    foreach ($executeHistory as $key => $replacement) {
+                        $strReplacements .= $strReplacements == "" ? $replacement["name"] : " - ".$replacement["name"];
+                    }
+                    $returnTMP["history"][$id]["replacements"] = $strReplacements;
+                }
+            }
+		}
+
+
+
+
+		////
+        /// history
+//        print "<pre>";
+//        var_dump($returnTMP);die;
+
+		return 	$returnTMP;
 		
 	}		
 	

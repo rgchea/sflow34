@@ -19,6 +19,10 @@
 <script type="text/javascript" src="{{ asset('bundles/pizotearkadmin/js/raphael-sketchpad-master/javascripts/json2.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/pizotearkadmin/js/raphael-sketchpad-master/src/raphael.sketchpad.js') }}"></script>
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 
 <script>
 	$('#pizote_spinner').show();
@@ -462,8 +466,16 @@
 			                            {{ form_label(form.repairEntryType) }}
 			                            {{ form_errors(form.repairEntryType) }}
 			                            {{ form_widget(form.repairEntryType, { 'attr': {'class' : 'select2-search' } }
-			                            ) }}	
-									</div>									
+			                            ) }}
+										<div id="divReentry" style="display: none">
+											<br/>
+											<label>Número de ingresos:&nbsp;</label><label id="entryCount">&nbsp;</label><br/>
+											<a id="entryHistory" class="btn btn-default">Historial de ingresos</a>
+											<br/>
+											<span>&nbsp;</span>
+
+										</div>
+									</div>
 									
 									<div class="form-group col-sm-5">
 			                            {{ form_label(form.humidity) }}
@@ -739,6 +751,16 @@
 		</div>
 
 		<div class="clearfix"></div>
+		<div id="historyDialog" title="Historial de ingresos">
+			<br/>
+			<div class="col-md-12">
+				<div class="col-md-1">IMEI</div>
+				<div class="col-md-6" id="dialogImei"></div>
+				<div class="clearfix"></div>
+				<br/>
+				<div id="dialogBody"></div>
+			</div>
+		</div>
 
 	</article>
 </div>
@@ -778,7 +800,21 @@
 			$("#divManufactureDate").hide();
 			$("#divPayer").hide();
 			$("#divWarrantyFlag").hide();
-		{% endif %}		
+		{% endif %}
+
+		//DIALOG BEGINS
+		$( "#historyDialog" ).dialog({
+			autoOpen: false,
+			minWidth: 600,
+			minWheight: 600,
+			modal: true
+		});
+
+		$( "#entryHistory" ).on( "click", function() {
+			$( "#historyDialog" ).dialog( "open" );
+		});
+
+		//DIALOG ENDS
 
 		//it converts the select on a searchable select
 		//$('.s2').select2();
@@ -1324,11 +1360,43 @@
 				if(data.result == 2){
 					$("#divEntryType").css( "background-color", "yellow" );
 					$("#repair_order_devicePurchaseDate").val(data.entry_date);
-					
-					
+
+					$("#divReentry").show();
+					console.log(data.count);
+					$("#entryCount").html(data.count);
+					$("#dialogImei").html(data.imei.trim());
+
+					//console.log(data);
+
+					//llenar campos automáticamente: MSN, XCVR, CODIGO DE FAB,
+					//traer número de reingresos y desplegar
+					//acceso directo a historial en un link que levante un pop up
+
+					//dialogBody
+					//add data to the dialog body
+					$("#dialogBody").html();
+
+
+					for (myHistory in data.history){
+
+						//console.log(myHistory);
+							//console.log("this shit");
+							//console.log(h);
+
+						$("#dialogBody").append('<div class="col-md-6">Fecha:</div><div>'+data.history[myHistory].date+'</div>');
+						$("#dialogBody").append('<div class="col-md-6">Defectos encontrados:</div><div>'+data.history[myHistory].defects+'</div>');
+						$("#dialogBody").append('<div class="col-md-6">Repuestos utilizados:</div><div>'+data.history[myHistory].replacements+'</div>');
+						$("#dialogBody").append('<div class="col-md-6">Reparación:</div><div>'+data.history[myHistory].fix_detail+'</div>');
+
+						$("#dialogBody").append('<br/><hr>');
+
+
+					}
+
 				}
 				else{
 					$("#divEntryType").css( "background-color", "white" );
+					$("#divReentry").hide();
 					
 				}
 				//$('#repair_order_repairEntryType option:not(:selected)').prop('disabled', true);
