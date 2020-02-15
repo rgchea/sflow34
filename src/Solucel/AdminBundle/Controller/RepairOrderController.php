@@ -1053,14 +1053,19 @@ class RepairOrderController extends Controller
         $entity = new RepairOrder();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+
+        //var_dump($entity);die;
+        $myTicket = trim($_REQUEST["repair_order"]["ticketNumber"]);
+        $objOrderDuplicate = $em->getRepository("SolucelAdminBundle:RepairOrder")->findOneByTicketNumber($myTicket);
+        if($objOrderDuplicate){
+            $this->get('services')->flashWarningCustom($request, "No fue posible guardar, ya que la boleta ".$myTicket. " existe previamente en el sistema");
+            return $this->redirectToRoute('solucel_admin_repairorder_new');
+        }
+
 		 
         if ($form->isValid()) {
-        	
-			
-            $em = $this->getDoctrine()->getManager();
-			//var_dump($entity);die;
-			
-			
+
 			///CLIENT
 			if(intval($arrClient["id"]) != 0){
 				//link client
@@ -1152,11 +1157,7 @@ class RepairOrderController extends Controller
 					$objDefect->setDeviceDefect($em->getRepository('SolucelAdminBundle:DeviceDefect')->find($value));
 		            $em->persist($objDefect);
 		            $em->flush();			
-					
-					
 				}
-				
-				
 			}
 			
 			///accessories
@@ -1177,15 +1178,15 @@ class RepairOrderController extends Controller
 			///guadar campos adicionales
 			///accessories
 			if(!empty($arrField)){
-			foreach ($arrField as $key => $value) {
-				$objField = new RepairOrderAdditionalField();
-				$objField->setRepairOrder($entity);
-				$objField->setName($value["name"]);
-				$objField->setValue($value["value"]);
-	            $em->persist($objField);
-	            $em->flush();			
-				
-			}					
+                foreach ($arrField as $key => $value) {
+                    $objField = new RepairOrderAdditionalField();
+                    $objField->setRepairOrder($entity);
+                    $objField->setName($value["name"]);
+                    $objField->setValue($value["value"]);
+                    $em->persist($objField);
+                    $em->flush();
+
+                }
 			}
 		
 			
@@ -1204,13 +1205,28 @@ class RepairOrderController extends Controller
             return $this->redirect($this->get('router')->generate('solucel_admin_homepage'));
 	                        
 
-        }		 
+        }
+        else{
 
+            /*
+            foreach($form->getErrors(true, false) as $er) {
+                print_r($er->__toString());
+            }
+            die;
+            */
 
+            $this->get('services')->flashWarningCustom($request, "Formulario Inválido ");
+        }
+
+        //var_dump("entra");
+        return $this->redirectToRoute('solucel_admin_repairorder_new');
+
+        /*
         return $this->render('SolucelAdminBundle:RepairOrder:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
+        */
     }
 
     /**
@@ -1607,8 +1623,20 @@ class RepairOrderController extends Controller
 		
 		$response = array();
 		//$response["result"] = $result;
-		$response["result"] = $result["result"];
-		if($result["result"] == 2) //re ingreso
+		$response["result"] = intval($result["result"]);
+
+		$reEntryTypes = array(2,3);
+		//2 reingreso
+        //3 reincidencia
+        $response["imei"] = "";
+        $response["device_code_fab"] = "";
+        $response["device_msn"] = "";
+        $response["device_xcvr"] = "";
+        $response["invoice_number"] = "";
+
+
+		//if($result["result"] == 2) //re ingreso
+        if (in_array($response["result"], $reEntryTypes))
 		{
 			//2018-08-29
 			$response["entry_date"] = implode("/", array_reverse(explode("-", $result["date"])) );
@@ -1617,11 +1645,17 @@ class RepairOrderController extends Controller
             $response["count"] = $result["count"];
             $response["history"] = $result["history"];
             $response["imei"] = $result["imei"];
+
+            $objOrder = $em->getRepository('SolucelAdminBundle:RepairOrder')->find(intval($result["id"]));
+
+            $response["device_code_fab"] = $objOrder->getDeviceCodeFab();
+            $response["device_msn"] = $objOrder->getDeviceMsn();
+            $response["device_xcvr"] = $objOrder->getDeviceXcvr();
+            $response["invoice_number"] = $objOrder->getInvoiceNumber();
+
 		}
 
 
-
-		   	
 		return new JsonResponse($response);
 						
 	}

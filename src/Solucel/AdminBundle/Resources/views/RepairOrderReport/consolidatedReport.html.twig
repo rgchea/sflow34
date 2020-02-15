@@ -75,112 +75,130 @@
             	<input type="hidden" name="filter" value="true" />
             	<input type="hidden" name="submit" value="true" />
 	            <fieldset>
-                        <table width="90%">
-                                <tbody>
-                                        <tr>
-                                                <td>
-                                                        <label for="select_operator">Operador:</label><br />
-                                                        <select id="select_operator" name="select_operator">
 
-                                                                {# evaluates to true if the foo variable is iterable #}
-                                                                {% if operators is iterable %}
-                                                                        <option value="0">Todos</option>
-                                                                        {% for operator in operators %}
-                                                                                {% set selected = operator.id == select_operator ? ' selected="selected" ' : ''%}
-                                                                                <option value="{{operator.id}}" {{selected}}>{{ operator.name }}</option>
-                                                                        {% endfor %}										
-                                                                {% else %}
-                                                                    {# users is probably a single object #}
-                                                                    <option value="{{operators.id}}">{{ operators.name }}</option>
-                                                                {% endif %}										
+						<div class="col-md-12">
+							<div class="col-md-2">
+								<label for="select_operator">Operador:</label><br />
+								<select id="select_operator" name="select_operator">
 
-                                                        </select>
+									{# evaluates to true if the foo variable is iterable #}
+									{% if operators is iterable %}
+										<option value="0">Todos</option>
+										{% for operator in operators %}
+											{% set selected = operator.id == select_operator ? ' selected="selected" ' : ''%}
+											<option value="{{operator.id}}" {{selected}}>{{ operator.name }}</option>
+										{% endfor %}
+									{% else %}
+										{# users is probably a single object #}
+										<option value="{{operators.id}}">{{ operators.name }}</option>
+									{% endif %}
 
-                                                </td>
-                                                <td>
-                                                        <label for="select_agency">Agencia:</label><br />
-                                                        <select id="select_agency" name="select_agency"  >
-                                                                <option value="0">Todos</option>
-                                                           {% for agency in agencies%}
-                                                                        {% set selected = agency.id == select_agency ? ' selected="selected" ' : ''%}	
-                                                                <option value="{{agency.id}}" {{selected}}>{{ agency.name }}</option>
-                                                            {% endfor %}										
-                                                        </select>
+								</select>
+							</div>
+							<div class="col-md-3">
+								<label for="select_agency">Agencia:</label><br />
+								<select id="select_agency" name="select_agency"  >
+									<option value="0">Todos</option>
+									{% for agency in agencies%}
+										{% set selected = agency.id == select_agency ? ' selected="selected" ' : ''%}
+										<option value="{{agency.id}}" {{selected}}>{{ agency.name }}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="col-md-3">
+								<label for="select_service_center">Centro de Servicio:</label><br />
+								<select id="select_service_center" name="select_service_center" >
 
-                                                </td>								
-                                                <td>
-                                                        <label for="select_service_center">Centro de Servicio:</label><br />
-                                                        <select id="select_service_center" name="select_service_center" >
-
-                                                                {# evaluates to true if the foo variable is iterable #}
-                                                                {% if service_centers is iterable %}
-                                                                        <option value="0">Todos</option>
-                                                                        {% for service_center in service_centers %}
-                                                                                {% set selected = service_center.id == select_service_center ? ' selected="selected" ' : ''%}
-                                                                                <option value="{{service_center.id}}" {{selected}}>{{ service_center.name }}</option>
-                                                                        {% endfor %}										
-                                                                {% else %}
-                                                                    {# users is probably a single object #}
-                                                                    <option value="{{service_centers.id}}">{{ service_centers.name }}</option>
-                                                                {% endif %}										
+									{# evaluates to true if the foo variable is iterable #}
+									{% if service_centers is iterable %}
+										<option value="0">Todos</option>
+										{% for service_center in service_centers %}
+											{% set selected = service_center.id == select_service_center ? ' selected="selected" ' : ''%}
+											<option value="{{service_center.id}}" {{selected}}>{{ service_center.name }}</option>
+										{% endfor %}
+									{% else %}
+										{# users is probably a single object #}
+										<option value="{{service_centers.id}}">{{ service_centers.name }}</option>
+									{% endif %}
 
 
-                                                        </select>
+								</select>
+							</div>
+							<div class="col-md-2">
+								<label for="select_brand">Marca:</label><br />
+								<select id="select_brand" name="select_brand" >
 
-                                                </td>
+									{# evaluates to true if the foo variable is iterable #}
+									{% if brands is iterable %}
+										<option value="0">Todos</option>
+										{% for brand in brands %}
 
-                                                <td>
-                                                        <label for="select_brand">Marca:</label><br />
-                                                        <select id="select_brand" name="select_brand" >
+											{#{% if brand.name  != "Motorola" %}#}
+											{% set selected = brand.id == select_brand ? ' selected="selected" ' : ''%}
+											<option value="{{brand.id}}" {{selected}}>{{ brand.name }}</option>
 
-                                                                {# evaluates to true if the foo variable is iterable #}
-                                                                {% if brands is iterable %}
-                                                                        <option value="0">Todos</option>
-                                                                        {% for brand in brands %}
-
-																			{#{% if brand.name  != "Motorola" %}#}
-																				{% set selected = brand.id == select_brand ? ' selected="selected" ' : ''%}
-																				<option value="{{brand.id}}" {{selected}}>{{ brand.name }}</option>
-
-																			{#{% endif %}#}
-                                                                        {% endfor %}
-                                                                {% else %}
-                                                                    {# brands is probably a single object #}
-                                                                    <option value="{{brands.id}}">{{ brands.name }}</option>
-                                                                {% endif %}										
+											{#{% endif %}#}
+										{% endfor %}
+									{% else %}
+										{# brands is probably a single object #}
+										<option value="{{brands.id}}">{{ brands.name }}</option>
+									{% endif %}
 
 
-                                                        </select>
+								</select>
+							</div>
+							<div class="col-md-2">
+								<label for="entry_type">Tipo de ingreso:</label><br />
+								<select id="entry_type" name="entry_type" >
 
-                                                </td>
+									{# evaluates to true if the foo variable is iterable #}
+									{% if entry_types is iterable %}
+										<option value="0">Todos</option>
+										{% for entry in entry_types %}
 
-                                        </tr>
-                                        <tr>
-																					
-                                                <td>
-                                                        <label for="created_from">Ingresada del:</label><br />
-                                                        <input readonly="readonly" id="created_from" name="created_from" type="text" class="form-control" value="{{filter_created_from}}" />									
-                                                </td>								
-                                                <td>
-                                                        <label for="created_to">Ingresada al:</label><br />
-                                                        <input readonly="readonly" id="created_to" name="created_to" type="text" class="form-control" value="{{filter_created_to}}" />									
-                                                </td>
-                                                <td>
-                                                        <label for="filter_dates">Aplicar Fechas:</label><br />
-                                                        <input id="filter_dates" name="filter_dates" type="checkbox" class="form-control" {{ filter_dates == 1 ? 'checked="checked"' : ''  }}  />									
-                                                </td>									
-                                        </tr>
-                                        <tr>
-                                                <td colspan="4" align="left">
-                                                        <button class="btn btn-primary" onclick="$('#pizote_spinner').show();">
-                                                        <i class="fa fa-search"></i>
-                                                        Filtrar
-                                                        </button>									
-                                                </td>
-                                        </tr>
+											{#{% if brand.name  != "Motorola" %}#}
+											{% set selected = entry.id == entry_type ? ' selected="selected" ' : ''%}
+											<option value="{{entry.id}}" {{selected}}>{{ entry.name }}</option>
 
-                                </tbody>
-                        </table>
+											{#{% endif %}#}
+										{% endfor %}
+									{% else %}
+										{# brands is probably a single object #}
+
+									{% endif %}
+								</select>
+							</div>
+
+						</div>
+						<div class="clearfix"></div>
+						<div class="col-md-12">
+							<div class="col-md-2">
+								<label for="created_from">Ingresada del:</label><br />
+								<input readonly="readonly" id="created_from" name="created_from" type="text" class="form-control" value="{{filter_created_from}}" />
+
+							</div>
+							<div class="col-md-3">
+								<label for="created_to">Ingresada al:</label><br />
+								<input readonly="readonly" id="created_to" name="created_to" type="text" class="form-control" value="{{filter_created_to}}" />
+
+							</div>
+							<div class="col-md-3">
+								<label for="filter_dates">Aplicar Fechas:</label><br />
+								<input id="filter_dates" name="filter_dates" type="checkbox" class="form-control" {{ filter_dates == 1 ? 'checked="checked"' : ''  }}  />
+
+							</div>
+
+						</div>
+
+						<div class="clearfix"></div><br/>
+						<div class="col-md-3">
+							<button class="btn btn-primary" onclick="$('#pizote_spinner').show();">
+								<i class="fa fa-search"></i>
+								Filtrar
+							</button>
+						</div>
+
+
 
                 </fieldset>
             </form>
@@ -234,6 +252,7 @@
 						{% for i in 1..7 %}
 							<th>REPUESTO {{ i }}</th>
 							<th>CODIGO DE REPUESTO {{ i }}</th>
+							<th>CANTIDAD DE REPUESTO {{ i }}</th>
 						{% endfor %}
 
 
@@ -306,9 +325,7 @@
 	                    	<td>{{entity.humidity}}</td>
 	                    	<td>{{entity.requisition_number}}</td>
 	                    	<td>{{entity.is_storehouse}}</td>
-							
 
-                    	
                     	<td>{{entity.device_imei}}</td>
 						<td>{{entity.device_imei2}}</td>
 						<td>{{entity.device_imei_out}}</td>
@@ -341,7 +358,9 @@
 							{% if entity.replacements[i] is defined %}
 								<td>{{ entity.replacements[i] }}</td>
 								<td>{{ entity.replacementsCodes[i] }}</td>
+								<td>{{ entity.replacementsQuantity[i] }}</td>
 							{% else %}
+								<td>-</td>
 								<td>-</td>
 								<td>-</td>
 							{% endif %}

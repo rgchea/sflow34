@@ -13,43 +13,13 @@ use Symfony\Component\HttpFoundation\Session\Session;
  */
 class RepairOrderRepository extends \Doctrine\ORM\EntityRepository
 {
-	
-	/*
+
 	public function checkEntryType($code, $type){
 
-		if($type == 1){
-			$sql = "	SELECT 	id
-						FROM	repair_order
-						WHERE	device_imei = '{$code}'
-						AND		enabled = 1";
-			
-		}//phone
-		else{
-			$sql = "	SELECT 	id
-						FROM	repair_order
-						WHERE	device_code_fab = '{$code}'
-						AND		enabled = 1";
-			
-		}
-		
-					 
-		   
-		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-	    $stmt->execute();
-		
-	    $execute = $stmt->fetchAll();		   
 
-		$return = empty($execute) ? "1" : "2";
-		//1 - ingreso
-		//2 - re ingreso
-		return $return;
+	    //RE INCIDENCIA
 
-		
-	}	
-	 * */
-	
-	
-	public function checkEntryType($code, $type){
+        //RE INGRESO
 
 		if($type == 1){
 			$sql = "	SELECT 	ro.id, ro.device_imei, DATE(ro.entry_date) fecha_entrada, rof.fix_detail
@@ -72,24 +42,42 @@ class RepairOrderRepository extends \Doctrine\ORM\EntityRepository
 			
 		}
 
-		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$strFilterReincidencia = " AND DATE(ro.entry_date) > (NOW() - INTERVAL 90 DAY)";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql.$strFilterReincidencia);
 	    $stmt->execute();
-		
-	    $execute = $stmt->fetchAll();
+	    $executeReincidencia = $stmt->fetchAll();
+		$returnReincidencia = empty($executeReincidencia) ? 1 : 3;
 
-		$return = empty($execute) ? 1 : 2;
+        $strFilterReingreso = " AND DATE(ro.entry_date) < (NOW() - INTERVAL 90 DAY)";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql.$strFilterReingreso);
+        $stmt->execute();
+        $executeReingreso = $stmt->fetchAll();
+        $returnReingreso = empty($executeReingreso) ? 1 : 2;
+
 		//1 - ingreso
 		//2 - re ingreso
+        //3 - re incidencia
 		$returnTMP = array();
-		if($return == 1){
+//		var_dump($returnReingreso);
+//        var_dump($returnReincidencia);die;
+
+		if($returnReingreso == 1 && $returnReincidencia == 1){
 			$returnTMP["result"] = 1;
 			//$returnTMP["date"] = $return[0]["fecha_entrada"];
 		}
 		else{
-			$returnTMP["result"] = 2;
+			$returnTMP["result"] = $returnReincidencia == 3 ? 3 : 2;
+
+            if($returnTMP["result"] == 3){
+                $execute = $executeReincidencia;
+            }
+            else{
+                $execute = $executeReingreso;
+            }
 			//$returnTMP["date"] = $execute[0]["fecha_entrada"];
             $returnTMP["count"] = count($execute);
             $returnTMP["imei"] = $execute[0]["device_imei"];
+            $returnTMP["id"] = $execute[0]["id"];
 
             //862654035419168
             $returnTMP["history"] = array();
@@ -939,7 +927,7 @@ class RepairOrderRepository extends \Doctrine\ORM\EntityRepository
 					
 				
 		//rs.name repair_status,
-		$sql = "	SELECT 	r.name, r.replacement_code, r.strdatabase
+		$sql = "	SELECT 	r.name, r.replacement_code, r.strdatabase, ror.quantity
 					FROM	repair_order_device_replacement ror
 						INNER JOIN device_replacement r ON (ror.device_replacement_id = r.id)
 					WHERE	ror.repair_order_id = {$orderID}

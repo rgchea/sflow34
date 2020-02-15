@@ -46,6 +46,8 @@ class RepairOrderReportController extends Controller
         $year_before = $select_year - 2;
         $arrayFilter["year_before"] = $year_before;
 		//$select_status = 1;//Ingresado
+        $arrayFilter["entry_type"] = 0;
+        $entry_type = 0;
 				
 		
 		///filter
@@ -62,6 +64,9 @@ class RepairOrderReportController extends Controller
 			$select_status = $arrayFilter["filter_status"] = $_REQUEST["select_status"];
 			$requestFrom = implode("-", array_reverse(explode("/", $_REQUEST["created_from"])));  
 			$requestTo = implode("-", array_reverse(explode("/", $_REQUEST["created_to"])));
+
+            $entry_type = isset($_REQUEST["entry_type"]) ? intval($_REQUEST["entry_type"]) : 0;
+			$arrayFilter["entry_type"] = $entry_type;
 			
 			$arrayFilter["filter_created_from"] = $requestFrom;
 			
@@ -123,8 +128,10 @@ class RepairOrderReportController extends Controller
 		$repair_status = $em->getRepository('SolucelAdminBundle:RepairStatus')->findAll(); 	
 		
 		//var_dump($arrayFilter);die;
+        $entry_types = $em->getRepository('SolucelAdminBundle:RepairEntryType')->findBy(array("id" => array(2,3)));//reingreso,reincidencia
 		
-		
+		//print "<pre>";
+		//var_dump($arrayFilter);die;
 		$arrReturn = array('arrayFilter' => $arrayFilter,
 							'operators'       => $operators,
 				            'agencies'       => $agencies,
@@ -141,6 +148,8 @@ class RepairOrderReportController extends Controller
 				            'select_status' => $select_status,
                                             'select_year' => $select_year,
                                             'year_before' => $year_before,
+                                            'entry_type' => $entry_type,
+                                            'entry_types' => $entry_types
 							);
 		
 		return $arrReturn;
@@ -767,9 +776,11 @@ class RepairOrderReportController extends Controller
 		
         $em = $this->getDoctrine()->getManager();
 		$user = $session->get('user_logged');
+
 		       
 		$_REQUEST["select_status"] = 0;
-		$arrayReturn = $this->filter($_REQUEST);		
+		$arrayReturn = $this->filter($_REQUEST);
+		///var_dump($arrayReturn);die;
 		
 		if(isset($_REQUEST["submit"])){
 			$entities = $em->getRepository('SolucelAdminBundle:RepairOrderFix')->consolidatedReport($arrayReturn["arrayFilter"]);	
@@ -815,6 +826,8 @@ class RepairOrderReportController extends Controller
             'select_agency' => $select_agency,
             'select_service_center' => $select_service_center,
             'select_status' => $select_status,
+            'entry_type' => $arrayReturn["entry_type"],
+            'entry_types' => $arrayReturn["entry_types"],
             
         ));		
 		

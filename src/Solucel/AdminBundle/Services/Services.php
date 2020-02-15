@@ -262,6 +262,12 @@ class Services extends Controller
 		$request->getSession()->getFlashBag()->add('warning','Tus cambios no fueron guardados, intenta de nuevo!');
 	}
 
+    public function flashWarningCustom($request, $msg){
+
+        $request->getSession()->getFlashBag()->add('warning',$msg);
+    }
+
+
 	public function flashSuccess($request){
 
 		$request->getSession()->getFlashBag()->add('success','Tus cambios fueron guardados!');

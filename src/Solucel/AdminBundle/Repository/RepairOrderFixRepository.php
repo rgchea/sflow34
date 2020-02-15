@@ -13,11 +13,21 @@ class RepairOrderFixRepository extends \Doctrine\ORM\EntityRepository
     
 	public function filter($request){
 
+	    //var_dump($request);die;
+
 		
 		$strFilter  = "";
+
+        if(isset($request["entry_type"]) ){
+
+            if($request["entry_type"] != 0){
+                //print "entra2";die;
+                $strFilter .= " AND repairo.repair_entry_type_id = '".$request["entry_type"]. "' ";
+            }
+        }
 		
 		if(isset($request["filter_dates"]) && $request["filter_dates"] != 0){
-		$strFilter = " AND (DATE(repairo.entry_date) >= '".$request["filter_created_from"]. "'  AND DATE(repairo.entry_date) <= '".$request["filter_created_to"]."')";
+		    $strFilter .= " AND (DATE(repairo.entry_date) >= '".$request["filter_created_from"]. "'  AND DATE(repairo.entry_date) <= '".$request["filter_created_to"]."')";
 		}
 		if(isset($request["filter_operator"]) && $request["filter_operator"] != 0){
 			$strFilter .= " AND operator.id = ".$request["filter_operator"];
@@ -45,7 +55,7 @@ class RepairOrderFixRepository extends \Doctrine\ORM\EntityRepository
 			
 			$strFilter .= " AND rs.name IN ('CAMBIO POR GARANTIA', 'FINALIZADO', 'NO REPARADO/NO CONFIRMADO', 'IRREPARABLE') ";//
 		}
-		
+		//var_dump($strFilter);die;
 		
 		return $strFilter;										
 	}
@@ -691,12 +701,9 @@ class RepairOrderFixRepository extends \Doctrine\ORM\EntityRepository
 					WHERE repairo.enabled = 1
 					{$strFilter}
 					ORDER BY repairo.id";	
-					
-					
-					
-		
-		//print "<pre>";			
-		//print $sql;die;					
+
+		//print "<pre>";
+		//print $sql;die;
 							
 		//
 		//print $sql;die;  
@@ -732,6 +739,7 @@ class RepairOrderFixRepository extends \Doctrine\ORM\EntityRepository
 			//var_dump($repairOrderHistory);die;
 			$value["replacements"] = array();
             $value["replacementsCodes"] = array();
+            $value["replacementsQuantity"] = array();
 			if($replacements){
 				//print "entra replacements";die;
 				//$replacements = $replacements[0];
@@ -740,6 +748,7 @@ class RepairOrderFixRepository extends \Doctrine\ORM\EntityRepository
 					if($replacement){
 						$value["replacements"][] = $replacement["name"];
                         $value["replacementsCodes"][] = $replacement["replacement_code"];
+                        $value["replacementsQuantity"][] = $replacement["quantity"];
                         //$replacement["replacement_code"].",".$replacement["strdatabase"]."; ";
 					}
 					
@@ -1055,7 +1064,8 @@ class RepairOrderFixRepository extends \Doctrine\ORM\EntityRepository
 		$this->getEntityManager()->flush();
 		$this->getEntityManager()->clear();
 
-	    	
+	    //print "<pre>";
+	    //var_dump($arrReturn);die;
 		
 		return $arrReturn;		
 		

@@ -1357,7 +1357,7 @@
 				
 				//$('#repair_order_repairEntryType option:not(:selected)').prop('disabled', false);
 				$("#repair_order_repairEntryType").val(data.result);
-				if(data.result == 2){
+				if(data.result == 2 || data.result == 3){
 					$("#divEntryType").css( "background-color", "yellow" );
 					$("#repair_order_devicePurchaseDate").val(data.entry_date);
 
@@ -1374,8 +1374,7 @@
 
 					//dialogBody
 					//add data to the dialog body
-					$("#dialogBody").html();
-
+					$("#dialogBody").html("");
 
 					for (myHistory in data.history){
 
@@ -1400,6 +1399,17 @@
 					
 				}
 				//$('#repair_order_repairEntryType option:not(:selected)').prop('disabled', true);
+
+
+				///AUTOCOMPLETE FIELDS
+				//console.log(data);
+				$("#repair_order_imei_check").val(data.imei);
+				$("#repair_order_deviceCodeFab").val(data.device_code_fab);
+				$("#repair_order_deviceMsn").val(data.device_msn);
+				$("#repair_order_deviceXcvr").val(data.device_xcvr);
+				$("#repair_order_invoiceNumber").val(data.invoice_number);
+
+
 								
 			}
 		});  		

@@ -1372,7 +1372,7 @@ class RepairOrderFixController extends Controller
 
 		$optionsQuantity = "";
 
-		for ($i=1; $i <= 10; $i++) {
+		for ($i=1; $i <= 50; $i++) {
 			$optionsQuantity .= "<option value='{$i}'>Cantidad = {$i}</option>";
 		}
 

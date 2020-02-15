@@ -77,115 +77,101 @@
 							    </h3>
 							    <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom">
 
-							    	
-							        <p>
-
 										<div class="clearfix"></div>
-				                        <div class="form-group col-sm-1">
-				                            <label for="">Operador</label>
-				                            <input disabled="" value="{{entity.repairOrder.operator.name}}" />
-				                        </div>						
-			
-				                        <div class="form-group col-sm-1">
-				                            <label for="">Agencia</label>
-				                            <input disabled="" value="{{entity.repairOrder.agency.name}}" />
-				                        </div>					
-				                        
-										
-				                        <div class="form-group col-sm-1">
-				                            <label for="">Tipo</label>
-				                            <input disabled="" value="{{entity.repairOrder.deviceType.name}}" />
-				                        </div>						
-			
-				                        <div class="form-group col-sm-1">
-				                            <label for="">Color</label>
-				                            <input disabled="" value="{{entity.repairOrder.deviceColor.name}}" />
-				                        </div>
-										<div class="form-group col-md-1" >&nbsp;</div>
-										<div class="form-group col-sm-1">
-											<label for="">Problema</label>
-											<textarea cols="50" rows="4" disabled="disabled">{{entity.repairOrder.deviceProblem}}</textarea>
+										<div class="col-md-6">
+											<div class="form-group col-md-6">
+												<label for="">Operador</label><br/>
+												<input class="form-control" disabled="" value="{{entity.repairOrder.operator.name}}" />
+											</div>
+											<div class="form-group col-md-6">
+												<label for="">Agencia</label><br/>
+												<input class="form-control" disabled="" value="{{entity.repairOrder.agency.name}}" />
+											</div>
+
+										</div>
+										<div class="col-md-6">
+											<div class="form-group col-md-12">
+												<label for="">Problema</label><br/>
+												<textarea class="form-control"  cols="50" rows="4" disabled="disabled">{{entity.repairOrder.deviceProblem}}</textarea>
+											</div>
+
+										</div>
+										<div class="clearfix"></div>
+										<div class="col-md-6">
+											<div class="form-group col-md-6">
+												<label for="">Tipo</label><br/>
+												<input class="form-control"  disabled="" value="{{entity.repairOrder.deviceType.name}}" />
+											</div>
+
+											<div class="form-group col-md-6">
+												<label for="">Color</label><br/>
+												<input class="form-control"  disabled="" value="{{entity.repairOrder.deviceColor.name}}" />
+											</div>
+											<div class="form-group col-md-6">
+												<label for="">Marca</label><br/>
+												<input class="form-control"  disabled="" value="{{entity.repairOrder.deviceBrand.name}}" />
+											</div>
+											<div class="form-group col-md-6">
+												<label for="">Modelo</label><br/>
+												<input class="form-control"  disabled="" value="{{entity.repairOrder.deviceModel.name}}" />
+											</div>
+
+										</div>
+										<div class="col-md-6">
+											<div class="form-group col-md-12">
+												<label for="">Observaciones</label><br/>
+												<textarea class="form-control"  cols="50" rows="4" disabled="disabled">{{entity.repairOrder.deviceObservation}}</textarea>
+											</div>
+
 										</div>
 
 
-			
+
 										<div class="clearfix"></div>
-				                        <div class="form-group col-sm-1">
-				                            <label for="">Marca</label>
-				                            <input disabled="" value="{{entity.repairOrder.deviceBrand.name}}" />
-				                        </div>		
-				                        <div class="form-group col-sm-1">
-				                            <label for="">Modelo</label>
-				                            <input disabled="" value="{{entity.repairOrder.deviceModel.name}}" />
-				                        </div>
-
-										<div class="form-group col-md-1" >&nbsp;</div>
-										<div class="form-group col-md-1" >&nbsp;</div>
-										<div class="form-group col-md-1" >&nbsp;</div>
-
-										<div class="form-group col-sm-1">
-											<label for="">Observaciones</label>
-											<textarea cols="50" rows="4" disabled="disabled">{{entity.repairOrder.deviceObservation}}</textarea>
+										<div class="col-md-6">
+											<div class="form-group col-md-6" >
+												<label for="">IMEI</label><br/>
+												<input class="form-control"  disabled="" value="{{entity.repairOrder.deviceImei}}" />
+											</div>
+											<div class="form-group col-md-6" >
+												<label for="">Cod Fab</label><br/>
+												<input class="form-control"  disabled="" value="{{entity.repairOrder.deviceCodeFab}}" />
+											</div>
 										</div>
+										<div class="col-md-6">
+											<div class="form-group col-md-12">
+												<label for="">Accesorios</label><br/>
+												<textarea class="form-control"  cols="50" rows="4" disabled="disabled">{{strAccessories}}</textarea>
+											</div>
 
+										</div>
+									<div class="clearfix"></div>
+									<div class="col-md-6">
+										<div class="form-group col-md-6" >
+											<label for="">Tipo de Ingreso</label><br/>
+											<input class="form-control"  disabled="" value="{{entity.repairOrder.repairEntrytype.name}}" />
+										</div>
 										<div class="clearfix"></div>
-				                        <div class="form-group col-md-1" >
-				                            <label for="">IMEI</label>
-				                            <input disabled="" value="{{entity.repairOrder.deviceImei}}" />
-				                        </div>						
-									
-			                        
-				                        <div class="form-group col-md-1" >
-				                            <label for="">Cod Fab</label>
-				                            <input disabled="" value="{{entity.repairOrder.deviceCodeFab}}" />
-				                        </div>
-
-										<div class="form-group col-md-1" >&nbsp;</div>
-										<div class="form-group col-md-1" >&nbsp;</div>
-										<div class="form-group col-md-1" >&nbsp;</div>
-
-										<div class="form-group col-sm-1">
-											<label for="">Accesorios</label>
-											<textarea cols="50" rows="4" disabled="disabled">{{strAccessories}}</textarea>
+										<div class="form-group col-md-6" >
+											<label for="">Fecha de Compra</label><br/>
+											<input class="form-control"  disabled="" value="{{entity.repairOrder.devicePurchaseDate|date('Y-m-d')}}" />
+										</div>
+										<div class="form-group col-md-6" >
+											<label for="">Número Asociado</label><br/>
+											<input class="form-control"  disabled="" value="{{entity.repairOrder.phoneNumber}}" />
 										</div>
 
 
+									</div>
+									<div class="col-md-6">
+										<div class="form-group col-md-12">
+											<label for="">Fallas</label><br/>
+											<textarea  class="form-control"  cols="50" rows="4" disabled="disabled">{{strDefects}}</textarea>
+										</div>
+
+									</div>
 
 									<div class="clearfix"></div>
-
-										<div class="form-group col-sm-1" >
-											<label for="">Tipo de Ingreso</label>
-											<input disabled="" value="{{entity.repairOrder.repairEntrytype.name}}" />
-										</div>
-
-										<div class="form-group col-md-1" >&nbsp;</div>
-										<div class="form-group col-md-1" >&nbsp;</div>
-										<div class="form-group col-md-1" >&nbsp;</div>
-										<div class="form-group col-md-1" >&nbsp;</div>
-
-										<div class="form-group col-sm-1">
-											<label for="">Fallas</label>
-											<textarea cols="50" rows="4" disabled="disabled">{{strDefects}}</textarea>
-										</div>
-
-
-									<div class="clearfix"></div>
-				                        
-				                        <div class="form-group col-sm-1" >
-				                            <label for="">Fecha de Compra</label>
-				                            <input disabled="" value="{{entity.repairOrder.devicePurchaseDate|date('Y-m-d')}}" />
-				                        </div>						
-									
-			                        
-				                        <div class="form-group col-sm-1" >
-				                            <label for="">Número Asociado</label>
-				                            <input disabled="" value="{{entity.repairOrder.phoneNumber}}" />
-				                        </div>			
-				                        	
-				                        				                        	
-		
-
-										
 
 										<div class="clearfix"></div>
 										<br>
@@ -196,7 +182,7 @@
 											  
 										    </div>
 										</div>				                        		  							        	
-							        </p>
+
 							    </div>
 								<h3 class="accordion-header ui-accordion-header ui-helper-reset ui-state-default ui-accordion-icons ui-corner-all">
 							        <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"></span>
