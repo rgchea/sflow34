@@ -179,4 +179,33 @@ class Agency
     {
         return $this->operator;
     }
+    /**
+     * @var \Solucel\AdminBundle\Entity\User
+     */
+    private $updatedBy;
+
+
+    /**
+     * Set updatedBy
+     *
+     * @param \Solucel\AdminBundle\Entity\User $updatedBy
+     *
+     * @return Agency
+     */
+    public function setUpdatedBy(\Solucel\AdminBundle\Entity\User $updatedBy = null)
+    {
+        $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedBy
+     *
+     * @return \Solucel\AdminBundle\Entity\User
+     */
+    public function getUpdatedBy()
+    {
+        return $this->updatedBy;
+    }
 }

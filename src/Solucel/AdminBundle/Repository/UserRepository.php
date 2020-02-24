@@ -174,12 +174,12 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         );
     }
 	
-	public function getUserFilters($userID, $serviceID){
+	public function getUserFilters($userID, $levelID){
 		//die;
 		
 		$strFilter = "";
-		if($serviceID != 0){
-			$strFilter = " AND sc.id = $serviceID";
+		if($levelID != 0){
+			$strFilter = " AND sc.id = $levelID";
 		}
 		
 		
@@ -208,6 +208,160 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
 		
 		
 	}
-	
+
+
+	public function myFilter($filterOperator, $filterBrand){
+
+        $strFilter = "";
+
+        if($filterOperator != 0){
+            $strFilter .= " AND ro.operator_id =  {$filterOperator} ";
+        }
+        if($filterBrand != 0){
+            $strFilter .= " AND ro.device_brand_id =  {$filterBrand} ";
+        }
+
+        return $strFilter;
+    }
+
+    public function getTopByOrders($from, $to, $filterOperator, $filterBrand){
+
+        $strFilter = $this->myFilter($filterOperator, $filterBrand);
+
+        $sql = "    SELECT COUNT(DISTINCT(ro.id)) orders, u.id tech_id, u.username tech_name
+                    FROM	repair_order ro
+                        INNER JOIN repair_order_fix rof ON(ro.id = rof.repair_order_id)
+                        INNER JOIN user u ON(rof.assigned_to = u.id)
+                        INNER JOIN repair_order_status ros ON(ros.repair_order_id = ro.id 
+                            AND ros.repair_status_id = 10)	
+                    WHERE	u.role_id = 7
+                    AND     (DATE(ro.created_at) >= '{$from}' AND DATE(ro.created_at) <= '{$to}')
+                    {$strFilter}
+                    GROUP BY u.id
+                    ORDER BY orders DESC 
+                    LIMIT 30";
+
+        //print $sql;die;
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $execute = $stmt->fetchAll();
+
+        if(!empty($execute)){
+            return $execute;
+        }
+        else{
+            return array();
+        }
+
+
+    }
+
+
+
+    public function getOrdersByLevel($from, $to, $arrTechs, $filterOperator, $filterBrand){
+
+        $strFilter = $this->myFilter($filterOperator, $filterBrand);
+
+        if(!empty($arrTechs)){
+
+            $strTechs = implode(",", $arrTechs);
+
+            $sql = "SELECT	COUNT(ro.id) orders, u.id tech_id, u.username tech_name, 
+                                 CONCAT('Nivel ', dfl.name) level_name, dfl.id level_id
+                    FROM	repair_order ro
+                        INNER JOIN repair_order_status ros ON(ros.repair_order_id = ro.id 
+                            AND ros.repair_status_id = 10)      
+                        INNER JOIN repair_order_fix rof ON(ro.id = rof.repair_order_id)
+                        INNER JOIN user u ON(rof.assigned_to = u.id)
+                                          
+                        INNER JOIN repair_order_device_fix_type rft ON (ro.id = rft.repair_order_id)
+                        INNER JOIN device_fix_type dft ON(dft.id = rft.device_fix_type_id)
+                        INNER JOIN device_fix_level dfl ON(dfl.id = dft.device_fix_level_id)
+                    WHERE       u.id IN($strTechs)
+                    AND         (DATE(ro.created_at) >= '{$from}' AND DATE(ro.created_at) <= '{$to}')
+                    {$strFilter}
+                    GROUP BY u.id, dfl.id
+                    ORDER BY u.id, dfl.name, orders DESC
+
+            ";
+
+
+            //print $sql;die;
+
+            $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+            $stmt->execute();
+
+            $execute = $stmt->fetchAll();
+
+            if(!empty($execute)){
+
+                $arrGroupTechs = array();
+
+                foreach ($execute as $row){
+                    $techID = $row["tech_id"];
+
+                    if(!isset($arrGroupTechs[$techID])){
+                        $arrGroupTechs[$techID] = array();
+                        //$arrGroupTechs[$techID]["dealer"] = $row["tech_name"];
+
+                    }
+
+                    $levelID = intval($row["level_id"]);
+                    $arrGroupTechs[$techID][$levelID] = array('tech'=> $row["tech_name"], 'name' => $row["level_name"], 'count' => intval($row["orders"]) );
+
+                }
+                //print "<pre>";
+                //var_dump($arrGroupTechs);die;
+
+                return $arrGroupTechs;
+
+            }
+            else{
+                return array();
+            }
+        }
+        else{
+            return array();
+        }
+
+    }
+
+
+
+
+    public function getTopByRelapseOrders($from, $to, $filterOperator, $filterBrand){
+
+        $strFilter = $this->myFilter($filterOperator, $filterBrand);
+
+        $sql = "    SELECT 	COUNT(DISTINCT(ro.id)) myCount,u.username, u.id user_id
+                    FROM	repair_order ro
+                        INNER JOIN repair_order_fix rof ON (rof.repair_order_id = ro.relapse_repair_order_id)
+                        INNER JOIN user u ON(u.id = rof.assigned_to)
+                    WHERE   ro.repair_entry_type_id = 3
+                    AND     (DATE(ro.created_at) >= '{$from}' AND DATE(ro.created_at) <= '{$to}')
+                    {$strFilter}
+                    GROUP BY u.id
+                    ORDER BY myCount DESC
+                    LIMIT 30;";
+
+        //print $sql;die;
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $execute = $stmt->fetchAll();
+
+        if(!empty($execute)){
+            return $execute;
+        }
+        else{
+            return array();
+        }
+
+
+    }
+    
 		
 }

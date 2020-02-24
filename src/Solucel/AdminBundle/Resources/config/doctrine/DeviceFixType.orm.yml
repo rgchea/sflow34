@@ -8,6 +8,10 @@ Solucel\AdminBundle\Entity\DeviceFixType:
         transaction_code_id:
             columns:
                 - transaction_code_id
+        device_brand_id:
+            columns:
+                - device_brand_id
+
 
     id:
         id:
@@ -31,6 +35,16 @@ Solucel\AdminBundle\Entity\DeviceFixType:
             length: 65535
             options:
                 fixed: false
+
+        price:
+            type: float
+            nullable: false
+            precision: 10
+            scale: 2
+            options:
+                comment: 'Costo'
+                default: 0.00
+
     manyToOne:
         deviceFixLevel:
             targetEntity: DeviceFixLevel
@@ -54,6 +68,18 @@ Solucel\AdminBundle\Entity\DeviceFixType:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: true
+        deviceBrand:
+            targetEntity: DeviceBrand
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                device_brand_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
 
 
     lifecycleCallbacks: {  }

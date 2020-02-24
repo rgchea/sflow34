@@ -29,4 +29,11 @@ Solucel\AdminBundle\Entity\DeviceBrand:
             nullable: false
             options:
                 default: true
+        repairmentEstimatedHour:
+            type: integer
+            nullable: false
+            options:
+                fixed: false
+                default: 0
+
     lifecycleCallbacks: {  }

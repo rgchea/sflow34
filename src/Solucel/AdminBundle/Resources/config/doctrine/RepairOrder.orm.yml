@@ -40,7 +40,10 @@ Solucel\AdminBundle\Entity\RepairOrder:
             columns:
                 - payer_id
                           
-                
+        relapse_repair_order_id:
+            columns:
+                - relapse_repair_order_id
+
     id:
         id:
             type: integer
@@ -76,8 +79,7 @@ Solucel\AdminBundle\Entity\RepairOrder:
                 fixed: false
                 default: 
             column: phone_number
-            
-            
+
         deviceChangeImei:
             type: string
             nullable: true
@@ -196,7 +198,7 @@ Solucel\AdminBundle\Entity\RepairOrder:
             scale: 2
             options:
                 comment: 'Datos Unidades con Costo'
-                default: '0.00'
+                default: 0.00
         deposit:
             type: string
             nullable: false
@@ -473,6 +475,19 @@ Solucel\AdminBundle\Entity\RepairOrder:
                 payer_id:
                     referencedColumnName: id
                     onDelete: CASCADE
-            orphanRemoval: true            
-                   
+            orphanRemoval: true
+
+        relapseRepairOrder:
+            targetEntity: RepairOrder
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                relapse_repair_order_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+
     lifecycleCallbacks: {  }

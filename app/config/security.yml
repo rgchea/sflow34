@@ -27,6 +27,7 @@ security:
                 default_target_path: solucel_admin_homepage
             logout:
                 path: fos_user_security_logout
+                handlers: [solucel_logoutlistener]
                 target: solucel_admin_homepage
             anonymous:    true
             remember_me:

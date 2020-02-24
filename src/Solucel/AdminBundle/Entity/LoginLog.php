@@ -3,9 +3,9 @@
 namespace Solucel\AdminBundle\Entity;
 
 /**
- * RepairLog
+ * LoginLog
  */
-class RepairLog
+class LoginLog
 {
     /**
      * @var integer
@@ -18,24 +18,14 @@ class RepairLog
     private $action = '';
 
     /**
-     * @var string
-     */
-    private $description = 'N/A';
-
-    /**
      * @var \DateTime
      */
-    private $createdAt;
+    private $createdAt = '2001-01-01 00:00:00';
 
     /**
      * @var \Solucel\AdminBundle\Entity\User
      */
     private $user;
-
-    /**
-     * @var \Solucel\AdminBundle\Entity\RepairOrder
-     */
-    private $repairOrder;
 
 
     /**
@@ -53,7 +43,7 @@ class RepairLog
      *
      * @param string $action
      *
-     * @return RepairLog
+     * @return LoginLog
      */
     public function setAction($action)
     {
@@ -73,35 +63,11 @@ class RepairLog
     }
 
     /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return RepairLog
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
      *
-     * @return RepairLog
+     * @return LoginLog
      */
     public function setCreatedAt($createdAt)
     {
@@ -125,7 +91,7 @@ class RepairLog
      *
      * @param \Solucel\AdminBundle\Entity\User $user
      *
-     * @return RepairLog
+     * @return LoginLog
      */
     public function setUser(\Solucel\AdminBundle\Entity\User $user = null)
     {
@@ -142,29 +108,5 @@ class RepairLog
     public function getUser()
     {
         return $this->user;
-    }
-
-    /**
-     * Set repairOrder
-     *
-     * @param \Solucel\AdminBundle\Entity\RepairOrder $repairOrder
-     *
-     * @return RepairLog
-     */
-    public function setRepairOrder(\Solucel\AdminBundle\Entity\RepairOrder $repairOrder = null)
-    {
-        $this->repairOrder = $repairOrder;
-
-        return $this;
-    }
-
-    /**
-     * Get repairOrder
-     *
-     * @return \Solucel\AdminBundle\Entity\RepairOrder
-     */
-    public function getRepairOrder()
-    {
-        return $this->repairOrder;
     }
 }

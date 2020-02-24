@@ -1,0 +1,18 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+{{ parent() }}
+<li> <a href="{{ path('solucel_admin_adminsetting_index') }}">Ajustes de Adminstrador</a> </li>
+<li> <a href="{{ path('solucel_admin_adminsetting_edit', { 'id': entity.id }) }}">Editar Ajustes</a> </li>
+{% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:AdminSetting:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+    
+    
+
+{% endblock %}

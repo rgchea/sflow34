@@ -474,8 +474,7 @@ class RepairOrderReportController extends Controller
 
 		$this->get("services")->setVars('responseTime');
     	$session = new Session();
-    	
-		
+
         $em = $this->getDoctrine()->getManager();
 		$user = $session->get('user_logged');
 		   
@@ -1228,5 +1227,7 @@ class RepairOrderReportController extends Controller
 	
 		
 	}
+
+
 
 }

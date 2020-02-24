@@ -1,0 +1,20 @@
+
+system_log_login_list_datatables:
+  path: /log/list/datatables
+  defaults:
+    _controller: SolucelAdminBundle:LoginLog:listDatatables
+
+system_log_login_list:
+  path: /log/list
+  defaults:
+    _controller: SolucelAdminBundle:LoginLog:list
+
+system_log_timelog_list_datatables:
+  path: /timelog/list/datatables
+  defaults:
+    _controller: SolucelAdminBundle:TimeLog:listDatatables
+
+system_log_timelog_list:
+  path: /timelog/list
+  defaults:
+    _controller: SolucelAdminBundle:TimeLog:list

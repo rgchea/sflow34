@@ -40,7 +40,7 @@ class ModuleAccessRepository extends \Doctrine\ORM\EntityRepository
 						FROM 	module_access ma
 							INNER JOIN 	module m ON (ma.module_id = m.id)
 						WHERE 	ma.role_id = '{$roleID}'
-						ORDER BY m.menu_order, m.id";					
+						ORDER BY m.name, m.menu_order, m.id";
 			
 		}
 		else{

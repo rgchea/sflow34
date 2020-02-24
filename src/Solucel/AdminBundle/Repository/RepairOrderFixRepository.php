@@ -264,20 +264,17 @@ class RepairOrderFixRepository extends \Doctrine\ORM\EntityRepository
 		//DATEDIFF(CURDATE(), '2015-04-18').
 		
 		$strFilter = "";
-		if(isset($request["filter_operator"]) && $request["filter_operator"] != 0){
-			$strFilter .= " AND operator.id = ".$request["filter_operator"];
+		if(isset($request["filter_operator"])){
+		    if($request["filter_operator"] != 0){
+                $strFilter .= " AND operator.id = ".$request["filter_operator"];
+            }
 		}
 		
-		if(isset($request["filter_brand"]) && $request["filter_brand"] != 0){
-			$strFilter .= " AND brand.id = ".$request["filter_brand"];
-		}
-		
-		if(isset($request["filter_agency"]) && $request["filter_agency"] != 0){
-			$strFilter .= " AND agency.id = ".$request["filter_agency"];
-		}
-		if(isset($request["filter_service_center"]) && $request["filter_service_center"] != 0){
-			$strFilter .= " AND service.id = ".$request["filter_service_center"];
-		}						
+		if(isset($request["filter_brand"]) ){
+		    if($request["filter_brand"] != 0){
+                $strFilter .= " AND brand.id = ".$request["filter_brand"];
+            }
+        }
 				
 		//default ordenes en estado ingreso
 		//ros.repair_status_id order_status
@@ -345,6 +342,7 @@ class RepairOrderFixRepository extends \Doctrine\ORM\EntityRepository
         return $arrReturn;		
 		
 	}
+
 	
 	
 
@@ -1080,31 +1078,34 @@ class RepairOrderFixRepository extends \Doctrine\ORM\EntityRepository
 		//default ordenes en estado ingreso
 		//ros.repair_status_id order_status
 		//rs.name repair_status,
-		
-		
+
+
 		$arrReturn = array();
 		
 		//status 10 finalizado,11 entregado,13 listo para entrega
-		
-		$sql = "	SELECT 	SUM(rof.fixing_price) total, service.id, service.name service
 
-					FROM repair_order repairo
-						INNER JOIN device_brand brand ON (brand.id = repairo.device_brand_id)
+        $sql = "    SELECT SUM(dft.price) brandTotal, brand.name brand
+                    FROM repair_order repairo
+                        INNER JOIN repair_order_device_fix_type rft ON (rft.repair_order_id = repairo.id)
+                        INNER JOIN device_fix_type dft ON (rft.device_fix_type_id = dft.id)
+                        INNER JOIN device_brand brand ON (dft.device_brand_id = brand.id)
+                        
 						INNER JOIN device_model model ON (model.id = repairo.device_model_id)
 						INNER JOIN service_center service ON (repairo.service_center_id = service.id) 
 						INNER JOIN operator ON (repairo.operator_id = operator.id)
 						INNER JOIN agency ON (repairo.agency_id = agency.id)
-						
-						INNER JOIN repair_order_fix rof ON (repairo.id = rof.repair_order_id)
-						
-					WHERE 	repairo.enabled = 1
-					AND 	repairo.repair_status_id IN(10,11,13)
-					AND		rof.has_warranty = 0
-					{$strFilter}
-					GROUP BY service.id, service.name
-					ORDER BY service.name";
+                        
+                        
+                    WHERE 	repairo.enabled = 1
+                    AND 	repairo.repair_status_id IN(10,11,13)
+                    
+                    {$strFilter}
+                    GROUP BY brand.id
+                    ORDER BY brand.id";
+
+
 					
-		//print $sql;die;					
+		//print $sql;die;
 			///print $strFilter;die;	
 		//print $sql;die;  
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
@@ -1114,7 +1115,7 @@ class RepairOrderFixRepository extends \Doctrine\ORM\EntityRepository
 			
 		
 		//print "<pre>";
-		//var_dump($arrReturn);die;
+		//var_dump($execute);die;
 		
 		return $execute;
 		

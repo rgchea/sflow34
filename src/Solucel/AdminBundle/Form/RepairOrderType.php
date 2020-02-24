@@ -212,7 +212,8 @@ class RepairOrderType extends AbstractType
             'data_class' => 'Solucel\AdminBundle\Entity\RepairOrder',
             'center' => null,
             'brand' => null,
-            'operator' => null            
+            'operator' => null,
+            'allow_extra_fields' => true
         ));
     }
 }

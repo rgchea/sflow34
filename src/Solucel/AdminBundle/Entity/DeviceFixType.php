@@ -142,4 +142,62 @@ class DeviceFixType
     {
         return $this->transactionCode;
     }
+    /**
+     * @var float
+     */
+    private $price = 0.0;
+
+    /**
+     * @var \Solucel\AdminBundle\Entity\DeviceBrand
+     */
+    private $deviceBrand;
+
+
+    /**
+     * Set price
+     *
+     * @param float $price
+     *
+     * @return DeviceFixType
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return float
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * Set deviceBrand
+     *
+     * @param \Solucel\AdminBundle\Entity\DeviceBrand $deviceBrand
+     *
+     * @return DeviceFixType
+     */
+    public function setDeviceBrand(\Solucel\AdminBundle\Entity\DeviceBrand $deviceBrand = null)
+    {
+        $this->deviceBrand = $deviceBrand;
+
+        return $this;
+    }
+
+    /**
+     * Get deviceBrand
+     *
+     * @return \Solucel\AdminBundle\Entity\DeviceBrand
+     */
+    public function getDeviceBrand()
+    {
+        return $this->deviceBrand;
+    }
 }

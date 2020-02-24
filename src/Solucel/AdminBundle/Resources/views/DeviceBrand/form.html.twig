@@ -47,7 +47,15 @@
                             ) }}
                         </div>	
 
-                        <div class="clearfix"></div>	                        
+                        <div class="clearfix"></div>
+							<div class="form-group col-md-6">
+								{{ form_label(form.repairmentEstimatedHour) }}
+								{{ form_errors(form.repairmentEstimatedHour) }}
+								{{ form_widget(form.repairmentEstimatedHour, { 'attr': {'class' : 'form-control' } }
+								) }}
+							</div>
+
+							<div class="clearfix"></div>
                         <div class="form-group col-md-12">
                             {{ form_label(form.enabled) }}
                             {{ form_errors(form.enabled) }}

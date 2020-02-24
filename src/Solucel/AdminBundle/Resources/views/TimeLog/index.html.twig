@@ -1,0 +1,284 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li> <a href="{{ path('system_log_timelog_list') }}">Tiempos en Flujo del Sistema</a> </li>
+{% endblock %}
+
+{% block title %}
+    Log list
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/jquery.dataTables-cust.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ColReorder.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/FixedColumns.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ColVis.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/ZeroClipboard.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/media/js/TableTools.min.js') }}"></script>
+    <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/DT_bootstrap.js') }}"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+
+    <style>
+        .dataTables_filter {
+            display: none;
+        }
+
+        /* Move tfood in the upper part of the table */
+        tfoot {
+            display: table-header-group;
+        }
+
+        .box
+        {
+            width:1270px;
+            padding:20px;
+            background-color:#fff;
+            border:1px solid #ccc;
+            border-radius:5px;
+            margin-top:25px;
+        }
+
+    </style>
+
+
+{% endblock %}
+
+
+{% block body -%}
+    {{ parent() }}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+
+        </div>
+
+    </div>
+
+    <div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+        <header>
+            <h2> Tiempos en Flujo</h2>
+        </header>
+
+        <!-- widget div-->
+        <div>
+
+            <!-- widget edit box -->
+            <div class="jarviswidget-editbox">
+                <!-- This area used as dropdown edit box -->
+
+            </div>
+
+            <!-- end widget edit box -->
+
+            <!-- widget content -->
+            <div class="widget-body no-padding">
+
+                <div class="widget-body-toolbar">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Fecha</label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="input-daterange">
+                            <div class="col-md-4">
+                                <input type="text" name="start_date" id="start_date" class="form-control myDate" />
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="end_date" id="end_date" class="form-control myDate" />
+                            </div>
+                        </div>
+                        {#
+                        <div class="col-md-4">
+                            <input type="button" name="search" id="search" value="Search" class="btn btn-info" />
+                        </div>
+    
+                        #}
+                    </div>
+                </div>
+
+                <table id="dt_table" class="table table-striped table-bordered table-hover">
+                    <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Acción</th>
+                        <th>Orden/Boleta</th>
+                        <th>Minutos</th>
+                        <th></th>
+
+
+                    </tr>
+                    </tfoot>
+                    <thead>
+                    <tr>
+                        {# sorting of properties based on query components #}
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Acción</th>
+                        <th>Orden/Boleta</th>
+                        <th>Minutos</th>
+                        <th>Fecha</th>
+
+
+                    </tr>
+
+                    </thead>
+                    <tbody></tbody>
+
+                </table>
+                {# display navigation #}
+
+            </div>
+            <!-- end widget content -->
+
+
+
+        </div>
+        <!-- end widget div -->
+    </div>
+
+    <script type="text/javascript">
+
+        var table;
+
+        function fetchData(){
+
+            table  = $('#dt_table').DataTable({
+                "columnDefs": [
+
+                    // These are the column name variables that will be sent to the server
+                    { "name": "id",   "targets": 0 },
+                    { "name": "username",   "targets": 1 },
+                    { "name": "action",  "targets": 2 },
+                    { "name": "repairOrder",  "targets": 3 },
+                    { "name": "logTime",  "targets": 4 },
+                    { "name": "created_at",  "targets": 5 },
+
+                ],
+                // Server-side parameters
+                "processing": true,
+                "serverSide": true,
+                // Ajax call
+                "ajax": {
+                    "url": "{{ path('system_log_timelog_list_datatables') }}",
+                    "type": "POST",
+                    data   : function( d ) {
+                        d.start_date= $('#start_date').val();
+                        d.end_date= $('#end_date').val();
+
+                    },
+                    //"dataSrc": ""
+                    //data: {start_date:$('#start_date').val(), end_date:$('#end_date').val()},
+                },
+                // Classic DataTables parameters
+                "paging" : true,
+                "info" : true,
+                "searching": true,
+                "pageLength": 100,
+                "order": [[0, 'desc']]
+            });
+
+        }
+
+        $(document).ready(function(){
+
+            // Add a text input to each footer cell
+            var pos = 1;
+            $('#dt_table tfoot th').each( function () {
+                var title = $(this).text();
+
+                    $(this).html( "<input id='input" + pos + "' type='text' class='form-control' style='font-family:Arial, FontAwesome; width:100%'/>" );
+
+
+                pos ++;
+            });
+
+
+            fetchData();
+
+            // Apply the search
+            pos = 1;
+            table.columns().every( function () {
+                var that = this;
+
+                $("#input"+pos).on( 'keyup change', function () {
+                    if ( that.search() !== this.value )
+                    {
+                        that.search( this.value ).draw();
+                    }
+                });
+                pos++;
+            });
+
+            //Apply DATES SEARCH
+            /*
+            $(".myDate").on( 'keyup change', function () {
+                table.search( this.value ).draw();
+            });
+            */
+
+
+            ///////SEARCH BETWEEN DATES
+            $('.input-daterange').datepicker({
+                todayBtn:'linked',
+                format: "yyyy-mm-dd",
+                autoclose: true
+            });
+
+            //fetch_data('no');
+
+
+            $('.myDate').change(function(){
+                var start_date = $('#start_date').val();
+                var end_date = $('#end_date').val();
+                if(start_date != '' && end_date !='')
+                {
+                    table.ajax.reload()
+
+                }
+                else
+                {
+                    alert("Ambos campos de la fecha son requeridos");
+                }
+            });
+
+            //remove search items
+            $("#input5").remove();
+            $("#input6").remove();
+
+        });
+
+    </script>
+
+
+{% endblock %}
+
+
+{% block extrascripts %}
+
+
+    jQuery.ajax({ async: false});
+
+
+
+    $(document).on('click', '.btn-delete', function(e){
+    e.preventDefault();
+
+    var url = $(this).attr('href');
+    var c = confirm('¿Está seguro?');
+
+    if(c){
+    $('#spinner').show();
+    window.location = url;
+    }else{
+    return false;
+    }
+
+
+    });
+
+{% endblock %}

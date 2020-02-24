@@ -20,6 +20,8 @@ class DeviceFixTypeType extends AbstractType
             ->add('description',  TextareaType::class, array('label'=>"Descripción", 'required'=>false))
             ->add('deviceFixLevel', null, array('label'=>"Nivel de Reparación", 'required'=>true))
             ->add('transactionCode', null, array('label'=>"Transaction Code", 'required'=>true))
+            ->add('deviceBrand',  null, array('label'=>"Marca", 'required'=>true))
+            ->add('price',  null, array('label'=>"Costo", 'required'=>true))
         ;
     }
     

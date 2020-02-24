@@ -1,0 +1,3 @@
+solucel_admin_graph_index:
+  path:     /
+  defaults: { _controller: "SolucelAdminBundle:Graph:index" }

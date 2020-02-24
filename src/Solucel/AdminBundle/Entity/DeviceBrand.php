@@ -115,4 +115,63 @@ class DeviceBrand
 	public function __toString(){
 		return $this->getName();
 	}	
+
+    /**
+     * @var integer
+     */
+    private $repairmentEstimatedHour = 0;
+
+
+    /**
+     * Set repairmentEstimatedHour
+     *
+     * @param integer $repairmentEstimatedHour
+     *
+     * @return DeviceBrand
+     */
+    public function setRepairmentEstimatedHour($repairmentEstimatedHour)
+    {
+        $this->repairmentEstimatedHour = $repairmentEstimatedHour;
+
+        return $this;
+    }
+
+    /**
+     * Get repairmentEstimatedHour
+     *
+     * @return integer
+     */
+    public function getRepairmentEstimatedHour()
+    {
+        return $this->repairmentEstimatedHour;
+    }
+    /**
+     * @var integer
+     */
+    private $entryEstimatedTime = 0;
+
+
+    /**
+     * Set entryEstimatedTime
+     *
+     * @param integer $entryEstimatedTime
+     *
+     * @return DeviceBrand
+     */
+    public function setEntryEstimatedTime($entryEstimatedTime)
+    {
+        $this->entryEstimatedTime = $entryEstimatedTime;
+
+        return $this;
+    }
+
+    /**
+     * Get entryEstimatedTime
+     *
+     * @return integer
+     */
+    public function getEntryEstimatedTime()
+    {
+        return $this->entryEstimatedTime;
+    }
 }

@@ -20,9 +20,9 @@ class RepairOrderRepository extends \Doctrine\ORM\EntityRepository
 	    //RE INCIDENCIA
 
         //RE INGRESO
-
 		if($type == 1){
-			$sql = "	SELECT 	ro.id, ro.device_imei, DATE(ro.entry_date) fecha_entrada, rof.fix_detail
+			$sql = "	SELECT 	ro.id, ro.device_imei, DATE(ro.entry_date) fecha_entrada, 
+	                            DATE_FORMAT(ro.device_purchase_date, '%d/%m/%Y') device_purchase_date, rof.fix_detail
 						FROM	repair_order ro
 						    LEFT JOIN repair_order_fix rof ON (rof.repair_order_id = ro.id)
 						WHERE	ro.device_imei = '{$code}'
@@ -32,7 +32,8 @@ class RepairOrderRepository extends \Doctrine\ORM\EntityRepository
 			
 		}//phone
 		else{
-			$sql = "	SELECT 	ro.id, ro.device_imei, DATE(ro.entry_date) fecha_entrada, rof.fix_detail
+			$sql = "	SELECT 	ro.id, ro.device_imei, DATE(ro.entry_date) fecha_entrada, 
+	                            DATE_FORMAT(ro.device_purchase_date, '%d/%m/%Y') device_purchase_date, rof.fix_detail
 						FROM	repair_order ro
 						    LEFT JOIN repair_order_fix rof ON (rof.repair_order_id = ro.id)
 						WHERE	ro.device_code_fab = '{$code}'
@@ -78,6 +79,7 @@ class RepairOrderRepository extends \Doctrine\ORM\EntityRepository
             $returnTMP["count"] = count($execute);
             $returnTMP["imei"] = $execute[0]["device_imei"];
             $returnTMP["id"] = $execute[0]["id"];
+            $returnTMP["device_purchase_date"] = $execute[0]["device_purchase_date"];
 
             //862654035419168
             $returnTMP["history"] = array();
@@ -647,6 +649,20 @@ class RepairOrderRepository extends \Doctrine\ORM\EntityRepository
 		}
 		
 	}
+
+    public function myFilter($filterOperator, $filterBrand){
+
+        $strFilter = "";
+
+        if($filterOperator != 0){
+            $strFilter .= " AND ro.operator_id =  {$filterOperator} ";
+        }
+        if($filterBrand != 0){
+            $strFilter .= " AND ro.device_brand_id =  {$filterBrand} ";
+        }
+
+        return $strFilter;
+    }
 	
 	public function getOrderStatus($orderID){
 		
@@ -1377,6 +1393,247 @@ class RepairOrderRepository extends \Doctrine\ORM\EntityRepository
 		return $execute;	
 		
 	}
-	 
+
+
+
+
+    public function getCountByStatus($from, $to, $filterOperator, $filterBrand){
+
+        $strFilter = $this->myFilter($filterOperator, $filterBrand);
+
+        $sql = "    SELECT	COUNT(ro.id) myCount, rs.name
+                    FROM	repair_order ro
+	                    INNER JOIN repair_status rs ON (ro.repair_status_id = rs.id)
+                    WHERE         (DATE(ro.created_at) >= '{$from}' AND DATE(ro.created_at) <= '{$to}')
+                    {$strFilter}
+                    GROUP BY rs.id
+                    ORDER BY myCount DESC";
+
+        //print $sql;die;
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $execute = $stmt->fetchAll();
+
+        if(!empty($execute)){
+            return $execute;
+        }
+        else{
+            return array();
+        }
+
+
+    }
+
+
+    public function getRelapseByYear($filterOperator, $filterBrand){
+
+        $strFilter = $this->myFilter($filterOperator, $filterBrand);
+
+        $currentYear = date("Y");
+        $start = $currentYear."-01-01";
+        $end = ($currentYear+1)."-01-01";
+
+        $sqlRelapse = "     SELECT  COUNT(ro.id) quantity, MONTH(ro.created_at) myMonth
+                            FROM    repair_order ro
+                            WHERE   ro.repair_entry_type_id = 3
+                            AND     DATE(ro.created_at) >= '{$start}' 
+                            AND     DATE(ro.created_at) < '{$end}' 
+                            {$strFilter}
+                            GROUP BY MONTH(ro.created_at)
+                            ORDER BY MONTH(ro.created_at)                    
+                       
+                        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sqlRelapse);
+        $stmt->execute();
+
+        $executeRelapse = $stmt->fetchAll();
+
+        $sql = "     SELECT  COUNT(ro.id) quantity, MONTH(ro.created_at) myMonth
+                            FROM    repair_order ro
+                            WHERE   1=1
+                            AND     DATE(ro.created_at) >= '{$start}' 
+                            AND     DATE(ro.created_at) < '{$end}' 
+                            {$strFilter}
+                            GROUP BY MONTH(ro.created_at)
+                            ORDER BY MONTH(ro.created_at)                    
+                       
+                        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $execute = $stmt->fetchAll();
+
+        $arrLines = array("quantity", "percentage");
+
+        $myArray = array();
+
+        foreach ($arrLines as $line){
+            for ($i = 1 ; $i <= 12; $i++){
+                $myArray[$line][$i] = 0;
+            }
+        }
+
+        //ALL ORDERS
+        foreach ($execute as $row) {
+            $myArray["quantity"][intval($row["myMonth"])] = intval($row["quantity"]);
+        }
+
+        //print "<pre>";
+        //var_dump($myArray);die;
+
+        //RELPASE ORDERS
+        foreach ($executeRelapse as $row) {
+            $relapseQuantity = intval($row["quantity"]);
+            $myMonth = intval($row["myMonth"]);
+
+            $ordersQuantity = $myArray["quantity"][$myMonth];
+            $percentage = ($relapseQuantity*100) / $ordersQuantity;
+
+            $myArray["percentage"][$myMonth] = $percentage;
+        }
+        //ALL ORDERS
+        foreach ($executeRelapse as $row) {
+            $myArray["quantity"][intval($row["myMonth"])] = intval($row["quantity"]);
+        }
+
+        //print "<pre>";
+        //var_dump($myArray);die;
+
+        return $myArray;
+    }
+
+    //getPercentageByLevel
+
+    public function getPercentageByLevel($from, $to, $filterOperator, $filterBrand){
+
+        $strFilter = $this->myFilter($filterOperator, $filterBrand);
+
+
+        $sqlTotal = "    SELECT	COUNT(DISTINCT(ro.id)) myCount
+                         FROM	repair_order ro
+                         WHERE         (DATE(ro.created_at) >= '{$from}' AND DATE(ro.created_at) <= '{$to}')
+                         {$strFilter}";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sqlTotal);
+        $stmt->execute();
+
+        $execute = $stmt->fetchAll();
+
+        $myTotal = intval($execute[0]["myCount"]);
+
+
+        $sql = "    SELECT	COUNT(ro.id) myCount, rs.name
+                    FROM	repair_order ro
+	                    INNER JOIN repair_status rs ON (ro.repair_status_id = rs.id)
+                    WHERE         (DATE(ro.created_at) >= '{$from}' AND DATE(ro.created_at) <= '{$to}')
+                    {$strFilter}    
+                    GROUP BY rs.id
+                    ORDER BY myCount DESC";
+
+        //print $sql;die;
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $execute = $stmt->fetchAll();
+
+        if(!empty($execute)){
+            return $execute;
+        }
+        else{
+            return array();
+        }
+
+    }
+
+
+
+    public function speedometerResponseTimeOrders($from, $to, $filterOperator, $filterBrand){
+        //DATEDIFF(CURDATE(), '2015-04-18').
+
+        $strFilter = $this->myFilter($filterOperator, $filterBrand);
+
+        $sqlOperatorDays = "SELECT  days_to_fix_device
+                            FROM    operator
+                            WHERE   id = {$filterOperator}";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sqlOperatorDays);
+        $stmt->execute();
+
+        $execute = $stmt->fetchAll();
+
+        $intOperatorDays = $execute[0]["days_to_fix_device"];
+
+        $sql = "	SELECT 	DISTINCT(ro.id), DATEDIFF(DATE(ros.created_at), DATE(ro.created_at) ) days
+					FROM repair_order ro
+						INNER JOIN device_brand brand ON (brand.id = ro.device_brand_id)
+						INNER JOIN repair_status rs ON (rs.id = ro.repair_status_id) 
+						INNER JOIN operator ON (ro.operator_id = operator.id)
+						INNER JOIN repair_order_status ros ON (ros.repair_order_id = ro.id)
+					WHERE ro.enabled = 1
+					AND (DATE(ro.created_at) >= '{$from}' AND DATE(ro.created_at) <= '{$to}')
+					{$strFilter} 
+					AND ros.repair_status_id IN (10,11)
+					
+					";
+        //10 estado finalizado
+        //11 ENTREGADO
+
+        //print $sql;die;
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $execute = $stmt->fetchAll();
+        /*
+        print "<pre>";
+        var_dump($execute);die;
+         *
+         */
+
+        $intOrdersTotal = 0;
+        $intOrdersOnTime = 0;
+
+        //print "<pre>";
+        foreach ($execute as $row) {
+            //var_dump($row);die;
+            $days = $row["days"];
+            if($days <= $intOperatorDays ){
+                $intOrdersOnTime++;
+            }
+            $intOrdersTotal++;
+
+        }
+
+        $arrReturn = array();
+
+        if($intOrdersTotal != 0){
+            $arrReturn["onTime"] = $intOrdersOnTime;
+            $arrReturn["green"] = $intOrdersTotal / 3;
+            $arrReturn["yellow"] = ($intOrdersTotal/3)*2;
+            $arrReturn["red"] = ($intOrdersTotal/3)*3;
+
+            //
+            $percentage = number_format(($intOrdersOnTime*100) / $intOrdersTotal, 2, ".", ",") ;
+            $arrReturn["percentage"] = $percentage;
+
+        }
+        else{
+            $arrReturn["onTime"] = 0;
+            $arrReturn["percentage"] = 0;
+        }
+
+        $arrReturn["total"] = $intOrdersTotal;
+
+        //print "<pre>";
+        //var_dump($arrReturn);die;
+
+        return $arrReturn;
+
+    }
+
 		
 }

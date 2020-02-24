@@ -2,11 +2,11 @@
 
 {% block breadcrumb %}
     {{ parent() }}
-    <li> <a href="{{ path('solucel_admin_devicefixtype_index') }}">Listado de Tipos de Reparación</a> </li>
+    <li> <a href="{{ path('solucel_admin_adminsetting_index') }}">Listado de Agencias</a> </li>
     {% endblock %}
 
 {% block title %}
-    Tipos de Reparación
+    Agencias
 {% endblock %}
 
 {% block javascripts %}
@@ -28,16 +28,19 @@
     <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 
     </div>
+    {#
     <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
-        <a class="pull-right btn btn-primary btn-lg" href="{{ path('solucel_admin_devicefixtype_new') }}">
-            Crear Nuevo Tipo de Reparación
+        <a class="pull-right btn btn-primary btn-lg" href="{{ path('solucel_admin_adminsetting_new') }}">
+            Crear Nueva Agencia
         </a>
     </div>
+
+    #}
 </div>
 
 <div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
     <header>
-        <h2> Listado de Tipos Reparación</h2>
+        <h2> Listado de Agencias</h2>
     </header>
 
     <!-- widget div-->
@@ -60,10 +63,10 @@
                 <thead>
                     <tr>
                     	<th>ID</th>
-                    	<th>Nombre</th>
-                    	<th>Nivel de Reparación</th>
-                        <th>Marca</th>
-                        <th>Costo</th>
+                    	<th>Tiempo estimado de para ingreso</th>
+                    	<th>Actualizado</th>
+                    	<th>Actulizado por</th>
+
                         <th width="150">Acciones</th>
                     </tr>
                 </thead>
@@ -71,20 +74,22 @@
                 {% for entity in entities %}
                     <tr>
                         <td>{{ entity.id }}</td>
-                        <td>{{ entity.name }}</td>
-                        <td>{{ entity.deviceFixLevel }}</td>
-                        <td>{{ entity.deviceBrand }}</td>
-                        <td>{{ entity.price|number_format(2, '.', '') }}</td>
+                        <td>{{ entity.entryEstimatedTime }}</td>
+                        <td>{{ entity.updatedAt|date('Y/m/d') }}</td>
+                        <td>{{ entity.updatedBy.username }}</td>
                         <td>
-                        	<a href="{{ path('solucel_admin_devicefixtype_edit', {'id': entity.id }) }}">
+                        	<a href="{{ path('solucel_admin_adminsetting_edit', {'id': entity.id }) }}">
 								<div class="btn btn-sm btn-primary">
 									<span class="fa fa-search"></span>
 								</div>                        	
                         		
                         	</a>
-                            <a class="btn btn-danger btn-delete" href="{{ path('solucel_admin_devicefixtype_delete', { 'id': entity.id }) }}">
+                            {#
+                            <a class="btn btn-danger btn-delete" href="{{ path('solucel_admin_adminsetting_delete', { 'id': entity.id }) }}">
                                 <i class="fa fa-trash-o"></i>
                             </a>
+
+                            #}
                         </td>
                     </tr>
                 {% endfor %}

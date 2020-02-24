@@ -15,6 +15,7 @@ use Solucel\AdminBundle\Entity\RepairOrderDeviceDefect;
 use Solucel\AdminBundle\Entity\RepairOrderDeviceAccessory;
 use Solucel\AdminBundle\Entity\RepairOrderDeviceLocation;
 use Solucel\AdminBundle\Entity\RepairOrderAdditionalField;
+use Solucel\AdminBundle\Entity\TimeLog;
 
 
 use Solucel\AdminBundle\Form\RepairOrderType;
@@ -25,6 +26,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints\Time;
 
 /**
  * Repair controller
@@ -730,13 +732,20 @@ class RepairOrderController extends Controller
         $form   = $this->createCreateForm($entity);
 		$user = $session->get('user_logged');		 
  
-		
+
 		$states = $em->getRepository('SolucelAdminBundle:State')->findAll();
+		$objAdminSetting = $em->getRepository('SolucelAdminBundle:AdminSetting')->find(1);
+        $entryEstimatedTime = intval($objAdminSetting->getEntryEstimatedTime());
+        $dateNow = date('Y-m-d H:i:s');
+
+
 				
         return $this->render('SolucelAdminBundle:RepairOrder:new.html.twig', array(
             'entity' => $entity,
             'states' => $states,
             'form' => $form->createView(),
+            'entryEstimatedTime' => $entryEstimatedTime,
+            'dateNow' => $dateNow
         ));
     }
 
@@ -1018,18 +1027,15 @@ class RepairOrderController extends Controller
     {
     	
 		
-		/*
-		print "<pre>";
-		var_dump($_REQUEST);die;
-		 * */
-		
-    	
+
+		//print "<pre>";
+		//var_dump($_REQUEST);die;
+
     	$session = new Session();
     	$this->get("services")->setVars('repairOrderNew');
         $entity = new RepairOrder();
         $form   = $this->createCreateForm($entity);
-		$user = $session->get('user_logged');		 
-		
+		$user = $session->get('user_logged');
 		
 		//$this->get('request')->query->remove('email_suffix');
 		
@@ -1038,8 +1044,7 @@ class RepairOrderController extends Controller
 		
 		$arrField = isset($_REQUEST["field"]) ? $_REQUEST["field"] : array();
 		$arrAccessory = isset($_REQUEST["accessory"]) ? $_REQUEST["accessory"] : array(); 
-		
-		
+
 		$request->request->remove("client");
 		$request->request->remove("defect");
 		$request->request->remove("accessory");
@@ -1069,7 +1074,6 @@ class RepairOrderController extends Controller
 			///CLIENT
 			if(intval($arrClient["id"]) != 0){
 				//link client
-				
 				$entity->setClient($em->getRepository('SolucelAdminBundle:Client')->find($arrClient["id"]));
 				
 			}
@@ -1122,9 +1126,17 @@ class RepairOrderController extends Controller
 			$entity->setDispatchPhotoPath("");
 			$entity->setDevicePurchaseDate(new \DateTime(implode("-", array_reverse(explode("/", $_REQUEST["repair_order"]["devicePurchaseDate"]))))  );
 			$entity->setEntryDate(new \DateTime(implode("-", array_reverse(explode("/", $_REQUEST["repair_order"]["entryDate"]))))  );
+            //$entity->setEntryDate(new \DateTime(implode("-", array_reverse(explode("/", $_REQUEST["repair_order"]["entryDate"]))))  );
 			$entity->setEstimatedDeliveryDate(new \DateTime(implode("-", array_reverse(explode("/", $_REQUEST["repair_order"]["estimatedDeliveryDate"]))))  );
 			$entity->setRepairStatus($status[0]);
-			
+
+			$relapse = intval($_REQUEST["repair_order"]["relapse"]) == 0 ? NULL : intval($_REQUEST["repair_order"]["relapse"]);
+			if($relapse != NULL){
+                $objRelapse = $em->getRepository('SolucelAdminBundle:RepairOrder')->find($relapse);
+                $entity->setRelapseRepairOrder($objRelapse);
+
+            }
+
 			$entity->setCreatedAtValue();
 			$entity->setUpdatedAtValue();
 			//default values end
@@ -1198,7 +1210,23 @@ class RepairOrderController extends Controller
 			$objDeviceLocation->setCreatedAtValue();			
 	        $em->persist($objDeviceLocation);
 	        $em->flush();
-			
+
+
+	        //LOG ENTRY TIME INTO TIME_LOG TABLE
+            $objTimeLog = new TimeLog();
+            $objTimeLog->setCreatedAtValue();
+            $objTimeLog->setRepairOrder($entity);
+            $objTimeLog->setAction("INGRESO");
+            $objTimeLog->setUser($user);
+
+            $from_time = strtotime($_REQUEST["entryTime"]);
+            $dateNow = date("Y-m-d H:i:s");
+            $to_time = strtotime($dateNow);
+            $myMinutes = round(abs($to_time - $from_time) / 60, 0);//minutes
+            $objTimeLog->setLogTimeMinutes($myMinutes);
+
+            $em->persist($objTimeLog);
+            $em->flush();
 
 			$this->get('services')->flashSuccess($request);
             //return $this->redirect($this->generateUrl('solucel_admin_user_index'));
@@ -1633,9 +1661,9 @@ class RepairOrderController extends Controller
         $response["device_msn"] = "";
         $response["device_xcvr"] = "";
         $response["invoice_number"] = "";
+        $response["device_purchase_date"] = "";
 
 
-		//if($result["result"] == 2) //re ingreso
         if (in_array($response["result"], $reEntryTypes))
 		{
 			//2018-08-29
@@ -1645,6 +1673,8 @@ class RepairOrderController extends Controller
             $response["count"] = $result["count"];
             $response["history"] = $result["history"];
             $response["imei"] = $result["imei"];
+            $response["id"] = $result["id"];
+            $response["device_purchase_date"] = $result["device_purchase_date"];
 
             $objOrder = $em->getRepository('SolucelAdminBundle:RepairOrder')->find(intval($result["id"]));
 

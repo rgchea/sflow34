@@ -53,5 +53,5 @@ Solucel\AdminBundle\Entity\Agency:
                 operator_id:
                     referencedColumnName: id
                     onDelete: CASCADE
-            orphanRemoval: true            
+            orphanRemoval: true
     lifecycleCallbacks: {  }

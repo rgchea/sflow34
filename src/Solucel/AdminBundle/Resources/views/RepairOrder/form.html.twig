@@ -51,11 +51,20 @@
 				<!-- widget content -->
 				<div class="widget-body" id="widgetBody">
 
+					<div class="col-md-6 ">&nbsp;</div>
+					<div class="col-md-6 pull-right">
+						<div class="well well-sm" style="text-align: right">Tiempo estimado para ingreso <span id="time">{{ entryEstimatedTime  }}:00</span> minutos.</div>
+					</div>
+
+					<div class="clearfix"></div>
+
 
                     {{ form_start(form) }}
+						<input type="hidden" value="{{ dateNow }}" name="entryTime">
                     	
 
 						<fieldset id="myFieldset">
+							<input type="hidden" name="repair_order[relapse]" id="relapse_repair_order_id" value="0">
 							
 							{% if edit is not defined %}
 								<div class="form-group col-md-4">
@@ -819,47 +828,16 @@
 		//it converts the select on a searchable select
 		//$('.s2').select2();
 			
-		$("#repair_order_devicePurchaseDate").datepicker();
-		
-		$("#repair_order_devicePurchaseDate").change(function() {
-			
-			
-			if($("#repair_order_devicePurchaseDate").val().trim() != ""){
-				
-				var today = new Date();
-				
-				dd = parseInt(today.getDate());
-				mm = today.getMonth()+1; //January is 0!			
-				yyyy = parseInt(today.getFullYear());
-				if(dd < 10){dd = "0"+dd;}
-				if(mm < 10){mm = "0"+mm;}
-							
-				dateCompare = $("#repair_order_devicePurchaseDate").val();
-				dateSplit = dateCompare.split("/");
-				
-				dds = dateSplit[0];
-				mms = dateSplit[1];
-				yyyys = dateSplit[2];
-				
-				
-			    var d1 = Date.parse(yyyy+"-"+mm+"-"+dd);//"2011-04-01"
-			    var d2 = Date.parse(yyyys+"-"+mms+"-"+dds);
-			    console.log(yyyy+"-"+mm+"-"+dd);
-			    console.log(yyyys+"-"+mms+"-"+dds);
-			    
-			    if (d2 > d1) {
-			    	alert ("Error! La fecha de compara no puede ser mayor al día de hoy.");
-			    	$("#repair_order_devicePurchaseDate").val("");
-			     }			
-	  			//console.log($("#repair_order_deviceType").val());				
-				
-			}
+		$("#repair_order_devicePurchaseDate").datepicker({
+			dateFormat: 'dd/mm/yy',
+			maxDate: 0
 
-		});			
+		});
 		
 
-		$("#repair_order_deviceManufactureDate").datepicker();
-		$("#repair_order_entryDate").datepicker();
+
+		$("#repair_order_deviceManufactureDate").datepicker({dateFormat: 'dd/mm/yy'});
+		$("#repair_order_entryDate").datepicker({dateFormat: 'dd/mm/yy'});
 
 		$("#repair_order_humidity").change(function() {
   			if(this.checked){
@@ -1365,6 +1343,10 @@
 					console.log(data.count);
 					$("#entryCount").html(data.count);
 					$("#dialogImei").html(data.imei.trim());
+					//$("#repair_order_devicePurchaseDate").html();
+					$('#repair_order_devicePurchaseDate').val(data.device_purchase_date);
+					//aca se setea el relapse repair order = reincidencia o reingreso
+					$("#relapse_repair_order_id").val(data.id);
 
 					//console.log(data);
 
@@ -1408,6 +1390,8 @@
 				$("#repair_order_deviceMsn").val(data.device_msn);
 				$("#repair_order_deviceXcvr").val(data.device_xcvr);
 				$("#repair_order_invoiceNumber").val(data.invoice_number);
+
+				//
 
 
 								
@@ -1608,7 +1592,34 @@
     function deleteField(id){
     	
 		$('#tr_repair_order_field_'+id).remove();
-    }	  	
+    }
+
+    var estimatedTime = {{ entryEstimatedTime }};
+
+	function startTimer(duration, display) {
+		var timer = duration, minutes, seconds;
+		setInterval(function () {
+			minutes = parseInt(timer / 60, 10)
+			seconds = parseInt(timer % 60, 10);
+
+			minutes = minutes < 10 ? "0" + minutes : minutes;
+			seconds = seconds < 10 ? "0" + seconds : seconds;
+
+			display.text(minutes + ":" + seconds);
+
+			if (--timer < 0) {
+				//timer = duration;
+				timer = duration = 0;
+			}
+		}, 1000);
+	}
+
+	jQuery(function ($) {
+		//var fiveMinutes = 60 * 5,
+		var entryMinutes = 60*estimatedTime;
+		display = $('#time');
+		startTimer(entryMinutes, display);
+	});
     
 	     
 </script>

@@ -179,11 +179,9 @@
                 </thead>
                 <tbody>
                 {% for entity in entities %}
-					
-					
                     <tr>
-                    	<td>{{entity.service}}</td>
-                    	<td>{{entity.total|number_format(2)}}</td>
+                    	<td>{{entity.brand}}</td>
+                    	<td>{{entity.brandTotal|number_format(2, ".", ",")}}</td>
                     </tr>
                     
                 {% endfor %}

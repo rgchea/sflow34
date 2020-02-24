@@ -1525,4 +1525,33 @@ class RepairOrder
     {
         return $this->paperworkComment;
     }
+    /**
+     * @var \Solucel\AdminBundle\Entity\RepairOrder
+     */
+    private $relapseRepairOrder;
+
+
+    /**
+     * Set relapseRepairOrder
+     *
+     * @param \Solucel\AdminBundle\Entity\RepairOrder $relapseRepairOrder
+     *
+     * @return RepairOrder
+     */
+    public function setRelapseRepairOrder(\Solucel\AdminBundle\Entity\RepairOrder $relapseRepairOrder = null)
+    {
+        $this->relapseRepairOrder = $relapseRepairOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get relapseRepairOrder
+     *
+     * @return \Solucel\AdminBundle\Entity\RepairOrder
+     */
+    public function getRelapseRepairOrder()
+    {
+        return $this->relapseRepairOrder;
+    }
 }

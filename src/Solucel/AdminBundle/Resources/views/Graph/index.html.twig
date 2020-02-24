@@ -1,0 +1,572 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+
+{% block body %}
+
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/highcharts-more.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/data.js"></script>
+        <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+        <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+
+        <style>
+            .loading {
+                margin-top: 10em;
+                text-align: center;
+                color: gray;
+            }
+            .alignRight{
+                text-align: right;
+            }
+
+            .myGraph{
+                min-width: 310px; height: 400px; margin: 0 auto
+            }
+        </style>
+
+        <div class="container">
+            <div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+
+                <!-- widget div-->
+                <div>
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+
+                    <!-- end widget edit box -->
+
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div class="widget-body-toolbar">
+
+                        </div>
+
+                        <form action="{{ path('solucel_admin_graph_index') }}" method="POST">
+                            <input type="hidden" name="submit">
+                            <div class="row">
+                                <div class="col-md-3" >
+                                    <label for="created_from">Desde:</label><br />
+                                    <input  id="created_from" name="dateFrom" type="date"  class="form-control myFilter input-daterange" value="{{ dateFrom }}"  />
+                                </div>
+                                <div class="col-md-3" >
+                                    <label for="created_to">Hasta:</label><br />
+                                    <input  id="created_to" name="dateTo" type="date" class="form-control myFilter input-daterange" value="{{ dateTo }}" />
+                                </div>
+                                <div class="col-md-3" >
+                                    <label for="operator">Operador:</label><br />
+                                    <select id="filter_operator" name="filter_operator">
+                                        <option value="0">Todos</option>
+                                        {% for operator in operators %}
+                                            {% set selectedOperator = operator.id == filterOperator ? 'selected="selected"' : '' %}
+                                            <option value="{{ operator.id }}" {{ selectedOperator }}>{{ operator.name }}</option>
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                                <div class="col-md-3" >
+                                    <label for="brand">Marca:</label><br />
+                                    <select id="filter_brand" name="filter_brand">
+                                        <option value="0">Todas</option>
+                                        {% for brand in brands %}
+                                            {% set selectedBrand = brand.id == filterBrand ? 'selected="selected"' : '' %}
+                                            <option value="{{ brand.id }}" {{ selectedBrand }}>{{ brand.name }}</option>
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                                <div class="clearfix"></div>
+
+
+                                <div class="col-md-3" >
+                                    <label for="">&nbsp;</label><br />
+                                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                                </div>
+                                <div class="col-md-5" >
+
+                                </div>
+                            </div>
+                        </form>
+                        <br/><br/>
+                        {# ORDERS DATA #}
+
+                        <div class="row" style="width: 90% !important;">
+                            <div class="col-md-12" >
+                                <div id="orders_by_tech" class="myGraph"></div>
+                            </div>
+                        </div>
+
+                        <br/><br/>
+                        <div class="row" style="width: 90% !important;">
+                            <div class="col-md-12" >
+                                <div id="repair_order_status" class="myGraph"></div>
+                            </div>
+
+                        </div>
+
+                        <br/><br/>
+                        <div class="row" style="width: 90% !important;">
+                            <div class="col-md-12" >
+                                <div id="tech_relapse" class="myGraph"></div>
+                            </div>
+                        </div>
+
+                        <br/><br/>
+                        <div class="row" style="width: 90% !important;">
+                            <div class="col-md-12" >
+                                <div id="tech_relapse_by_month" class="myGraph"></div>
+                            </div>
+                        </div>
+
+                        <br/><br/>
+                        <div class="row" style="width: 90% !important;">
+                            <div class="col-md-12" >
+                                <div id="response_time" class="myGraph"></div>
+                            </div>
+                        </div>
+
+                        {% if filterOperator > 0  %}
+                            <br/><br/>
+                            <div class="row" style="width: 90% !important;">
+                                <div class="col-md-12" >
+                                    <figure class="highcharts-figure">
+                                        <div id="speedometer_response_time" class="myGraph"></div>
+                                    </figure>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                            <div class="col-md-12" >
+                                <div class="panel" style="width: 90%">
+                                    <div class="panel-body">
+                                        <ul class="col-md-12 stats">
+                                            <li class="stat col-md-4">
+                                                <span><b class="value">{{ arrStats['arrSpeedometerOnTime']['percentage'] }}%</b> Ordenes</span>
+                                                <em>En tiempo</em>
+                                            </li>
+                                            <li class="stat col-md-4">
+                                                <span><b class="value">{{ arrStats['arrSpeedometerOnTime']['total']|number_format(0, '', ',')  }}</b> Ordenes</span>
+                                                <em>Ingresadas</em>
+                                            </li>
+                                            <li class="stat col-md-4">
+                                                <span><b class="value">{{ arrStats['arrSpeedometerOnTime']['onTime']|number_format(0, '', ',') }}</b> Ordenes</span>
+                                                <em>En tiempo</em>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        {% set strOrders = "" %}
+
+        {% for tech in arrStats['arrTechs'] %}
+            {% set strOrders = strOrders == "" ? strOrders~tech["orders"] : strOrders~","~tech["orders"] %}
+        {% endfor %}
+
+        {% set strTechs = "" %}
+        {% for tech in arrStats['arrTechs'] %}
+            {% set strTechs = strTechs == "" ? strTechs~"'"~tech["tech_name"]~"'" : strTechs~","~"'"~tech["tech_name"]~"'" %}
+
+        {% endfor %}
+
+
+        <script type="text/javascript">
+
+            // Create the chart
+            Highcharts.chart('orders_by_tech', {
+                credits: {
+                    enabled: false
+                },
+
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Cantidad de reparaciones por Técnico'
+                },
+                subtitle: {
+                    text: 'Top 30'
+                },
+                xAxis: {
+                    type: 'category',
+                    min: 0,
+                    max: 29,
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '11px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                },
+                yAxis: {
+                    allowDecimals: false,
+                    min: 0,
+                    title: {
+                        text: 'Reparaciones'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        pointPadding: 0.2,
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            crop: false,
+                            overflow: 'none'
+
+                        }
+                    }
+                },
+
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y} </b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true                },
+
+                series: [
+                    {
+                        name: "Reparaciones",
+                        colorByPoint: true,
+                        data: [{{ arrStats['strOrdersByTech']|raw }}]
+                    }
+                ],
+                drilldown: {
+                    series: [ {{ arrStats['strOrdersByTechLevels']|raw }} ]
+                }
+            });
+
+
+            // Build the chart
+            Highcharts.chart('repair_order_status', {
+                credits: {
+                    enabled: false
+                },
+
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Estados de reparación'
+                },
+                subtitle: {
+                    text: 'Top 30'
+                },
+                tooltip: {
+                    //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    pointFormat: '<b>{point.y}</b>'
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [{
+                    name: '',
+                    colorByPoint: true,
+                    data: [{{ arrStats['strOrdersByStatus']|raw }}]
+                }]
+            });
+
+
+            //TECH RELAPSE
+            Highcharts.chart('tech_relapse', {
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Reincidencia por técnico'
+                },
+                subtitle: {
+                    {#text: 'Source: <a href="http://en.wikipedia.org/wiki/List_of_cities_proper_by_population">Wikipedia</a>'#}
+                    text: 'Top 30'
+                },
+                xAxis: {
+                    type: 'category',
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '12px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                },
+                yAxis: {
+                    allowDecimals: false,
+                    min: 0,
+                    title: {
+                        text: 'Cantidad'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    pointFormat: 'Reincidencias: <b>{point.y}</b>'
+                },
+                series: [{
+                    name: 'Relapse',
+                    data: [{{ arrStats['strRelapseByTech']|raw }}],
+                    dataLabels: {
+                        enabled: true,
+                        rotation: -90,
+                        color: '#FFFFFF',
+                        align: 'right',
+                        //format: '{point.y:.1f}', // one decimal
+                        format: '{point.y}', // one decimal
+                        y: 10, // 10 pixels down from the top
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                }]
+            });
+
+            //TECH RELAPSE BY MONTH/ LINE
+            Highcharts.chart('tech_relapse_by_month', {
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: '% Reincidencias por mes'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+                },
+                yAxis: {
+                    title: {
+                        text: '% reincidencias'
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                        enableMouseTracking: false
+                    }
+                },
+                series: [{
+                        name: 'Porcentaje',
+                        data: [{{ arrStats["strRelapseByYearPercentage"] }}]
+                        },
+                        {
+                        name: 'Cantidad',
+                        data: [{{ arrStats["strRelapseByYearQuantity"] }}]
+                        }
+                        ]
+            });
+
+
+            Highcharts.chart('response_time', {
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: 'Ordenes y tiempos de respuesta'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+                },
+                yAxis: {
+                    title: {
+                        text: 'Cantidad'
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                        enableMouseTracking: false
+                    }
+                },
+                series: [{{ arrStats['strResponseTime']|raw }}]
+            });
+
+            {% if filterOperator > 0  %}
+
+
+                Highcharts.chart('speedometer_response_time', {
+                        credits: {
+                            enabled: false
+                        },
+                        chart: {
+                            type: 'gauge',
+                            plotBackgroundColor: null,
+                            plotBackgroundImage: null,
+                            plotBorderWidth: 0,
+                            plotShadow: false
+                        },
+
+                        title: {
+                            text: 'Indicador tiempos de respuesta'
+                        },
+
+                        pane: {
+                            startAngle: -150,
+                            endAngle: 150,
+                            background: [{
+                                backgroundColor: {
+                                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                                    stops: [
+                                        [0, '#FFF'],
+                                        [1, '#333']
+                                    ]
+                                },
+                                borderWidth: 0,
+                                outerRadius: '109%'
+                            }, {
+                                backgroundColor: {
+                                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                                    stops: [
+                                        [0, '#333'],
+                                        [1, '#FFF']
+                                    ]
+                                },
+                                borderWidth: 1,
+                                outerRadius: '107%'
+                            }, {
+                                // default background
+                            }, {
+                                backgroundColor: '#DDD',
+                                borderWidth: 0,
+                                outerRadius: '105%',
+                                innerRadius: '103%'
+                            }]
+                        },
+
+                        // the value axis
+                        yAxis: {
+                            min: 0,
+                            max: {{ arrStats['arrSpeedometerOnTime']['total'] }},
+
+                            minorTickInterval: 'auto',
+                            minorTickWidth: 1,
+                            minorTickLength: 10,
+                            minorTickPosition: 'inside',
+                            minorTickColor: '#666',
+
+                            tickPixelInterval: 30,
+                            tickWidth: 2,
+                            tickPosition: 'inside',
+                            tickLength: 10,
+                            tickColor: '#666',
+                            labels: {
+                                step: 2,
+                                rotation: 'auto'
+                            },
+                            title: {
+                                text: 'KPI'
+                            },
+                            plotBands: [{
+                                from: 0,
+                                to: {{ arrStats['arrSpeedometerOnTime']['green'] }},
+                                color: '#DF5353' // green
+                            }, {
+                                from: {{ arrStats['arrSpeedometerOnTime']['green'] }},
+                                to: {{ arrStats['arrSpeedometerOnTime']['yellow'] }},
+                                color: '#DDDF0D' // yellow
+                            }, {
+                                from: {{ arrStats['arrSpeedometerOnTime']['yellow'] }},
+                                to: {{ arrStats['arrSpeedometerOnTime']['red'] }},
+                                color: '#55BF3B' // red
+                            }]
+                        },
+
+                        series: [{
+                            name: 'Reparaciones',
+                            data: [{{ arrStats['arrSpeedometerOnTime']['onTime'] }}],
+                            tooltip: {
+                                valueSuffix: ' en tiempo'
+                            }
+                        }]
+
+                    },
+                    // Add some life
+                    /*
+                    function (chart) {
+                        if (!chart.renderer.forExport) {
+                            setInterval(function () {
+                                var point = chart.series[0].points[0],
+                                    newVal,
+                                    inc = Math.round((Math.random() - 0.5) * 20);
+
+                                newVal = point.y + inc;
+                                if (newVal < 0 || newVal > 200) {
+                                    newVal = point.y - inc;
+                                }
+
+                                point.update(newVal);
+
+                            }, 3000);
+                        }
+                    }
+                     */
+                );
+            {% endif %}
+
+
+
+
+        </script>
+
+
+
+
+
+{% endblock %}
+
+{% block extrascripts %}
+
+
+{% endblock %}

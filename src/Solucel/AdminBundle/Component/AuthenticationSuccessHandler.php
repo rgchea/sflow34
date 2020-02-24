@@ -63,7 +63,9 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
 		 */
       	if ($this->securityContext->isGranted('ROLE_USER')){			
 			$uri = $this->router->generate('solucel_admin_homepage');            
-        } 		
+        }
+
+
  		//$uri = $this->router->generate('solucel_admin_homepage');    
       	return new RedirectResponse($uri);
    }

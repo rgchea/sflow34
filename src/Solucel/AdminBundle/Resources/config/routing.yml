@@ -175,3 +175,16 @@ solucel_admin_problemfoundcode:
 solucel_admin_payer:
     resource: "@SolucelAdminBundle/Resources/config/routing/payer.yml"
     prefix:   /payer
+
+solucel_admin_graph:
+    resource: "@SolucelAdminBundle/Resources/config/routing/graph.yml"
+    prefix:   /graph
+
+backend_admin_log:
+    resource: "@SolucelAdminBundle/Resources/config/routing/systemlog.yml"
+    prefix:   /log
+
+backend_admin_adminsetting:
+    resource: "@SolucelAdminBundle/Resources/config/routing/adminsetting.yml"
+    prefix:   /log
+

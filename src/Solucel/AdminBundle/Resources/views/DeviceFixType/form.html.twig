@@ -56,13 +56,26 @@
                             ) }}
                         </div>
 
-
 							<div class="form-group col-md-6">
 								{{ form_label(form.transactionCode) }}
 								{{ form_errors(form.transactionCode) }}
 								{{ form_widget(form.transactionCode, { 'attr': {'class' : 'form-control' } }
 								) }}
 							</div>
+
+							<div class="form-group col-md-6">
+								{{ form_label(form.deviceBrand) }}
+								{{ form_errors(form.deviceBrand) }}
+								{{ form_widget(form.deviceBrand, { 'attr': {'class' : 'form-control' } }
+								) }}
+							</div>
+							<div class="form-group col-md-6">
+								{{ form_label(form.price) }}
+								{{ form_errors(form.price) }}
+								{{ form_widget(form.price, { 'attr': {'class' : 'form-control' } }
+								) }}
+							</div>
+
 
 							<div class="hide">
                             {{ form_rest(form) }}
