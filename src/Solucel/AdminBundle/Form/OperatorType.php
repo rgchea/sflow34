@@ -7,6 +7,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
+
 class OperatorType extends AbstractType
 {
     /**
@@ -22,7 +26,7 @@ class OperatorType extends AbstractType
             //->add('createdAt', 'datetime')
             ->add('daysToFixDevice', null, array('label'=>"Días para reparar 1 dispositivo", 'required' => false))
             ->add('logoPath', null, array('label'=>"Logo (Imagen)", 'required'=>false))
-            ->add('file', 'file', array('label'=>"Logo (Imagen)", 'required'=>false))
+            ->add('file', FileType::class, array('label'=>"Logo (Imagen)", 'required'=>false))
 			
         ;
     }
