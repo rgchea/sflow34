@@ -1,5 +1,6 @@
 <?php
 
+print "Sitio de pruebas deshabiliado temporalmente.";die;
 use Symfony\Component\HttpFoundation\Request;
 
 require __DIR__.'/../vendor/autoload.php';
