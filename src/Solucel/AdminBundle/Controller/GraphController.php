@@ -197,8 +197,8 @@ class GraphController extends Controller
 
 
             ////RESPONSE TIME GRAPH
-            //$myYear = date('Y');
-            $myYear = "2018";
+            $myYear = date('Y');
+            //$myYear = "2018";
             $arrFilter = array("select_year" => $myYear);
             $arrFilter["filter_operator"] = $filterOperator;
             $arrFilter["filter_brand"] = $filterBrand;
