@@ -185,8 +185,8 @@ class GraphController extends Controller
             $strRelapseByYear = "";
 
             $arrRelapseByYear = $this->em->getRepository("SolucelAdminBundle:RepairOrder")->getRelapseByYear($filterOperator, $filterBrand);
-            //print "<pre>";
-            //var_dump($arrOrdersByStatus);die;
+            print "<pre>";
+            var_dump($arrRelapseByYear);die;
 
             $strRelapseByYearQuantity = "";
             $strRelapseByYearPercentage = "";
