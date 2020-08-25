@@ -300,7 +300,7 @@ class RepairOrderFixRepository extends \Doctrine\ORM\EntityRepository
 					";
 					//10 estado finalizado
 					
-		print $sql;die;
+		//print $sql;die;
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 	    $stmt->execute();
 		
