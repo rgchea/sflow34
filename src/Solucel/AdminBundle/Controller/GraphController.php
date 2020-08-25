@@ -255,7 +255,7 @@ class GraphController extends Controller
             //print "<pre>";
             //var_dump($arrStats["strRelapseByYearPercentage"]);
             //var_dump($arrStats["strRelapseByYearQuantity"]);
-            die;
+            //die;
 
             //$objCountry = $this->em->getRepository("BackendAdminBundle:GlobalCountry")->find(1);
 
