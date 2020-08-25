@@ -252,9 +252,10 @@ class GraphController extends Controller
             $arrStats["arrSpeedometerOnTime"] = $arrSpeedometerOnTime;
 
 
-            //print "<pre>";
-            //var_dump($arrStats["strRelapseByYearPercentage"]);
-            //die;
+            print "<pre>";
+            var_dump($arrStats["strRelapseByYearPercentage"]);
+            var_dump($arrStats["strRelapseByYearQuantity"]);
+            die;
 
             //$objCountry = $this->em->getRepository("BackendAdminBundle:GlobalCountry")->find(1);
 
