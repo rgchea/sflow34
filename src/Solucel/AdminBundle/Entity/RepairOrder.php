@@ -61,7 +61,7 @@ class RepairOrder
     /**
      * @var float
      */
-    private $price = '0.00';
+    private $price = 0.00;
 
     /**
      * @var string
@@ -91,7 +91,7 @@ class RepairOrder
     /**
      * @var boolean
      */
-    private $enable = '1';
+    private $enable = true;
 
     /**
      * @var string

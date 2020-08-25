@@ -53,7 +53,10 @@
 
 					<div class="col-md-6 ">&nbsp;</div>
 					<div class="col-md-6 pull-right">
-						<div class="well well-sm" style="text-align: right">Tiempo estimado para ingreso <span id="time">{{ entryEstimatedTime  }}:00</span> minutos.</div>
+						{% if new is defined %}
+							<div class="well well-sm" style="text-align: right">Tiempo estimado para ingreso <span id="time">{{ entryEstimatedTime  }}:00</span> minutos.</div>
+						{% endif %}
+
 					</div>
 
 					<div class="clearfix"></div>
@@ -1594,7 +1597,10 @@
 		$('#tr_repair_order_field_'+id).remove();
     }
 
-    var estimatedTime = {{ entryEstimatedTime }};
+	{% if new is defined %}
+		var estimatedTime = {{ entryEstimatedTime }};
+	{% endif %}
+
 
 	function startTimer(duration, display) {
 		var timer = duration, minutes, seconds;
@@ -1615,10 +1621,14 @@
 	}
 
 	jQuery(function ($) {
-		//var fiveMinutes = 60 * 5,
-		var entryMinutes = 60*estimatedTime;
-		display = $('#time');
-		startTimer(entryMinutes, display);
+
+		{% if new is defined %}
+			//var fiveMinutes = 60 * 5,
+			var entryMinutes = 60*estimatedTime;
+			display = $('#time');
+			startTimer(entryMinutes, display);
+
+		{% endif %}
 	});
     
 	     

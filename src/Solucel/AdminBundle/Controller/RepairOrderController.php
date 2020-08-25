@@ -179,8 +179,13 @@ class RepairOrderController extends Controller
             $tmpReplacements = "";
             if($objReplacemets){
                 foreach ($objReplacemets as $replacement){
-                    $r = $replacement->getDeviceReplacement()->getName();
-                    $tmpReplacements .= $tmpReplacements == "" ? $r: ",".$r;
+                    if($replacement->getDeviceReplacement()){
+                        $r = $replacement->getDeviceReplacement()->getName();
+                        $tmpReplacements .= $tmpReplacements == "" ? $r: ",".$r;
+                    }
+                    else{
+                        $tmpReplacements = "";
+                    }
                 }
             }
             else{
@@ -745,7 +750,8 @@ class RepairOrderController extends Controller
             'states' => $states,
             'form' => $form->createView(),
             'entryEstimatedTime' => $entryEstimatedTime,
-            'dateNow' => $dateNow
+            'dateNow' => $dateNow,
+            'new' => true
         ));
     }
 

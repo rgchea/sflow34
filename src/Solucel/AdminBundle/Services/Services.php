@@ -278,9 +278,9 @@ class Services extends Controller
 		$request->getSession()->getFlashBag()->add('warning','No se puede eliminar, existen registros relacionados');
 	}
 
-	public function userHasAccess(){
+	public function userHasAccess($session){
 
-		$session = new Session();
+
 		$item = $session->get('item');
 		//var_dump($item);
 		$userAccess = $session->get('user_access');
@@ -331,9 +331,7 @@ class Services extends Controller
 	}
 
 
-	public function getUserAccess(){
-
-		$session = new Session();
+	public function getUserAccess($session){
 
 		$role = "ROLE_USER";
 		//$session->set("user_access", "all");
@@ -379,7 +377,6 @@ class Services extends Controller
 		$session = new Session();
 
 		$em = $this->em;
-        $session = new Session();
         $session->set('item', $item);
 
 		$auth_checker = $this->get('security.authorization_checker');
@@ -420,8 +417,8 @@ class Services extends Controller
 
 
 
-		$this->getUserAccess();
-		$access = $this->userHasAccess();
+		$this->getUserAccess($session);
+		$access = $this->userHasAccess($session);
 
 		if(!$access){
 			throw new AccessDeniedException();
