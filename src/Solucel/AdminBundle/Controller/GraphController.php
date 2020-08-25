@@ -66,8 +66,8 @@ class GraphController extends Controller
             }
             else{
                 $dateTo = date("Y-m-d");
-                //$time = strtotime($dateTo.' -30 days');
-                $time = strtotime($dateTo.' -600 days');
+                $time = strtotime($dateTo.' -30 days');
+                //$time = strtotime($dateTo.' -600 days');
                 $dateFrom = date("Y-m-d", $time);
             }
             //orders_by_tech
