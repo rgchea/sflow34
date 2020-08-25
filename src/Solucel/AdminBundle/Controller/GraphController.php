@@ -185,8 +185,8 @@ class GraphController extends Controller
             $strRelapseByYear = "";
 
             $arrRelapseByYear = $this->em->getRepository("SolucelAdminBundle:RepairOrder")->getRelapseByYear($filterOperator, $filterBrand);
-            print "<pre>";
-            var_dump($arrRelapseByYear);die;
+            //print "<pre>";
+            //var_dump($arrRelapseByYear);die;
 
             $strRelapseByYearQuantity = "";
             $strRelapseByYearPercentage = "";
@@ -252,9 +252,9 @@ class GraphController extends Controller
             $arrStats["arrSpeedometerOnTime"] = $arrSpeedometerOnTime;
 
 
-            print "<pre>";
-            var_dump($arrStats["strRelapseByYearPercentage"]);
-            var_dump($arrStats["strRelapseByYearQuantity"]);
+            //print "<pre>";
+            //var_dump($arrStats["strRelapseByYearPercentage"]);
+            //var_dump($arrStats["strRelapseByYearQuantity"]);
             die;
 
             //$objCountry = $this->em->getRepository("BackendAdminBundle:GlobalCountry")->find(1);
