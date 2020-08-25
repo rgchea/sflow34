@@ -1490,8 +1490,14 @@ class RepairOrderRepository extends \Doctrine\ORM\EntityRepository
             $relapseQuantity = intval($row["quantity"]);
             $myMonth = intval($row["myMonth"]);
 
-            $ordersQuantity = $myArray["quantity"][$myMonth];
-            $percentage = number_format(($relapseQuantity*100) / $ordersQuantity, 2, ".", "") ;
+            $ordersQuantity = intval($myArray["quantity"][$myMonth]);
+            if($ordersQuantity > 0){
+                $percentage = number_format(($relapseQuantity*100) / $ordersQuantity, 2, ".", "") ;
+            }
+            else{
+                $percentage = 0;
+            }
+
 
             $myArray["percentage"][$myMonth] = $percentage;
         }

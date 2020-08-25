@@ -251,6 +251,11 @@ class GraphController extends Controller
             $arrStats["strResponseTime"] = $strResponseTime;
             $arrStats["arrSpeedometerOnTime"] = $arrSpeedometerOnTime;
 
+
+            //print "<pre>";
+            //var_dump($arrStats["strRelapseByYearPercentage"]);
+            //die;
+
             //$objCountry = $this->em->getRepository("BackendAdminBundle:GlobalCountry")->find(1);
 
             $operators = $this->em->getRepository('SolucelAdminBundle:Operator')->findBy(array("enabled" => 1), array("name" => "ASC"));

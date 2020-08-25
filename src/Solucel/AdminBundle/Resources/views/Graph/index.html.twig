@@ -145,10 +145,6 @@
                                     <div class="panel-body">
                                         <ul class="col-md-12 stats">
                                             <li class="stat col-md-4">
-                                                <span><b class="value">{{ arrStats['arrSpeedometerOnTime']['percentage'] }}%</b> Ordenes</span>
-                                                <em>En tiempo</em>
-                                            </li>
-                                            <li class="stat col-md-4">
                                                 <span><b class="value">{{ arrStats['arrSpeedometerOnTime']['total']|number_format(0, '', ',')  }}</b> Ordenes</span>
                                                 <em>Ingresadas</em>
                                             </li>
@@ -156,6 +152,11 @@
                                                 <span><b class="value">{{ arrStats['arrSpeedometerOnTime']['onTime']|number_format(0, '', ',') }}</b> Ordenes</span>
                                                 <em>En tiempo</em>
                                             </li>
+                                            <li class="stat col-md-4">
+                                                <span><b class="value">{{ arrStats['arrSpeedometerOnTime']['percentage'] }}%</b> Ordenes</span>
+                                                <em>En tiempo</em>
+                                            </li>
+
 
                                         </ul>
                                     </div>
