@@ -19,8 +19,6 @@
     <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/media/js/TableTools.min.js') }}"></script>
     <script src="{{ asset('bundles/pizotearkadmin/js/plugin/datatables/DT_bootstrap.js') }}"></script>
     
-    
-    
 
 {% endblock %}
 
@@ -119,8 +117,8 @@
                 { "name": "username",  "targets": 1 },
                 { "name": "name",  "targets": 2 },
                 { "name": "role",  "targets": 3 },
-                { "name": "email",  "targets": 4 },
-                { "name": "enabled",  "targets": 5 },
+                { "name": "enabled",  "targets": 4 },
+                { "name": "email",  "targets": 5 },
                 { "name": "actions",  "targets": 6 },
 
             ],
@@ -138,10 +136,8 @@
             "info" : true,
             "searching": true,
             "pageLength": 10,
-            "order": [[1, 'asc']],
-            "language": {
-                "url": "{{ asset('bundles/pizotearkadmin/js/plugin/datatables/dataTables.spanish.lang') }}"
-            }
+            "order": [[0, 'ASC']],
+
 
         });
 

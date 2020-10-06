@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\Session\Session;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
-	
 
 
-    public function getRequiredDTData($start, $length, $orders, $search, $columns, $userFilters)
+
+    public function getRequiredDTData($start, $length, $orders, $search, $columns)
     {
         // Create Main Query
         $query = $this->createQueryBuilder('u');
@@ -28,29 +28,9 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         $query->join('u.role', 'r');
         $countQuery->join('u.role', 'r');
 
-        //filter brand
-        if($userFilters["brand_id"] != NULL){
-            $query->andWhere('u.deviceBrand = '.intval($userFilters["brand_id"]));
-            $countQuery->andWhere('u.deviceBrand = '.intval($userFilters["brand_id"]));
-        }
-
-        if($userFilters["center_id"] != NULL){
-            $query->andWhere('u.serviceCenter = '.intval($userFilters["center_id"]));
-            $countQuery->andWhere('u.serviceCenter = '.intval($userFilters["center_id"]));
-        }
-
-        if($userFilters["operator_id"] != NULL){
-            $query->andWhere('u.operator = '.intval($userFilters["operator_id"]));
-            $countQuery->andWhere('u.operator = '.intval($userFilters["operator_id"]));
-        }
-
-
         //ENABLED
         $query->andWhere("u.enabled = 1");
         $countQuery->andWhere("u.enabled = 1");
-        //$query->andWhere("r.enabled = 1");
-        //$countQuery->andWhere("r.enabled = 1");
-
 
 
         // Fields Search
@@ -66,29 +46,30 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                 {
                     case 'id':
                     {
-                        $searchQuery = 'u.id ='. $searchItem;
+                        $searchQuery = 'u.id = '. $searchItem;
                         break;
                     }
+
+                    case 'name':
+                    {
+                        $searchQuery = 'u.name LIKE \'%'.$searchItem.'%\'';
+                        break;
+                    }
+
                     case 'username':
                     {
                         $searchQuery = 'u.username LIKE \'%'.$searchItem.'%\'';
+                        break;
+                    }
+                    case 'email':
+                    {
+                        $searchQuery = 'u.email LIKE \'%'.$searchItem.'%\'';
                         break;
                     }
 
                     case 'role':
                     {
                         $searchQuery = 'r.name LIKE \'%'.$searchItem.'%\'';
-                        break;
-                    }
-                    case 'name':
-                    {
-                        $searchQuery = 'u.name LIKE \'%'.$searchItem.'%\'';
-                        $searchQuery .= ' OR u.lastName LIKE \'%'.$searchItem.'%\'';
-                        break;
-                    }
-                    case 'email':
-                    {
-                        $searchQuery = 'u.email LIKE \'%'.$searchItem.'%\'';
                         break;
                     }
 
@@ -102,6 +83,8 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                 }
             }
         }
+
+
 
         // Limit
         $query->setFirstResult($start)->setMaxResults($length);
@@ -131,6 +114,18 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                         break;
                     }
 
+                    case 'name':
+                    {
+                        $orderColumn = 'u.name';
+                        break;
+                    }
+
+                    case 'username':
+                    {
+                        $orderColumn = 'u.username';
+                        break;
+                    }
+
                     case 'email':
                     {
                         $orderColumn = 'u.email';
@@ -140,18 +135,6 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                     case 'role':
                     {
                         $orderColumn = 'r.name';
-                        break;
-                    }
-
-                    case 'name':
-                    {
-                        $orderColumn = 'u.name';
-                        break;
-                    }
-
-                    case 'enabled':
-                    {
-                        $orderColumn = 'u.enabled';
                         break;
                     }
 
@@ -173,6 +156,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
             "countResult"	=> $countResult
         );
     }
+
 	
 	public function getUserFilters($userID, $levelID){
 		//die;
@@ -228,7 +212,8 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
 
         $strFilter = $this->myFilter($filterOperator, $filterBrand);
 
-        $sql = "    SELECT COUNT(DISTINCT(ro.id)) orders, u.id tech_id, u.username tech_name
+        //u.username tech_name
+        $sql = "    SELECT COUNT(DISTINCT(ro.id)) orders, u.id tech_id, CONCAT(u.name, ' ', u.last_name ) tech_name
                     FROM	repair_order ro
                         INNER JOIN repair_order_fix rof ON(ro.id = rof.repair_order_id)
                         INNER JOIN user u ON(rof.assigned_to = u.id)
@@ -268,7 +253,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
 
             $strTechs = implode(",", $arrTechs);
 
-            $sql = "SELECT	COUNT(ro.id) orders, u.id tech_id, u.username tech_name, 
+            $sql = "SELECT	COUNT(ro.id) orders, u.id tech_id, CONCAT(u.name, ' ', u.last_name ) tech_name, 
                                  CONCAT('Nivel ', dfl.name) level_name, dfl.id level_id
                     FROM	repair_order ro
                         INNER JOIN repair_order_status ros ON(ros.repair_order_id = ro.id 
@@ -335,7 +320,8 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
 
         $strFilter = $this->myFilter($filterOperator, $filterBrand);
 
-        $sql = "    SELECT 	COUNT(DISTINCT(ro.id)) myCount,u.username, u.id user_id
+        //u.username
+        $sql = "    SELECT 	COUNT(DISTINCT(ro.id)) myCount, CONCAT(u.name, ' ', u.last_name ) username, u.id user_id
                     FROM	repair_order ro
                         INNER JOIN repair_order_fix rof ON (rof.repair_order_id = ro.relapse_repair_order_id)
                         INNER JOIN user u ON(u.id = rof.assigned_to)

@@ -21,9 +21,19 @@ class DeviceReplacementType extends AbstractType
             ->add('description', TextareaType::class, array('label'=>"Descripción", 'required'=>false))
             ->add('deviceReplacementType', null, array('label'=>"Tipo de Repuesto", 'required'=>true))
 			->add('deviceBrand', null, array('label'=>"Marca", 'required'=>true))
-			->add('deviceModel', null, array('label'=>"Modelo", 'required'=>true))
-			
+			//->add('deviceModel', null, array('label'=>"Modelo", 'required'=>true))
         ;
+
+        $builder->add('deviceModel', null, array('label'=>"Modelo", 'required' => true,
+            'class' => 'Solucel\AdminBundle\Entity\DeviceModel',
+            'query_builder' => function (\Doctrine\ORM\EntityRepository $er)  use ($options){
+                return $er->createQueryBuilder('Model')
+                    ->where('Moodel.enabled = 1')
+                    //->setParameter('param_operator', $options["operator"]);
+                    ->orderBy("Model.name", "ASC");
+
+            }
+        ));
     }
     
     /**

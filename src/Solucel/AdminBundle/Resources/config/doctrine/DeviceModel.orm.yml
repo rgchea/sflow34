@@ -22,6 +22,12 @@ Solucel\AdminBundle\Entity\DeviceModel:
             options:
                 fixed: false
                 default: ''
+        enabled:
+            type: boolean
+            nullable: false
+            options:
+                default: true
+
         isObsolete:
             type: boolean
             nullable: false

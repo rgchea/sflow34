@@ -772,26 +772,25 @@ class RepairOrderRepository extends \Doctrine\ORM\EntityRepository
 	    $stmt->execute();
 		
 	    $execute = $stmt->fetchAll();
-	    
 				
 		return $execute;	
 		
 				
 	}
 	
-	
-	
+
 	//public function findReplacement($term, $model){//use to be by model
 		public function findReplacement($term, $brand){
 			
-		$brand = intval(urldecode($brand));	
-
+		$brand = intval(urldecode($brand));
 
 		$sql = "	SELECT 	r.id, r.name, rt.name tipo, r.replacement_code codigo
 					FROM	device_replacement r
 						INNER JOIN device_replacement_type rt ON (rt.id = r.device_replacement_type_id)
 					WHERE	(r.name LIKE '%".$term."%' OR r.replacement_code LIKE '%".$term."%')
-					AND	r.device_brand_id = {$brand}";
+					AND	    r.device_brand_id = {$brand}
+					AND     r.enabled = 1 
+					";
 					
 		//print $sql;die;
 		/*

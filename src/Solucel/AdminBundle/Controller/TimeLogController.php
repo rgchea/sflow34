@@ -57,12 +57,16 @@ class TimeLogController extends Controller
             $orders = $request->request->get('order');
             $columns = $request->request->get('columns');
 
+            //$arrDate["start"] =  isset($_REQUEST["start"]) ?  trim($_REQUEST["start"]) : date("Y-m-d");
+            //$arrDate["end"] =  isset($_REQUEST["end"])  ? trim($_REQUEST["end"]) :date("Y-m-d");
 
             $arrDate["start"] = $request->request->get('start_date');
             $arrDate["end"] = $request->request->get('end_date');
 
             $arrDate["start"] =  trim($arrDate["start"]) != "" ? trim($arrDate["start"]). " 00:00:00" : trim($arrDate["start"]);
-            $arrDate["end"] =  trim($arrDate["end"]) != "" ? trim($arrDate["end"]). " 23:59:59" : trim($arrDate["start"]);
+            $arrDate["end"] =  trim($arrDate["end"]) != "" ? trim($arrDate["end"]). " 23:59:59" : trim($arrDate["end"]);
+
+            //var_dump($arrDate["start"]);die;
         }
         else // If the request is not a POST one, die hard
             die;
@@ -78,12 +82,16 @@ class TimeLogController extends Controller
         }
 
         // Further filtering can be done in the Repository by passing necessary arguments
+        /*
         if(trim($arrDate["start"]) != "" && trim($arrDate["end"]) != ""){
             $otherConditions = $arrDate;
         }
         else{
             $otherConditions = null;
         }
+        */
+        $otherConditions = $arrDate;
+
 
 
         // Get results from the Repository

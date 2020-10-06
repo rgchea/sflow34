@@ -259,7 +259,13 @@ Solucel\AdminBundle\Entity\RepairOrder:
             type: boolean
             nullable: true
             options:
-                default: false            
+                default: false
+        oldData:
+            type: boolean
+            nullable: false
+            options:
+                default: false
+            column: old_data
         enabled:
             type: boolean
             nullable: false

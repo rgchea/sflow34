@@ -26,6 +26,7 @@ class TimeLogRepository extends \Doctrine\ORM\EntityRepository
 
     public function getRequiredDTData($start, $length, $orders, $search, $columns, $otherConditions)
     {
+
         // Create Main Query
         $query = $this->createQueryBuilder('sl');
 
@@ -42,27 +43,16 @@ class TimeLogRepository extends \Doctrine\ORM\EntityRepository
         $countQuery->join('sl.repairOrder', 'ro');
 
 
-        // Other conditions than the ones sent by the Ajax call ?
-        if ($otherConditions === null)
-        {
-            // No
-            // However, add a "always true" condition to keep an uniform treatment in all cases
-            $query->where("1=1");
-            $countQuery->where("1=1");
-        }
-        else
-        {
-            // Add date condition
-            $query->where('sl.createdAt BETWEEN :startDate AND :endDate')
-                ->setParameter('startDate', $otherConditions["start"])
-                ->setParameter('endDate', $otherConditions["end"]);
-            //$countQuery->where($otherConditions);
-            $countQuery->where('sl.createdAt BETWEEN :startDate AND :endDate')
-                ->setParameter('startDate', $otherConditions["start"])
-                ->setParameter('endDate', $otherConditions["end"]);
+        //var_dump(date("Y-m-d H:i:s", strtotime($otherConditions["start"])));die;
 
+        $query->andWhere('sl.createdAt >= :startDate AND sl.createdAt <= :endDate')
+            ->setParameter('startDate', date("Y-m-d H:i:s", strtotime($otherConditions["start"])) )
+            ->setParameter('endDate', date('Y-m-d H:i:s', strtotime($otherConditions["end"] . ' +1 day')));
 
-        }
+        $countQuery->andWhere('sl.createdAt >= :startDate AND sl.createdAt <= :endDate')
+            ->setParameter('startDate', date("Y-m-d H:i:s", strtotime($otherConditions["start"])) )
+            ->setParameter('endDate', date('Y-m-d H:i:s', strtotime($otherConditions["end"] . ' +1 day')));
+
 
         // Fields Search
         foreach ($columns as $key => $column)

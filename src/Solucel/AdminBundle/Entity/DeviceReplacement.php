@@ -258,4 +258,33 @@ class DeviceReplacement
     {
         return $this->strdatabase;
     }
+    /**
+     * @var boolean
+     */
+    private $enabled = true;
+
+
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     *
+     * @return DeviceReplacement
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
 }

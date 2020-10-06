@@ -57,7 +57,8 @@ class RepairOrderType extends AbstractType
 					'choices' => array('PostPago' => 'Postpago', 'Prepago' => 'Prepago')))
 			->add('deviceType', null, array('label'=>"Tipo de dispositivo", 'required'=>true))
 			->add('deviceBrand', null, array('label'=>"Marca", 'required'=>true))
-			->add('deviceModel', null, array('label'=>"Modelo", 'required'=>true))
+
+
 			->add('deviceColor', null, array('label'=>"Color", 'required'=>true))
 			->add('deviceImei', null, array('label'=>"IMEI", 'required'=>true))
 			->add('deviceImei2', null, array('label'=>"IMEI2", 'required'=>false))
@@ -84,10 +85,19 @@ class RepairOrderType extends AbstractType
 			->add('repairEntryType', null, array('label'=>"Tipo de ingreso", 'required'=>true))
 			->add('invoiceNumber', null, array('label'=>"Número de Factura", 'required'=>true))
 			->add('humidity', null, array('label'=>"Ingreso por Humedad", 'required'=>false))
-			
 			;
 			
-			
+
+            $builder->add('deviceModel', null, array('label'=>"Modelo", 'required' => true,
+                'class' => 'Solucel\AdminBundle\Entity\DeviceModel',
+                'query_builder' => function (\Doctrine\ORM\EntityRepository $er)  use ($options){
+                    return $er->createQueryBuilder('Model')
+                        ->where('Model.enabled = 1')
+                        //->setParameter('param_operator', $options["operator"]);
+                        ->orderBy("Model.name", "ASC");
+
+                }
+            ));
 
 			//operator filter
 			if(intval($options["operator"]) != 0){

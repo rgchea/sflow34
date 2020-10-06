@@ -237,7 +237,6 @@ class GraphController extends Controller
                 $arrSpeedometerOnTime = array();
             }
 
-
             //print "<pre>";
             //var_dump($arrSpeedometer);die;
 
@@ -250,7 +249,6 @@ class GraphController extends Controller
             $arrStats["strRelapseByYearPercentage"] = $strRelapseByYearPercentage;
             $arrStats["strResponseTime"] = $strResponseTime;
             $arrStats["arrSpeedometerOnTime"] = $arrSpeedometerOnTime;
-
 
             //print "<pre>";
             //var_dump($arrStats["strRelapseByYearPercentage"]);

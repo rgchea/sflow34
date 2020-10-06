@@ -50,6 +50,12 @@ Solucel\AdminBundle\Entity\DeviceReplacement:
             length: 65535
             options:
                 fixed: false
+        enabled:
+            type: boolean
+            nullable: false
+            options:
+                default: true
+
     manyToOne:
         deviceReplacementType:
             targetEntity: DeviceReplacementType

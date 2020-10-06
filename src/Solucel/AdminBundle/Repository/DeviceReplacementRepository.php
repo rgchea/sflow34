@@ -51,7 +51,8 @@ class DeviceReplacementRepository extends \Doctrine\ORM\EntityRepository
 
 
         //ENABLED
-
+        $query->andWhere("u.enabled = 1");
+        $countQuery->andWhere("u.enabled = 1");
 
         // Fields Search
         foreach ($columns as $key => $column)

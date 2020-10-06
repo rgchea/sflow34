@@ -1554,4 +1554,33 @@ class RepairOrder
     {
         return $this->relapseRepairOrder;
     }
+    /**
+     * @var boolean
+     */
+    private $oldData = false;
+
+
+    /**
+     * Set oldData
+     *
+     * @param boolean $oldData
+     *
+     * @return RepairOrder
+     */
+    public function setOldData($oldData)
+    {
+        $this->oldData = $oldData;
+
+        return $this;
+    }
+
+    /**
+     * Get oldData
+     *
+     * @return boolean
+     */
+    public function getOldData()
+    {
+        return $this->oldData;
+    }
 }

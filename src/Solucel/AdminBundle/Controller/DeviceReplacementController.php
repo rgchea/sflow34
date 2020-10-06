@@ -35,7 +35,6 @@ class DeviceReplacementController extends Controller
     private $session;
 
 
-
     // Set up all necessary variable
     protected function initialise()
     {
@@ -47,9 +46,7 @@ class DeviceReplacementController extends Controller
         $this->userLogged = $this->session->get('userLogged');
         $this->role = $this->session->get('userLogged')->getRole()->getName();
 
-
     }
-	
 
 	
     /**
@@ -250,60 +247,37 @@ class DeviceReplacementController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
-	
-    /**
-     * Deletes a DeviceReplacement entity.
-     *
-     */
+
+
     public function deleteAction(Request $request, $id)
     {
-    	$this->get("services")->setVars('deviceReplacement');	
+
+        $this->get("services")->setVars('deviceReplacement');
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SolucelAdminBundle:DeviceReplacement')->find($id);		
+        $entity = $em->getRepository('SolucelAdminBundle:DeviceReplacement')->find($id);
         $form = $this->createDeleteForm($entity);
         $form->handleRequest($request);
 
-        //if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('SolucelAdminBundle:DeviceReplacement')->find($entity);
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Replacement entity.');
+        }
+        else{
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find DeviceReplacement entity.');
-            }
+            //SOFT DELETE
+            $entity->setEnabled(0);
+            //$customHelper->blameOnMe($entity);
+            $this->em->persist($entity);
+            $this->em->flush();
 
+        }
 
-			try{
-				
-	            $em->remove($entity);
-	            $em->flush();        		
-			
-            } catch (\Doctrine\DBAL\DBALException $e) {
-            	//var_dump($e->getCode());die;
-                if ($e->getCode() == 0)
-                {
-                	//var_dump($e->getPrevious()->getCode());die;
-                    if (intval($e->getPrevious()->getCode()) == 23000)
-                    {
-                        $this->get('services')->flashWarningForeignKey($request);
-                        return $this->redirectToRoute('solucel_admin_devicereplacement_index');
-                    }
-                    else
-                    {
-                        throw $e;
-                    }
-                }
-                else
-                {
-                    throw $e;
-                }
-            }      		
-        	
-        //}
-		
-		$this->get('services')->flashSuccess($request);
+        $this->get('services')->flashSuccess($request);
         return $this->redirectToRoute('solucel_admin_devicereplacement_index');
+
     }
+	
+
 
     /**
      * Creates a form to delete a DeviceReplacement entity.
@@ -320,9 +294,7 @@ class DeviceReplacementController extends Controller
             ->getForm()
         ;
     }
-	
-	
-	
+
 	
     /**
      * Creates a new DeviceReplacement entity.
@@ -521,7 +493,6 @@ class DeviceReplacementController extends Controller
 						$entity = $entity[0];
 					} 
 					else{
-						
 						$entity = new ReplacementType();
 						$entity->setName($replacementType);
 			            $em->persist($entity);
@@ -564,6 +535,7 @@ class DeviceReplacementController extends Controller
 						//$entity->setStyle($field);
 						$entity->setDeviceBrand($objBrand);
 						$entity->setIsObsolete(0);
+                        $entity->setEnabled(1);
 						
 			            $em->persist($entity);
 			            $em->flush();
@@ -581,6 +553,7 @@ class DeviceReplacementController extends Controller
 					$objReplacement->setStrdatabase($database);
 					$objReplacement->setDeviceReplacementType($objDeviceReplacementType);
 					$objReplacement->setDescription("");
+                    $objReplacement->setEnabled(1);
     				$em->persist($objReplacement);
 
 				 }
@@ -598,12 +571,16 @@ class DeviceReplacementController extends Controller
 
 
 	public function findEntity($entity, $searchTerm){
-		
+
 		$em = $this->getDoctrine()->getManager();
 		$qb = $em->createQueryBuilder();		
 		$obj = $qb->select('x')->from($entity, 'x')
-				->where( $qb->expr()->like('x.name', $qb->expr()->literal('%' . trim($searchTerm). '%')) )
-				->getQuery()
+				->where( $qb->expr()->like('x.name', $qb->expr()->literal('%' . trim($searchTerm). '%')) );
+
+                if( ($entity == 'Solucel\AdminBundle\Entity\DeviceBrand') || ($entity == "Solucel\AdminBundle\Entity\DeviceModel") ){
+                    $qb->andWhere('x.enabled = 1');
+                }
+				$qb->getQuery()
 				->getResult();
 				
 		return $obj;

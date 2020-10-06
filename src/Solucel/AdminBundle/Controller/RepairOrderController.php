@@ -918,9 +918,7 @@ class RepairOrderController extends Controller
     {
     	$this->get("services")->setVars('repairOrderNew');
         $em = $this->getDoctrine()->getManager();
-		
-		
-		
+
         $entity = $em->getRepository('SolucelAdminBundle:RepairOrder')->find($id);
 		$states = $em->getRepository('SolucelAdminBundle:State')->findAll();
 				
@@ -1282,10 +1280,10 @@ class RepairOrderController extends Controller
             'brand' => $session->get("user_device_brand"),
             'center' => $session->get("user_service_center"),
             'operator' => $session->get("user_operator"),
+            //'old_data' => 0
             
             //'client' => $this->userLogged,
         ));
-
 
         return $form;
     }	
@@ -1310,6 +1308,7 @@ class RepairOrderController extends Controller
             'brand' => $session->get("user_device_brand"),
             'center' => $session->get("user_service_center"),
             'operator' => $session->get("user_operator"),
+            //'old_data' => $entity->getOldData()
             //'client' => $this->userLogged,
         ));
 
@@ -1531,7 +1530,16 @@ class RepairOrderController extends Controller
     {
     	
 		$em = $this->getDoctrine()->getManager();
-		$models = $em->getRepository('SolucelAdminBundle:DeviceModel')->findBy(array("deviceBrand"=> intval($_REQUEST["device_brand_id"])), array( "name" => "ASC"));		
+
+		$isOldData = intval($_REQUEST["isOldData"]);
+
+		if($isOldData){
+            $models = $em->getRepository('SolucelAdminBundle:DeviceModel')->findBy(array("deviceBrand"=> intval($_REQUEST["device_brand_id"])), array( "name" => "ASC"));
+        }
+		else{
+            $models = $em->getRepository('SolucelAdminBundle:DeviceModel')->findBy(array("enabled" => 1,  "deviceBrand"=> intval($_REQUEST["device_brand_id"])), array( "name" => "ASC"));
+        }
+
 		
 		$arrDeviceModel = array();
 

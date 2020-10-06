@@ -277,7 +277,7 @@
 				                        <div class="form-group col-md-6">
 				                            {{ form_label(form.hasWarranty) }}
 				                            {{ form_errors(form.hasWarranty) }}
-				                            {{ form_widget(form.hasWarranty, { 'attr': {'class' : 'select2-search' } }
+				                            {{ form_widget(form.hasWarranty, { 'attr': {'class' : 'select2-search', 'required': "" } }
 				                            ) }}	                        	
 				                        	{#
 											<label for="repair_order_fix_hasWarranty">Tiene Garantía</label>
@@ -933,12 +933,9 @@
     	//console.log('{{replacementCount}}');
     	if('{{replacementCount}}' > 1){
    	
-	    	$('#pizote_spinner').show();
-	    	
+	    	//$('#pizote_spinner').show();
 	
 			var orderID = '{{orderID}}';
-			
-	
 			$.ajax({
 				
 				type:"POST",
@@ -962,7 +959,6 @@
 				else{
 
 					  $.each( data.availability, function( key, val ) {
-					  	
 					  	
 					  	quantity = $("#repair_order_replacement_quantity_"+key).val();
 					  	globalTotal = globalTotal + (val.price*quantity);
@@ -1047,20 +1043,13 @@
 							  	 
 							  	 $('#repairmentConfirmation').hide();
 							  		
-							  }				    		
-						    												    	
+							  }
 				    	}
-				    						  
 				  
-						$("#repair_order_fix_fixingPrice").val(globalTotal.toFixed(2)); 					
-					
+						$("#repair_order_fix_fixingPrice").val(globalTotal.toFixed(2));
 				}
-					
-						
-						  
-				$('#pizote_spinner').hide();
-		
-									
+
+					$('#pizote_spinner').hide();
 				}
 			}); 		
 	    	    		
@@ -1165,6 +1154,8 @@
     }
     
 	$(document).ready(function() {
+
+		$('#pizote_spinner').hide();
 		
 	  $(window).keydown(function(event){
 	    if(event.keyCode == 13) {

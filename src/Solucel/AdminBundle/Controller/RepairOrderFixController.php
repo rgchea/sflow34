@@ -22,6 +22,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+define("REPINVENTORY", "http://192.227.87.166/Solucel_ws/RepInventory.asmx?wsdl");
+define("MYDATABASE", "SOLUCEL");
 
 /**
  * RepairOrderFix controller.
@@ -29,6 +31,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class RepairOrderFixController extends Controller
 {
+
+
+
     /**
      * Lists all RepairOrderFix entities.
      *
@@ -148,17 +153,18 @@ class RepairOrderFixController extends Controller
 
     	$session = new Session();
         $em = $this->getDoctrine()->getManager();
-
 		$user = $session->get('user_logged');
+
+        date_default_timezone_set('America/Guatemala');
 
 		/*
 		print "<pre>";
 		var_dump($_REQUEST);die;
 		 * */
 
-		$orderID =  $_REQUEST["orderID"];
-		$orderFixID = $_REQUEST["entityID"];
-		$disccount = $_REQUEST["orderID"];
+		$orderID =  intval($_REQUEST["orderID"]);
+		$orderFixID = intval($_REQUEST["entityID"]);
+		$disccount = intval($_REQUEST["orderID"]);
 
 
 		$replacements = $em->getRepository('SolucelAdminBundle:RepairOrderDeviceReplacement')->findByRepairOrder($orderID);
@@ -174,19 +180,13 @@ class RepairOrderFixController extends Controller
 		///////total del doc
 		$totalDoc = 0;
 
-
 		///SAP WS
 
 		 //PROD
 		//http://143.208.180.250:21489/pedidos/RepInventory.asmx
 
-		//DEV
-		//http://143.208.180.250:21489/webserviceinventoryTest/RepInventory.asmx
-
-		$client = new \nusoap_client("http://143.208.180.250:21489/pedidos/RepInventory.asmx?wsdl", "wsdl");
-		$client->setEndPoint("http://143.208.180.250:21489/pedidos/RepInventory.asmx?wsdl");
-
-
+		$client = new \nusoap_client(REPINVENTORY, "wsdl");
+		$client->setEndPoint(REPINVENTORY);
 
 		//var_dump($client);die;
 		//$client->se
@@ -213,7 +213,6 @@ class RepairOrderFixController extends Controller
 					echo 'Error ' . $err ;
 					die;
 				 * */
-
 				 $result = 0;
 
 			} else {		// Muestra el resultado
@@ -224,7 +223,8 @@ class RepairOrderFixController extends Controller
 
 				//print "entra aca no hay error en el constructor";die;
 
-				$now = date("Y-m-d") . 'T' . date("H:i:s");
+				//$now = date("Y-m-d") . 'T' . date("H:i:s");
+                $now = date("Y-m-d");
 				//print $now;die;
 
 				foreach ($replacements as $replacement) {
@@ -243,12 +243,9 @@ class RepairOrderFixController extends Controller
 				$return = array();
 				$return["request"] = array();
 
-
-
 				foreach ($replacements as $replacement) {
 
 					//var_dump($replacement->getId());die;
-
 
 					//print $value["cost"];
 					$DetalleOrden = array();
@@ -267,21 +264,27 @@ class RepairOrderFixController extends Controller
 					///codBodega
 					$DetalleOrden['cTipoMoneda'] = 'QTZ';
 					$DetalleOrden['cCardCode'] = $clientCode;
+                    //$DetalleOrden['cCardCode'] = "CL10050";
 					$DetalleOrden['cTotalDoc'] = floatval($totalDoc);
 
 					$objReplacement = $em->getRepository('SolucelAdminBundle:DeviceReplacement')->find($replacement->getDeviceReplacement()->getId());
 					$DetalleOrden['cCodRepuesto'] = $objReplacement->getReplacementCode();
+                    //$DetalleOrden['cCodRepuesto'] = "Y0118BCA051A";
 					$DetalleOrden['cCantidad'] = $replacement->getQuantity();
+                    //$DetalleOrden['cCantidad'] = 2;
 					//$DetalleOrden['cDescripcion'] = $objReplacement->getName();
 					//$linePrice = intval($value["quantity"]) * (floatval($value["price"]) + floatval($value["cost"]) );
 					$linePrice = intval($replacement->getQuantity()) * (floatval($replacement->getPrice()) );
 					$DetalleOrden['cLinePriceAfterVat'] = floatval(number_format($linePrice, 2)) ;
-					$DetalleOrden['cBodega'] = $objOrderFix->getAssignedTo()->getServiceCenter()->getStorehouse()->getStorehouseCode();
-					$DetalleOrden['cDiscountPercent'] = 0.0;
+					$DetalleOrden['cBodega'] = $objOrder->getServiceCenter()->getStorehouse()->getStorehouseCode();
+                    //$DetalleOrden['cBodega'] = "01";
+					$DetalleOrden['cDiscountPercent'] = 0;
 					$DetalleOrden['cBoleta'] =  strval($objOrder->getId())."";
+                    //$DetalleOrden['cBoleta'] =  "656D5FSDjj";
 					$DetalleOrden['cBD'] =  $db;
+                    //$DetalleOrden['cBD'] =  MYDATABASE;
 
-					$DetalleOrden['cResultado'] = "";
+					$DetalleOrden['cResultado'] = 1;
 
 					$arrTMP[] = $DetalleOrden;
 
@@ -293,8 +296,10 @@ class RepairOrderFixController extends Controller
 
 				}
 
+                //var_dump($arrTMP);die;
 				$return["request"] = $arrTMP;
 
+				//call order
 				 $response = $client->call('Order', array('DetalleOrdenList' => array("DetalleOrden" => $arrTMP)));
 				 //var_dump($response);die;
 				 //chea change
@@ -355,7 +360,6 @@ class RepairOrderFixController extends Controller
         public string cResultado { Este es de control interno }
 		 * */
 
-
 		 //var_dump($now);die;
 
 		if($result){
@@ -383,8 +387,6 @@ class RepairOrderFixController extends Controller
 	}
 
 
-
-
 	public function requestSAPAction(Request $request){
 
     	$session = new Session();
@@ -397,26 +399,18 @@ class RepairOrderFixController extends Controller
 		$arrReplacements = $_REQUEST["arrValues"];
 
 		//WSDL CLIENT
-
-		//PROD
-		//http://143.208.180.250:21489/pedidos/RepInventory.asmx
-
-		//DEV
-		//http://143.208.180.250:21489/webserviceinventoryTest/RepInventory.asmx
-
-		//$client = new \nusoap_client("http://143.208.180.250:21489/pedidos/RepInventory.asmx?wsdl", "wsdl");
+		$client = new \nusoap_client(REPINVENTORY, "wsdl");
 		//$client->setEndPoint("http://143.208.180.250:21489/pedidos/RepInventory.asmx?wsdl");
-
+        $client->setEndPoint(REPINVENTORY);
 
 		//var_dump($client);die;
 
-		/*
 		$err = $client->getError();
 		if ($err) {
 			print 'Error en Constructor' . $err ;
 			return false;
 			die;
-		}*/
+		}
 
 		$orderID = $request->get("orderID");
 		$objOrder = $em->getRepository('SolucelAdminBundle:RepairOrder')->find($orderID);
@@ -438,25 +432,18 @@ class RepairOrderFixController extends Controller
 		$replacementAvailability = 1;//este es la disponibilidad en general de los repuestos
 		$replacementsTotalAmount = 0;
 
-
 		$warranty = intval($objOrderFix->getHasWarranty());
-
 
 		/*
 		if($warranty){
-
-
 			$objOrderFix->setClientRepairmentConfirmation(1);
 			$em->persist($objOrderFix);
 			$em->flush();
 		}
 		else{
-
-
 			$objOrderFix->setClientRepairmentConfirmation(0);
 			$em->persist($objOrderFix);
 			$em->flush();
-
 		}
 		 * */
 
@@ -465,7 +452,9 @@ class RepairOrderFixController extends Controller
 		$return["request"] = array();
 		
 		$boolAvailable = 1;
-		
+
+
+		/*
 		foreach ($arrReplacements as $replacement => $arr) {
 			
 			$key = $replacement;//indice de contador
@@ -477,28 +466,27 @@ class RepairOrderFixController extends Controller
 			
 			$quantity = intval($arr["quantity"]);
 			
-					$availability[$key]["availability"]	= 1;
-					$availability[$key]["price"] = floatval(0.00);
-					//$availability[$key]["cost"] = floatval($result["Costo"]);
-					//$availability[$key]["total"] = $quantity * floatval($result["Precio"] + $result["Costo"]);			
-			
-					$objOrderReplacement = $em->getRepository('SolucelAdminBundle:RepairOrderDeviceReplacement')->findBy(array("repairOrder"=> $orderID, "deviceReplacement" => $replacementID));
-					$objOrderReplacement = $objOrderReplacement[0];
+            $availability[$key]["availability"]	= 1;
+            $availability[$key]["price"] = floatval(0.00);
+            //$availability[$key]["cost"] = floatval($result["Costo"]);
+            //$availability[$key]["total"] = $quantity * floatval($result["Precio"] + $result["Costo"]);
 
+            $objOrderReplacement = $em->getRepository('SolucelAdminBundle:RepairOrderDeviceReplacement')->findBy(array("repairOrder"=> $orderID, "deviceReplacement" => $replacementID));
+            $objOrderReplacement = $objOrderReplacement[0];
 
-					//var_dump($objOrderReplacement);die;
-					$objOrderReplacement->setPrice(floatval(0.00));
-					$objOrderReplacement->setCost(0);
-					$objOrderReplacement->setAvailable($boolAvailable);
+            //var_dump($objOrderReplacement);die;
+            $objOrderReplacement->setPrice(floatval(0.00));
+            $objOrderReplacement->setCost(0);
+            $objOrderReplacement->setAvailable($boolAvailable);
 
-					$em->persist($objOrderReplacement);
-					$em->flush();
-			
+            $em->persist($objOrderReplacement);
+            $em->flush();
 			
 		}
+		*/
 
-		/*	
 
+        ///comment
 		foreach ($arrReplacements as $replacement => $arr) {
 
 			//var_dump($arr);die;
@@ -509,8 +497,6 @@ class RepairOrderFixController extends Controller
 			$replacementCode = $objReplacement->getReplacementCode();
 			$strdatabase =  $objReplacement->getStrdatabase();
 			$db = $strdatabase == "" ? "SOLUCEL": $strdatabase;
-
-
 
 			$quantity = intval($arr["quantity"]);
 
@@ -526,21 +512,28 @@ class RepairOrderFixController extends Controller
 			//nusoap_client ($endpoint, $wsdl=false, $proxyhost=false, $proxyport=false, $proxyusername=false, $proxypassword=false, $timeout=0, $response_timeout=30, $portName= '')
  			//call ($operation, $params=array(), $namespace='http://tempuri.org', $soapAction='', $headers=false, $rpcParams=null, $style='rpc', $use='encoded')
 
-			/*
-			$requestArray = array('CodRepuesto'=>$replacementCode,
+
+			$requestArray = array(
+			                        'CodRepuesto'=>$replacementCode,
+                                    //'CodRepuesto'=>"Y0118BCA051A",
 									'CodBodega'=>$storehouseCode,
+                                    //'CodBodega'=>"01",
 									'CodCliente'=>$clientCode,
+                                    //'CodCliente'=>"CL10050",
 									'Cantidad'=>$quantity,
 									'Confirmado'=>'0',
 									'bd'=>$db,
+                                    //'bd'=>MYDATABASE
 									);
 
 			$return["request"][] = $requestArray;
+			//print "<pre>";
 			//var_dump($requestArray);
 
 			$response = $client->call('GetInventoryXml', $requestArray);
-									//http://localhost/GetInventory/", "http://localhost/GetInventory/GetInventoryXml");
+            //http://localhost/GetInventory/", "http://localhost/GetInventory/GetInventoryXml");
 
+            //print "<pre>";
 			//var_dump($response);die;
 
 			if ($client->fault) {
@@ -564,10 +557,12 @@ class RepairOrderFixController extends Controller
 					 
 					//return $response["GetInventoryXmlResult"];
 					//$requestResponse[$replacement] = $response["GetInventoryXmlResult"];
+                    //print "<pre>";
+                    //var_dump($response);die;
 					//var_dump($response["GetInventoryXmlResult"]);die;
 					$result = $response["GetInventoryXmlResult"];
 					$boolAvailable = 0;//este es por la disponibilidad individual de cada repuesto
-					if($result["Cantidad"] >= $quantity){
+					if(intval($result["Cantidad"]) >= $quantity){
 						$boolAvailable = 1;
 					}
 					else{
@@ -596,20 +591,19 @@ class RepairOrderFixController extends Controller
 
 					$availability[$key]["availability"]	= $boolAvailable;
 					$availability[$key]["price"] = floatval($result["Precio"]);
-					//$availability[$key]["cost"] = floatval($result["Costo"]);
+					$availability[$key]["cost"] = floatval($result["Costo"]);
 					//$availability[$key]["total"] = $quantity * floatval($result["Precio"] + $result["Costo"]);
 
 					$replacementsTotalAmount += $quantity * floatval($result["Precio"]);
 
 					//$availability["total"] += $availability[$replacement]["total"];
 					///ACA GUARDAR EN BASE DE DATOS POR CADA UNO DE LOS REPUESTOS
-					$objOrderReplacement = $em->getRepository('SolucelAdminBundle:RepairOrderDeviceReplacement')->findBy(array("repairOrder"=> $orderID, "deviceReplacement" => $replacementID));
-					$objOrderReplacement = $objOrderReplacement[0];
-
+					$objOrderReplacement = $em->getRepository('SolucelAdminBundle:RepairOrderDeviceReplacement')->findOneBy(array("repairOrder"=> $orderID, "deviceReplacement" => $replacementID));
 
 					//var_dump($objOrderReplacement);die;
 					$objOrderReplacement->setPrice(floatval($result["Precio"]));
-					$objOrderReplacement->setCost(0);
+					//$objOrderReplacement->setCost(0);
+					$objOrderReplacement->setCost(floatval($result["Costo"]));
 					$objOrderReplacement->setAvailable($boolAvailable);
 
 					$em->persist($objOrderReplacement);
@@ -618,14 +612,11 @@ class RepairOrderFixController extends Controller
 			}
 		}
 		//end foreach
-		*/
 
+        //die;
 
 		///ACA CONSULTAR LA BASE DE DATOS INTERNA PARA EL STOCK
-
-
 		//var_dump($warranty);die;
-
 		if($warranty){
 
 			$objOrderFix->setClientRepairmentRequest(1);
@@ -645,7 +636,6 @@ class RepairOrderFixController extends Controller
 		}
 		else{
 			//PENDIENTE CONFIRMACION DE COSTO?
-
 
 			if($clientConfirmation == 0){
 				//enviar correo al cliente para confirmacion de la orden
@@ -670,7 +660,6 @@ class RepairOrderFixController extends Controller
 
 
 		}
-
 
 
 		$status = $em->getRepository('SolucelAdminBundle:RepairStatus')->findByName($newStatus);
@@ -833,7 +822,6 @@ class RepairOrderFixController extends Controller
 		var_dump($response);
 		die;
 		 * */
-
 
 		$this->get("services")->setVars('repairOrderFix');
     	$session = new Session();
@@ -1257,15 +1245,10 @@ class RepairOrderFixController extends Controller
 		}
 
 
-
-
-
-
 		/*
 		print "<pre>";
 		var_dump($_REQUEST);die;
 		 * */
-
 
         $deleteForm = $this->createDeleteForm($entity);
         $editForm = $this->createEditForm($entity);
@@ -1273,10 +1256,6 @@ class RepairOrderFixController extends Controller
 
 		//die((string) $editForm->getErrors(true));
         if ($editForm->isValid()) {
-
-
-
-
 
             //requisitionNumber
             if(isset($_REQUEST["repair_order_fix"]["requisitionNumber"])){
@@ -1356,7 +1335,6 @@ class RepairOrderFixController extends Controller
 
 		////GROUP BY TYPE IN SELECT
 
-
 		$em = $this->getDoctrine()->getManager();
 		//$entities = $em->getRepository('SolucelAdminBundle:DeviceReplacement')->findAll();
 
@@ -1426,9 +1404,8 @@ class RepairOrderFixController extends Controller
 	}
 
 
-	//public function replacementFindAction(Request $request, $model){//use to be by model
-		public function replacementFindAction(Request $request, $brand){//brandID
-
+	//public function replacementFindAction(Request $request, $model){//used to be by model
+    public function replacementFindAction(Request $request, $brand){//brandID
 
         $term = trim(strip_tags($request->get('term')));
 

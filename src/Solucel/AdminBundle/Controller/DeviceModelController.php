@@ -33,15 +33,13 @@ class DeviceModelController extends Controller
 		
 		if($deviceBrand != NULL){
 			
-			$entities = $em->getRepository('SolucelAdminBundle:DeviceModel')->findBy(array("deviceBrand" => $deviceBrand->getId()));
+			$entities = $em->getRepository('SolucelAdminBundle:DeviceModel')->findBy(array("deviceBrand" => $deviceBrand->getId(), 'enabled' => 1), array("name", "ASC"));
 			
 		}
 		else{
-			$entities = $em->getRepository('SolucelAdminBundle:DeviceModel')->findAll();
+			$entities = $em->getRepository('SolucelAdminBundle:DeviceModel')->findBy(array('enabled' => 1), array("name", "ASC"));
 		}		
 
-
-        
 
         return $this->render('SolucelAdminBundle:DeviceModel:index.html.twig', array(
             'entities' => $entities,
@@ -119,54 +117,33 @@ class DeviceModelController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-    	
-		$this->get("services")->setVars('deviceModel');
+
+        $this->get("services")->setVars('deviceModel');
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SolucelAdminBundle:DeviceModel')->find($id);		
+        $entity = $em->getRepository('SolucelAdminBundle:DeviceModel')->find($id);
         $form = $this->createDeleteForm($entity);
         $form->handleRequest($request);
 
-        //if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('SolucelAdminBundle:DeviceModel')->find($entity);
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Model entity.');
+        }
+        else{
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find DeviceModel entity.');
-            }
+            //SOFT DELETE
+            $entity->setEnabled(0);
+            //$customHelper->blameOnMe($entity);
+            $this->em->persist($entity);
+            $this->em->flush();
 
+        }
 
-			try{
-				
-	            $em->remove($entity);
-	            $em->flush();        		
-			
-            } catch (\Doctrine\DBAL\DBALException $e) {
-            	//var_dump($e->getCode());die;
-                if ($e->getCode() == 0)
-                {
-                	//var_dump($e->getPrevious()->getCode());die;
-                    if (intval($e->getPrevious()->getCode()) == 23000)
-                    {
-                        $this->get('services')->flashWarningForeignKey($request);
-                        return $this->redirectToRoute('solucel_admin_devicemodel_index');
-                    }
-                    else
-                    {
-                        throw $e;
-                    }
-                }
-                else
-                {
-                    throw $e;
-                }
-            }     		
-        	
-        //}
-		
-		$this->get('services')->flashSuccess($request);
+        $this->get('services')->flashSuccess($request);
         return $this->redirectToRoute('solucel_admin_devicemodel_index');
+
     }
+
+
 
     /**
      * Creates a form to delete a DeviceModel entity.

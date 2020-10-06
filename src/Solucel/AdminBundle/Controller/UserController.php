@@ -28,9 +28,7 @@ class UserController extends Controller
 {
 
     protected $em;
-
     protected $repository;
-    private  $renderer;
     private $userLogged;
     private $role;
     private $session;
@@ -43,11 +41,8 @@ class UserController extends Controller
         $this->session = new Session();
         $this->em = $this->getDoctrine()->getManager();
         $this->repository = $this->em->getRepository('SolucelAdminBundle:User');
-
-        $this->renderer = $this->get('templating');
         $this->userLogged = $this->session->get('userLogged');
         $this->role = $this->session->get('userLogged')->getRole()->getName();
-
 
     }
 
@@ -67,9 +62,6 @@ class UserController extends Controller
             'role' => $this->role
         ));
     }
-
-
-
 
 
     public function listDatatablesAction(Request $request)
@@ -99,13 +91,11 @@ class UserController extends Controller
         $arrTMP = array();
         $user = $this->session->get("user_logged");
 
-        $serviceCenter = $user->getServiceCenter() == null ? 0 : $user->getServiceCenter()->getId();
-
-        $userFilters = $this->repository->getUserFilters($user->getId(), $serviceCenter);
+        //$serviceCenter = $user->getServiceCenter() == null ? 0 : $user->getServiceCenter()->getId();
 
         //var_dump($myArray);die;
 
-        $results = $this->repository->getRequiredDTData($start, $length, $orders, $search, $columns, $userFilters);
+        $results = $this->repository->getRequiredDTData($start, $length, $orders, $search, $columns);
         $objects = $results["results"];
         $selected_objects_count = count($objects);
         //var_dump($selected_objects_count);die;
@@ -149,11 +139,13 @@ class UserController extends Controller
                         $responseTemp = $entity->getName()." ".$entity->getLastName();
                         break;
                     }
+
                     case 'email':
                     {
                         $responseTemp = $entity->getEmail();
                         break;
                     }
+
 
                     case 'enabled':
                     {
@@ -170,7 +162,13 @@ class UserController extends Controller
                         $urlDelete = $this->generateUrl('solucel_admin_user_delete', array('id' => $entity->getId()));
                         $delete = "<a class='btn btn-danger btn-delete'  href='".$urlDelete."'><span class='fa fa-trash-o'></span></a>";
 
-                        $responseTemp = $edit.$delete;
+                        $impersonate = "";
+                        if($this->role == "ADMINISTRADOR"){
+                            $urlImpersonate = $this->generateUrl('solucel_admin_homepage')."?_switch_user=".$entity->getUsername();
+                            $impersonate = "<a class='btn btn-sm btn-default' title='Impersonar' href='".$urlImpersonate."'><i class='fa fa-user'></i><span class='item-label'></span></a>&nbsp;&nbsp;";
+                        }
+
+                        $responseTemp = $edit.$delete.$impersonate;
                         break;
                     }
 
@@ -361,6 +359,11 @@ class UserController extends Controller
 		 * */
 		 
 		 /////
+        ///
+        //print "<pre>";
+        //var_dump($_REQUEST);DIE;
+
+
         $plainPassword = $form['password']->getData();
 		
 		$checkExistence = $this->get('services')->checkExistence(trim($_REQUEST["user"]["username"]), trim($_REQUEST["user"]["email"]), 0);
@@ -369,7 +372,20 @@ class UserController extends Controller
 			$entity->setPlainPassword($plainPassword);
             $em = $this->getDoctrine()->getManager();
 			//var_dump($entity);die;
-			
+
+
+            $roleID = intval($_REQUEST["user"]["role"]);
+            $objRole = $this->em->getRepository('SolucelAdminBundle:Role')->find($roleID);
+            $role = $objRole->getName(); //GETS THE NAME
+            $entity->setRole($objRole);
+
+            if($role == "ADMINISTRADOR"){
+                $entity->setRoles(array("ROLE_SUPER_ADMIN"));
+            }
+            else{
+                $entity->setRoles(array("ROLE_USER"));
+            }
+
 			
             $em->persist($entity);
             $em->flush();			
@@ -479,9 +495,9 @@ class UserController extends Controller
     public function updateAction(Request $request, $id)
     {
     	
-		/*
-		print "<pre>";
-		var_dump($_REQUEST["user"]["username"]);die;*/
+
+		//print "<pre>";
+		//var_dump($_REQUEST["user"]);die;
 		
 		$this->get("services")->setVars('user');
     	$session = new Session();
@@ -499,8 +515,7 @@ class UserController extends Controller
         $deleteForm = $this->createDeleteForm($entity);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
-		
-        
+
 
         $plainPassword = trim($editForm['password']->getData());
 		
@@ -523,6 +538,18 @@ class UserController extends Controller
             $this->get('log')->add($text, $user, 'update');
 			 * 
 			 */
+            $roleID = intval($_REQUEST["user"]["role"]);
+            $objRole = $this->em->getRepository('SolucelAdminBundle:Role')->find($roleID);
+            $role = $objRole->getName(); //GETS THE NAME
+            $entity->setRole($objRole);
+
+            if($role == "ADMINISTRADOR"){
+                $entity->setRoles(array("ROLE_SUPER_ADMIN"));
+            }
+            else{
+                $entity->setRoles(array("ROLE_USER"));
+            }
+
 
             $em->flush();
 

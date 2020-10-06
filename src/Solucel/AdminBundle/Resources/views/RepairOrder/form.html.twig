@@ -62,7 +62,12 @@
 
 
                     {{ form_start(form) }}
-						<input type="hidden" value="{{ dateNow }}" name="entryTime">
+
+						{% if new is defined %}
+							<input type="hidden" value="{{ dateNow }}" name="entryTime">
+
+						{% endif %}
+
                     	
 
 						<fieldset id="myFieldset">
@@ -779,6 +784,7 @@
 <script language="JavaScript" type="text/javascript">
 	//jQuery.ajaxSetup({async:false});
 	var daysToRepair = 0;
+	var changeModelCount = 0;
 
 	var defectCount = '{{defectCount}}';
 
@@ -994,6 +1000,9 @@
 		$('#pizote_spinner').hide();
 		
 		$("#editor").attr('style',  'width: 800px;cursor: crosshair;-moz-user-select: text;position:absolute; margin-top: -500px');
+
+		//on ready
+		changeModel();
 		
 	});
 	
@@ -1089,6 +1098,17 @@
 	
 	function changeModel(){
 
+		if(changeModelCount > 1){
+			isOldData = '0';
+		}
+		else{
+			{% if edit is defined %}
+				isOldData = '{{ entity.oldData }}';
+			{% else %}
+				isOldData = '0';
+			{% endif %}
+		}
+
 		isEdit = 0;
 		{% if edit is defined %}
 			isEdit = 1;
@@ -1099,51 +1119,33 @@
 
 
 			{% if edit is defined %}
-
-				$.ajax({
-					type:"POST",
-					async: false,
-					//dataType:"json",
-					dataType:"html",
-					url:"{{ path('solucel_admin_repairorder_device_model') }}",
-					data:{device_brand_id: $("#repair_order_deviceBrand").val(), device_model_id: '{{entity.deviceModel.id}}', isEdit: isEdit},
-					success:function(data){
-
-						$("#repair_order_deviceModel").html(data);
-
-						//sortlist();
-						$('#pizote_spinner').hide();
-					}
-
-				});
-
+				device_model_id =  '{{entity.deviceModel.id}}';
 
 			{% else %}
-
-				$.ajax({
-					type:"POST",
-					async: false,
-					//dataType:"json",
-					dataType:"html",
-					url:"{{ path('solucel_admin_repairorder_device_model') }}",
-					data:{device_brand_id: $("#repair_order_deviceBrand").val(), device_model_id: '0', isEdit: isEdit},
-					success:function(data){
-
-						$("#repair_order_deviceModel").html(data);
-
-						//sortlist();
-						$('#pizote_spinner').hide();
-					}
-
-				});
-
-
+				device_model_id = '0';
 			{% endif %}
+
+			$.ajax({
+				type:"POST",
+				async: false,
+				//dataType:"json",
+				dataType:"html",
+				url:"{{ path('solucel_admin_repairorder_device_model') }}",
+				data:{device_brand_id: $("#repair_order_deviceBrand").val(), device_model_id: device_model_id, isEdit: isEdit, isOldData: isOldData },
+				success:function(data){
+
+					$("#repair_order_deviceModel").html(data);
+					//sortlist();
+					$('#pizote_spinner').hide();
+				}
+
+			});
 
 			$('#pizote_spinner').hide();
 
 		}
-		
+
+		changeModelCount++;
   		
 	}		
 	
