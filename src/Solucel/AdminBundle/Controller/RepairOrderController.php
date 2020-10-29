@@ -2464,6 +2464,422 @@ class RepairOrderController extends Controller
         ));			
 		
 		
-	}	
+	}
+
+
+    public function batchAction(Request $request)
+    {
+
+        $this->get("services")->setVars('repairOrderBatch');
+        $session = new Session();
+
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $session->get('user_logged');
+
+        $role = $user->getRole()->getName();
+
+        //var_dump($role);die;
+        //$role = 'cliente';
+        if ($role != "ADMINISTRADOR") {
+            throw new AccessDeniedException();//
+        }
+
+
+
+        if(isset($_REQUEST["loadSubmit"])){
+            set_time_limit(60000);
+
+
+            $csvData = array();
+            $tmpName = $_FILES['file']['tmp_name'];
+            //$csvAsArray = array_map('str_getcsv', file($tmpName));
+
+
+            $file_handle = fopen($tmpName, 'r');
+            while (!feof($file_handle) ) {
+                $line_of_text[] = fgetcsv($file_handle, 1024);
+            }
+            fclose($file_handle);
+
+            /*
+            print "<pre>";
+            var_dump($line_of_text) ;die;
+             * */
+
+            $error = "";
+
+            foreach ($line_of_text as $key => $value) {
+
+
+                //var_dump(count($value));die;
+
+                ///check columns on row
+                if(count($value) != 27){
+                    continue;
+                }
+
+                if($key != 0){
+
+                    //print "<pre>";
+                    //var_dump($value);die;
+
+                    //PRINT "ENTRA 1";DIE;
+                    //**buscarlo en base de datos y sustituir con ID
+
+                    //0 - boleta No//
+                    //1 - guia entrada
+                    //2 - operador// name match
+                    //3 - agencia// name match
+                    //4 - centro de servicio // name match
+                    //5 - fecha ingreso // y-m-d
+                        //Fecha Estimada de Entrega
+                    //6 - código de cliente //client_code: CL00001
+                    //7 - tipo de dispositivo //name match
+                    //8 - plan //name match
+                    //9 - marca //name match
+                    //10- modelo - //name match
+                    //11- color - //name match
+                    //12 - fecha de compra del dispositivo // y-m-d
+                    //13 - Número Asociado
+                    //14 -  IMEI
+                    //15 -  MSN
+                    //16 - XCVR
+                    //17 - Código de fabricación
+                    //18 - Número de Factura
+                        //tipo de ingreso //repair_entry_type_id
+                    //19 - Ingreso por humedad // si-no
+                    //20 - falla 1
+                    //21 - falla 2
+                    //22 - Descripción del problema
+                    //23 - observaciones
+                    //24 - estado //default 1 = INGRESADO
+
+                    //--EXTRA FIELDS--//
+                    //25 - accesorio 1
+                    //26 - accesorio 2
+
+
+                    //-- TECH FIELDS--//
+
+                    //27 - garantía // si-no
+                    //28 - detalle de reparación
+                    //29 - reparación // name match
+                    //30 - repuesto 1 // replacement_code
+                    //31 - repuesto 2 // replacement_code
+                    //32 - comentario sobre garantía
+
+                    $ticketNumber = trim($value[0]);
+                    $guideIn = trim($value[1]);
+                    $operator = trim($value[2]);
+                    $agency = trim($value[3]);
+                    $serviceCenter = trim($value[4]);
+                    $entryDate = trim($value[5]);
+                    $clientCode = trim($value[6]);
+                    $deviceType = trim($value[7]);
+                    $plan = trim($value[8]);
+                    $brand = trim($value[9]);
+                    $model = trim($value[10]);
+                    $color = trim($value[11]);
+                    $devicePurchaseDate = trim($value[12]);
+                    $PhoneNumber = trim($value[13]);
+                    $imei = trim($value[14]);
+                    $msn = trim($value[15]);
+                    $xcvr = trim($value[16]);
+                    $fabCode = trim($value[17]);
+                    $invoiceNumber = trim($value[18]);
+                    $humidity = trim(strtolower($value[19])) == "si" ? 1 : 0 ;
+                    $failure1 = trim($value[20]);
+                    $failure2 = trim($value[21]);
+                    $deviceProblem = trim($value[22]);
+                    $observations = trim($value[23]);
+                    $status =  trim($value[24]);
+                    $accessory1 = trim($value[25]);
+                    $accessory2 = trim($value[26]);
+
+                    $line = $key+1 . "<br/>";
+
+                    //--DEVICE TYPE--//
+                    $entity = $this->findEntity('Solucel\AdminBundle\Entity\DeviceType', $deviceType, false);
+                    if(!empty($entity)){
+                        $objDeviceType = $entity[0];
+                    }
+                    else{
+                        $error .= "Error en Tipo de dispositivo {$deviceType}, línea ".$line;
+                        continue;
+                    }
+
+                    //--STATUS--//
+                    $entity = $this->findEntity('Solucel\AdminBundle\Entity\RepairStatus', $status, false);
+                    if(!empty($entity)){
+                        $objStatus = $entity[0];
+                    }
+                    else{
+                        $error .= "Error en Status {$status}, línea ".$line;
+                        continue;
+                    }
+
+                    //--CLIENT--//
+                    $entity = $em->getRepository('SolucelAdminBundle:Client')->findOneByClientCode($clientCode);
+                    if(!empty($entity)){
+                        $objClient = $entity;
+                    }
+                    else{
+                        $error .= "Error en código de cliente {$clientCode}, línea ".$line;
+                        continue;
+                    }
+
+                    //--OPERATOR--//
+                    $entity = $this->findEntity('Solucel\AdminBundle\Entity\DeviceColor', $color, false);
+                    if(!empty($entity)){
+                        $objColor = $entity[0];
+                    }
+                    else{
+                        $error .= "Error en Operador {$operator}, línea ".$line;
+                        continue;
+                    }
+
+                    //--OPERATOR--//
+                    $entity = $this->findEntity('Solucel\AdminBundle\Entity\Operator', $operator);
+                    if(!empty($entity)){
+                        $objOperator = $entity[0];
+                    }
+                    else{
+                        $error .= "Error en Operador {$operator}, línea ".$line;
+                        continue;
+                    }
+
+                    //**BRAND**//
+                    $entity = $this->findEntity('Solucel\AdminBundle\Entity\DeviceBrand', $brand);
+                    if(!empty($entity)){
+                        $objBrand = $entity[0];
+                    }
+                    else{
+                        $error .= "Error en Marca {$brand}, línea ".$line;
+                        continue;
+                    }
+
+                    //**MODEL**//
+                    $entity = $this->findEntity('Solucel\AdminBundle\Entity\DeviceModel', $model);
+                    if(!empty($entity)){
+                        $objModel = $entity[0];
+                    }
+                    else{
+                        $error .= "Error en Modelo {$model}, línea ".$line;
+                        continue;
+                    }
+
+                    //**AGENCY**//
+                    $entity = $this->findEntity('Solucel\AdminBundle\Entity\Agency', $agency);
+                    if(!empty($entity)){
+                        $objAgency = $entity[0];
+                    }
+                    else{
+                        $error .= "Error en Agencia {$agency}, línea ".$line;
+                        continue;
+                    }
+
+                    //**SERVICE CENTER**//
+                    $entity = $this->findEntity('Solucel\AdminBundle\Entity\ServiceCenter', $serviceCenter);
+                    if(!empty($entity)){
+                        $objServiceCenter = $entity[0];
+                    }
+                    else{
+                        $error .= "Error en Centro de servicio {$agency}, línea ".$line;
+                        continue;
+                    }
+
+                    //**FAILURE 1**//
+                    if($failure1 != ""){
+                        $entity = $this->findEntity('Solucel\AdminBundle\Entity\DeviceDefect', $failure1, false);
+                        if(!empty($entity)){
+                            $objFailure1 = $entity[0];
+                        }
+                        else{
+                            $error .= "Error en falla 1 {$failure1}, línea ".$line;
+                            continue;
+                        }
+                    }
+
+                    //**FAILURE 2**//
+                    if($failure2 != ""){
+                        $entity = $this->findEntity('Solucel\AdminBundle\Entity\DeviceDefect', $failure2, false);
+                        if(!empty($entity)){
+                            $objFailure2 = $entity[0];
+                        }
+                        else{
+                            $error .= "Error en falla 2 {$failure2}, línea ".$line;
+                            continue;
+                        }
+                    }
+
+                    //**ACCESSORY 1**//
+                    if($accessory1 != ""){
+                        $entity = $this->findEntity('Solucel\AdminBundle\Entity\DeviceAccessory', $accessory1, false);
+                        if(!empty($entity)){
+                            $objAccessory1 = $entity[0];
+                        }
+                        else{
+                            $error .= "Error en falla 1 {$accessory1}, línea ".$line;
+                            continue;
+                        }
+                    }
+
+                    //**ACCESSORY 2**//
+                    if($accessory2 != ""){
+                        $entity = $this->findEntity('Solucel\AdminBundle\Entity\DeviceAccessory', $accessory2, false);
+                        if(!empty($entity)){
+                            $objAccessory2 = $entity[0];
+                        }
+                        else{
+                            $error .= "Error en falla 2 {$accessory2}, línea ".$line;
+                            continue;
+                        }
+                    }
+
+                    $checkOrder = $em->getRepository('SolucelAdminBundle:RepairOrder')->findOneByTicketNumber($ticketNumber);
+                    if($checkOrder){
+                        $objRepairOder = $checkOrder;
+                    }
+                    else{
+                        $objRepairOder = new RepairOrder();
+                    }
+
+                    $objRepairOder->setCreatedBy($user);
+                    $entryType = $em->getRepository('SolucelAdminBundle:RepairOrder')->findOneByDeviceImei($imei);
+                    if(!$entryType){//INGRESO
+
+                        //print "entra ingreso";die;
+                        $objRepairOder->setRepairEntryType($em->getRepository('SolucelAdminBundle:RepairEntryType')->find(1));
+                    }
+                    else{//RE INGRESO
+                        //print "entra RE ingreso";die;
+                        $objRepairOder->setRepairEntryType($em->getRepository('SolucelAdminBundle:RepairEntryType')->find(2));
+                    }
+                    $objRepairOder->setOperator($objOperator);
+                    $objRepairOder->setAgency($objAgency);
+                    $objRepairOder->setClient($objClient);
+                    $objRepairOder->setDeviceBrand($objBrand);
+                    $objRepairOder->setDeviceModel($objModel);
+                    $objRepairOder->setDeviceType($objDeviceType);
+                    $objRepairOder->setDeviceColor($objColor);
+                    $objRepairOder->setServiceCenter($objServiceCenter);
+                    $objRepairOder->setRepairStatus($objStatus);
+                    $objRepairOder->setTicketNumber($ticketNumber);
+                    $objRepairOder->setDevicePlan($plan);
+                    $objRepairOder->setDeviceImei($imei);
+                    $objRepairOder->setDeviceMsn($msn);
+                    $objRepairOder->setDeviceXcvr($xcvr);
+                    $objRepairOder->setDeviceCodeFab($fabCode);
+                    $objRepairOder->setDeviceProblem($deviceProblem);
+                    $objRepairOder->setDeviceObservation($observations);
+                    $objRepairOder->setInvoiceNumber($invoiceNumber);
+
+                    //
+                    $objRepairOder->setDeviceBorrowedImei("N/A");
+                    $objRepairOder->setPrice(0);
+                    $objRepairOder->setDeposit("N/A");
+                    $objRepairOder->setDevicePurchaseDate(new \DateTime($devicePurchaseDate) );
+
+                    $daysToRepair = $objOperator->getDaysToFixDevice();
+                    $estimatedDeliveryDate = date('Y-m-d', strtotime($entryDate. ' + '.$daysToRepair.' days'));
+                    $objRepairOder->setEstimatedDeliveryDate(new \Datetime($estimatedDeliveryDate));
+                    $objRepairOder->setEntryDate(new \Datetime($entryDate));
+                    $objRepairOder->setHumidity($humidity);
+                    $objRepairOder->setEnabled(1);
+                    $objRepairOder->setDispatchPhotoPath("");
+                    $objRepairOder->setPhoneNumber($PhoneNumber);
+                    $objRepairOder->setGuideIn($guideIn);
+                    $objRepairOder->setReadyToAssign(0);
+                    $objRepairOder->setOldData(0);
+                    $objRepairOder->setFinishedAt(new \DateTime("now"));
+
+                    $objRepairOder->setCreatedAt(new \DateTime("now"));
+                    $objRepairOder->setUpdatedAt(new \DateTime("now"));
+
+                    $em->persist($objRepairOder);
+                    //$em->flush();
+
+                    //failures
+                    if(isset($objFailure1)){
+                        $objDeviceDefect1 = new RepairOrderDeviceDefect();
+                        $objDeviceDefect1->setRepairOrder($objRepairOder);
+                        $objDeviceDefect1->setDeviceDefect($objFailure1);
+                        $em->persist($objDeviceDefect1);
+                        unset($objFailure1);
+                    }
+
+                    if(isset($objFailure2)){
+                        $objDeviceDefect2 = new RepairOrderDeviceDefect();
+                        $objDeviceDefect2->setRepairOrder($objRepairOder);
+                        $objDeviceDefect2->setDeviceDefect($objFailure2);
+                        $em->persist($objDeviceDefect2);
+                        unset($objFailure2);
+
+                    }
+
+                    //accesories
+                    if(isset($objAccessory1)){
+                        $objDeviceAccessory1 = new RepairOrderDeviceAccessory();
+                        $objDeviceAccessory1->setRepairOrder($objRepairOder);
+                        $objDeviceAccessory1->setDeviceAccessory($objAccessory1);
+                        $em->persist($objDeviceAccessory1);
+                        unset($objAccessory1);
+                    }
+
+                    if(isset($objAccessory2)){
+                        $objDeviceAccessory2 = new RepairOrderDeviceAccessory();
+                        $objDeviceAccessory2->setRepairOrder($objRepairOder);
+                        $objDeviceAccessory2->setDeviceAccessory($objAccessory2);
+                        $em->persist($objDeviceAccessory2);
+                        unset($objAccessory2);
+                    }
+
+                    //$em->flush();
+                }
+            }
+
+            if($error != ""){
+                $this->get('services')->flashWarningCustom($request, "<br/>".$error);
+            }
+            else{
+                $em->flush();
+                $this->get('services')->flashSuccess($request);
+            }
+
+
+            return $this->redirectToRoute('solucel_admin_repairorder_batch');
+        }
+
+
+        return $this->render('SolucelAdminBundle:RepairOrder:batch.html.twig', array());
+
+
+
+    }
+
+
+    public function findEntity($entity, $searchTerm, $enabled = true){
+
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQueryBuilder();
+        $obj = $qb->select('x')->from($entity, 'x')
+            //$expr->neq('a.deleted', 1)
+            //->where( $qb->expr()->eq('x.name', "'".$searchTerm."'") )
+            ->where( 'x.name = :param_search' )
+            //->where( $qb->expr()->eq('x.name', ':param_search') )
+            ->setParameter('param_search', $searchTerm);
+            ;
+
+        if( $enabled){
+            //$qb->andWhere('x.enabled = 1');
+        }
+        $result = $qb->getQuery()
+            ->getResult();
+
+        return $result;
+
+    }
 
 }
+

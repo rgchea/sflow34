@@ -121,5 +121,9 @@ solucel_admin_repairorder_sketch:
 solucel_admin_repairorder_reassign:
     path:     /{id}/reassign
     defaults: { _controller: "SolucelAdminBundle:RepairOrder:reassignTec" }
-  
+
+solucel_admin_repairorder_batch:
+    path:     /batch
+    defaults: { _controller: "SolucelAdminBundle:RepairOrder:batch" }
+
   
