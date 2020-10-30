@@ -2740,22 +2740,30 @@ class RepairOrderController extends Controller
                     $checkOrder = $em->getRepository('SolucelAdminBundle:RepairOrder')->findOneByTicketNumber($ticketNumber);
                     if($checkOrder){
                         $objRepairOder = $checkOrder;
+                        $isUpdate = 1;
                     }
                     else{
                         $objRepairOder = new RepairOrder();
+                        $isUpdate = 0;
                     }
 
                     $objRepairOder->setCreatedBy($user);
                     $entryType = $em->getRepository('SolucelAdminBundle:RepairOrder')->findOneByDeviceImei($imei);
                     if(!$entryType){//INGRESO
-
                         //print "entra ingreso";die;
                         $objRepairOder->setRepairEntryType($em->getRepository('SolucelAdminBundle:RepairEntryType')->find(1));
                     }
                     else{//RE INGRESO
                         //print "entra RE ingreso";die;
-                        $objRepairOder->setRepairEntryType($em->getRepository('SolucelAdminBundle:RepairEntryType')->find(2));
+                        if($isUpdate == 1){
+                            //$objRepairOder->setRepairEntryType($em->getRepository('SolucelAdminBundle:RepairEntryType')->find(2));
+                        }
+                        else{
+                            $objRepairOder->setRepairEntryType($em->getRepository('SolucelAdminBundle:RepairEntryType')->find(2));
+                        }
+
                     }
+
                     $objRepairOder->setOperator($objOperator);
                     $objRepairOder->setAgency($objAgency);
                     $objRepairOder->setClient($objClient);
@@ -2800,40 +2808,45 @@ class RepairOrderController extends Controller
                     $em->persist($objRepairOder);
                     //$em->flush();
 
-                    //failures
-                    if(isset($objFailure1)){
-                        $objDeviceDefect1 = new RepairOrderDeviceDefect();
-                        $objDeviceDefect1->setRepairOrder($objRepairOder);
-                        $objDeviceDefect1->setDeviceDefect($objFailure1);
-                        $em->persist($objDeviceDefect1);
-                        unset($objFailure1);
+
+                    if($isUpdate == 0){
+                        //failures
+                        if(isset($objFailure1)){
+                            $objDeviceDefect1 = new RepairOrderDeviceDefect();
+                            $objDeviceDefect1->setRepairOrder($objRepairOder);
+                            $objDeviceDefect1->setDeviceDefect($objFailure1);
+                            $em->persist($objDeviceDefect1);
+                            unset($objFailure1);
+                        }
+
+                        if(isset($objFailure2)){
+                            $objDeviceDefect2 = new RepairOrderDeviceDefect();
+                            $objDeviceDefect2->setRepairOrder($objRepairOder);
+                            $objDeviceDefect2->setDeviceDefect($objFailure2);
+                            $em->persist($objDeviceDefect2);
+                            unset($objFailure2);
+
+                        }
+
+                        //accesories
+                        if(isset($objAccessory1)){
+                            $objDeviceAccessory1 = new RepairOrderDeviceAccessory();
+                            $objDeviceAccessory1->setRepairOrder($objRepairOder);
+                            $objDeviceAccessory1->setDeviceAccessory($objAccessory1);
+                            $em->persist($objDeviceAccessory1);
+                            unset($objAccessory1);
+                        }
+
+                        if(isset($objAccessory2)){
+                            $objDeviceAccessory2 = new RepairOrderDeviceAccessory();
+                            $objDeviceAccessory2->setRepairOrder($objRepairOder);
+                            $objDeviceAccessory2->setDeviceAccessory($objAccessory2);
+                            $em->persist($objDeviceAccessory2);
+                            unset($objAccessory2);
+                        }
+
                     }
 
-                    if(isset($objFailure2)){
-                        $objDeviceDefect2 = new RepairOrderDeviceDefect();
-                        $objDeviceDefect2->setRepairOrder($objRepairOder);
-                        $objDeviceDefect2->setDeviceDefect($objFailure2);
-                        $em->persist($objDeviceDefect2);
-                        unset($objFailure2);
-
-                    }
-
-                    //accesories
-                    if(isset($objAccessory1)){
-                        $objDeviceAccessory1 = new RepairOrderDeviceAccessory();
-                        $objDeviceAccessory1->setRepairOrder($objRepairOder);
-                        $objDeviceAccessory1->setDeviceAccessory($objAccessory1);
-                        $em->persist($objDeviceAccessory1);
-                        unset($objAccessory1);
-                    }
-
-                    if(isset($objAccessory2)){
-                        $objDeviceAccessory2 = new RepairOrderDeviceAccessory();
-                        $objDeviceAccessory2->setRepairOrder($objRepairOder);
-                        $objDeviceAccessory2->setDeviceAccessory($objAccessory2);
-                        $em->persist($objDeviceAccessory2);
-                        unset($objAccessory2);
-                    }
 
                     //$em->flush();
                 }
