@@ -28,7 +28,7 @@ class DeviceReplacementType extends AbstractType
             'class' => 'Solucel\AdminBundle\Entity\DeviceModel',
             'query_builder' => function (\Doctrine\ORM\EntityRepository $er)  use ($options){
                 return $er->createQueryBuilder('Model')
-                    ->where('Moodel.enabled = 1')
+                    ->where('Model.enabled = 1')
                     //->setParameter('param_operator', $options["operator"]);
                     ->orderBy("Model.name", "ASC");
 

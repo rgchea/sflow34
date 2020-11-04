@@ -37,7 +37,7 @@ class DeviceModelController extends Controller
 			
 		}
 		else{
-			$entities = $em->getRepository('SolucelAdminBundle:DeviceModel')->findBy(array('enabled' => 1), array("name", "ASC"));
+			$entities = $em->getRepository('SolucelAdminBundle:DeviceModel')->findBy(array('enabled' => 1), array("name" => "ASC"));
 		}		
 
 

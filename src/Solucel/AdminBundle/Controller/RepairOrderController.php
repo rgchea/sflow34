@@ -2807,8 +2807,7 @@ class RepairOrderController extends Controller
 
                     $em->persist($objRepairOder);
                     //$em->flush();
-
-
+                    
                     if($isUpdate == 0){
                         //failures
                         if(isset($objFailure1)){
