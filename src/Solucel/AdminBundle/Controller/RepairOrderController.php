@@ -249,7 +249,8 @@ class RepairOrderController extends Controller
         //var_dump($role);die;
         //$role = 'cliente';
         if($role != "LOGISTICA" && $role != "ADMINISTRADOR"){
-            throw new AccessDeniedException();//
+            print "ACCESO DENEGADO";DIE;
+            //throw new AccessDeniedException();//
         }
 
 
@@ -439,7 +440,8 @@ class RepairOrderController extends Controller
         $role = $user->getRole()->getName();
 
         if($role != "LOGISTICA" && $role != "ADMINISTRADOR"){
-            throw new AccessDeniedException();//
+            PRINT "ACCESO DENEGADO";DIE;
+            //throw new AccessDeniedException();//
         }
         //print "<pre>";
         //var_dump($_REQUEST);die;
@@ -506,7 +508,8 @@ class RepairOrderController extends Controller
         //var_dump($role);die;
         //$role = 'cliente';
         if($role != "LOGISTICA" && $role != "ADMINISTRADOR"){
-            throw new AccessDeniedException();//
+            PRINT "ACCESO DENEGADO";DIE;
+            //throw new AccessDeniedException();//
         }
 
 
@@ -678,7 +681,8 @@ class RepairOrderController extends Controller
         $role = $user->getRole()->getName();
 
         if($role != "LOGISTICA" && $role != "ADMINISTRADOR"){
-            throw new AccessDeniedException();//
+            PRINT "ACCESO DENEGADO";DIE;
+            //throw new AccessDeniedException();//
         }
         //print "<pre>";
         //var_dump($_REQUEST);die;
@@ -2482,10 +2486,9 @@ class RepairOrderController extends Controller
         //var_dump($role);die;
         //$role = 'cliente';
         if ($role != "ADMINISTRADOR") {
-            throw new AccessDeniedException();//
+            PRINT "ACCESO DENEGADO";DIE;
+            //throw new AccessDeniedException();//
         }
-
-
 
         if(isset($_REQUEST["loadSubmit"])){
             set_time_limit(60000);

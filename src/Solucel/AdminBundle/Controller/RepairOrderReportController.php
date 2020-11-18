@@ -492,8 +492,8 @@ class RepairOrderReportController extends Controller
 		 */
 		 
 		$entities = $em->getRepository('SolucelAdminBundle:RepairOrderFix')->filterResponseTimeOrders($arrayReturn["arrayFilter"]);
-		/*print "<pre>";
-		var_dump($entities);die;*/
+		print "<pre>";
+		var_dump($entities);die;
 		 
 		     
             $operators = $arrayReturn["operators"];
