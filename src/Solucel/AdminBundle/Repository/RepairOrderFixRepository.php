@@ -327,14 +327,18 @@ class RepairOrderFixRepository extends \Doctrine\ORM\EntityRepository
 			$mes = $row["monthValue"];
 			$days = $row["days"];
 
-			if($days > 7 ){
-				$arrReturn[$mes][8] = $arrReturn[$mes][8] + 1;
-				$arrTotalByDays[8] = $arrTotalByDays[8] + 1; 
-			}else{
-				$arrReturn[$mes][$days] = $arrReturn[$mes][$days] + 1;
-				$arrTotalByDays[$days] = $arrTotalByDays[$days] + 1;					
-			}
-							
+
+			if($days > 0){
+                if($days > 7 ){
+                    $arrReturn[$mes][8] = $arrReturn[$mes][8] + 1;
+                    $arrTotalByDays[8] = $arrTotalByDays[8] + 1;
+                }else{
+                    $arrReturn[$mes][$days] = $arrReturn[$mes][$days] + 1;
+                    $arrTotalByDays[$days] = $arrTotalByDays[$days] + 1;
+                }
+
+            }
+
 			
 		}	   
 		
