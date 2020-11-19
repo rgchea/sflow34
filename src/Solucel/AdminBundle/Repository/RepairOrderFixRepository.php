@@ -328,7 +328,7 @@ class RepairOrderFixRepository extends \Doctrine\ORM\EntityRepository
 			$days = $row["days"];
 
 
-			if($days > 0){
+			if($days >= 0){
                 if($days > 7 ){
                     $arrReturn[$mes][8] = $arrReturn[$mes][8] + 1;
                     $arrTotalByDays[8] = $arrTotalByDays[8] + 1;
