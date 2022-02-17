@@ -25,7 +25,6 @@
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "jms/serializer-bundle": "^2.4",
         "datatables/datatables": "1.10.*",
-        "symfony/webpack-encore-pack": "^1.0",
         "twig/extensions": "~1.0",
         "spraed/pdf-generator-bundle": "v1.0",
         "whiteoctober/tcpdf-bundle": "dev-master",
