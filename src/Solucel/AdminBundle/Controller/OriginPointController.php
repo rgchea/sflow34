@@ -8,46 +8,46 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 
-use Solucel\AdminBundle\Entity\RepairEntryType;
-use Solucel\AdminBundle\Form\RepairEntryTypeType;
+use Solucel\AdminBundle\Entity\OriginPoint;
+use Solucel\AdminBundle\Form\OriginPointType;
 
 /**
- * RepairEntryType controller.
+ * OriginPoint controller.
  *
  */
-class RepairEntryTypeController extends Controller
+class OriginPointController extends Controller
 {
     /**
-     * Lists all RepairEntryType entities.
+     * Lists all OriginPoint entities.
      *
      */
     public function indexAction()
     {
     	$session = new Session();
-    	$this->get("services")->setVars('repairEntryType');
+    	$this->get("services")->setVars('originPoint');
 		
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('SolucelAdminBundle:RepairEntryType')->findAll();
+        $entities = $em->getRepository('SolucelAdminBundle:OriginPoint')->findAll();
 
-        return $this->render('SolucelAdminBundle:RepairEntryType:index.html.twig', array(
+        return $this->render('SolucelAdminBundle:OriginPoint:index.html.twig', array(
             'entities' => $entities,
         ));
     }
 
     /**
-     * Creates a new RepairEntryType entity.
+     * Creates a new OriginPoint entity.
      *
      */
     public function newAction(Request $request)
     {
     	
-		$this->get("services")->setVars('repairEntryType');
-        $entity = new RepairEntryType();
+		$this->get("services")->setVars('originPoint');
+        $entity = new OriginPoint();
         $form   = $this->createCreateForm($entity);
 		 
 	
-        return $this->render('SolucelAdminBundle:RepairEntryType:new.html.twig', array(
+        return $this->render('SolucelAdminBundle:OriginPoint:new.html.twig', array(
             'entity' => $entity,
             'form' => $form->createView(),
         ));
@@ -56,30 +56,30 @@ class RepairEntryTypeController extends Controller
  
 
     /**
-     * Finds and displays a RepairEntryType entity.
+     * Finds and displays a OriginPoint entity.
      *
      */
     public function showAction($entity)
     {
         $deleteForm = $this->createDeleteForm($entity);
 
-        return $this->render('solucel_admin_repairentrytype/show.html.twig', array(
+        return $this->render('solucel_admin_originpoint/show.html.twig', array(
             'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
-     * Displays a form to edit an existing RepairEntryType entity.
+     * Displays a form to edit an existing OriginPoint entity.
      *
      */
     public function editAction(Request $request, $id)
     {
     	
-		$this->get("services")->setVars('repairEntryType');
+		$this->get("services")->setVars('originPoint');
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SolucelAdminBundle:RepairEntryType')->find($id);
+        $entity = $em->getRepository('SolucelAdminBundle:OriginPoint')->find($id);
 				
         $deleteForm = $this->createDeleteForm($entity);
 		$editForm = $this->createEditForm($entity);
@@ -91,10 +91,10 @@ class RepairEntryTypeController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirectToRoute('solucel_admin_repairentrytype_edit', array('id' => $id));
+            return $this->redirectToRoute('solucel_admin_originpoint_edit', array('id' => $id));
         }
 
-        return $this->render('SolucelAdminBundle:RepairEntryType:edit.html.twig', array(
+        return $this->render('SolucelAdminBundle:OriginPoint:edit.html.twig', array(
             'entity' => $entity,
             'form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -102,25 +102,25 @@ class RepairEntryTypeController extends Controller
     }
 	
     /**
-     * Deletes a RepairEntryType entity.
+     * Deletes a OriginPoint entity.
      *
      */
     public function deleteAction(Request $request, $id)
     {
     		
-    	$this->get("services")->setVars('repairEntryType');
+    	$this->get("services")->setVars('originPoint');
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SolucelAdminBundle:RepairEntryType')->find($id);		
+        $entity = $em->getRepository('SolucelAdminBundle:OriginPoint')->find($id);		
         $form = $this->createDeleteForm($entity);
         $form->handleRequest($request);
 
         //if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('SolucelAdminBundle:RepairEntryType')->find($entity);
+            $entity = $em->getRepository('SolucelAdminBundle:OriginPoint')->find($entity);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find RepairEntryType entity.');
+                throw $this->createNotFoundException('Unable to find OriginPoint entity.');
             }
 
 
@@ -137,7 +137,7 @@ class RepairEntryTypeController extends Controller
                     if (intval($e->getPrevious()->getCode()) == 23000)
                     {
                         $this->get('services')->flashWarningForeignKey($request);
-                        return $this->redirectToRoute('solucel_admin_repairentrytype_index');
+                        return $this->redirectToRoute('solucel_admin_originpoint_index');
                     }
                     else
                     {
@@ -153,20 +153,20 @@ class RepairEntryTypeController extends Controller
         //}
 		
 		$this->get('services')->flashSuccess($request);
-        return $this->redirectToRoute('solucel_admin_repairentrytype_index');
+        return $this->redirectToRoute('solucel_admin_originpoint_index');
     }
 
     /**
-     * Creates a form to delete a RepairEntryType entity.
+     * Creates a form to delete a OriginPoint entity.
      *
-     * @param RepairEntryType The RepairEntryType entity
+     * @param OriginPoint The OriginPoint entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
     private function createDeleteForm($entity)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('solucel_admin_repairentrytype_delete', array('id' => $entity->getId())))
+            ->setAction($this->generateUrl('solucel_admin_originpoint_delete', array('id' => $entity->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;
@@ -176,13 +176,13 @@ class RepairEntryTypeController extends Controller
 	
 	
     /**
-     * Creates a new RepairEntryType entity.
+     * Creates a new OriginPoint entity.
      *
      */
     public function createAction(Request $request)
     {
 		
-        $entity = new RepairEntryType();
+        $entity = new OriginPoint();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 		/*print "<pre>";
@@ -197,7 +197,7 @@ class RepairEntryTypeController extends Controller
 
 
 			$this->get('services')->flashSuccess($request);
-            return $this->redirect($this->generateUrl('solucel_admin_repairentrytype_index'));
+            return $this->redirect($this->generateUrl('solucel_admin_originpoint_index'));
 			 
         }
 		/*
@@ -205,24 +205,24 @@ class RepairEntryTypeController extends Controller
 			print "FORMULARIO NO VALIDO";DIE;
 		}*/
 
-        return $this->render('SolucelAdminBundle:RepairEntryType:new.html.twig', array(
+        return $this->render('SolucelAdminBundle:OriginPoint:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
 
     /**
-     * Creates a form to create a RepairEntryType entity.
+     * Creates a form to create a OriginPoint entity.
      *
-     * @param RepairEntryType $entity The entity
+     * @param OriginPoint $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
     private function createCreateForm($entity)
     {
     	//$this->setVars();
-        $form = $this->createForm(RepairEntryTypeType::class, $entity, array(
-            'action' => $this->generateUrl('solucel_admin_repairentrytype_create'),
+        $form = $this->createForm(OriginPointType::class, $entity, array(
+            'action' => $this->generateUrl('solucel_admin_originpoint_create'),
             'method' => 'POST'
             //'client' => $this->userLogged,
         ));
@@ -235,17 +235,17 @@ class RepairEntryTypeController extends Controller
 	
 	
     /**
-    * Creates a form to edit a RepairEntryType entity.
+    * Creates a form to edit a OriginPoint entity.
     *
-    * @param RepairEntryType $entity The entity
+    * @param OriginPoint $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
     private function createEditForm($entity)
     {
     	//$this->setVars();
-        $form = $this->createForm(RepairEntryTypeType::class, $entity, array(
-            'action' => $this->generateUrl('solucel_admin_repairentrytype_update', array('id' => $entity->getId())),
+        $form = $this->createForm(OriginPointType::class, $entity, array(
+            'action' => $this->generateUrl('solucel_admin_originpoint_update', array('id' => $entity->getId())),
             'method' => 'PUT',
             //'client' => $this->userLogged,
         ));
@@ -256,18 +256,18 @@ class RepairEntryTypeController extends Controller
 	
 	
     /**
-     * Edits an existing RepairEntryType entity.
+     * Edits an existing OriginPoint entity.
      *
      */
     public function updateAction(Request $request, $id)
     {
-    	$this->get("services")->setVars('repairEntryType');
+    	$this->get("services")->setVars('originPoint');
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SolucelAdminBundle:RepairEntryType')->find($id);
+        $entity = $em->getRepository('SolucelAdminBundle:OriginPoint')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find RepairEntryType entity.');
+            throw $this->createNotFoundException('Unable to find OriginPoint entity.');
         }
 
         $deleteForm = $this->createDeleteForm($entity);
@@ -278,11 +278,11 @@ class RepairEntryTypeController extends Controller
             $em->flush();
 
 			$this->get('services')->flashSuccess($request);
-            return $this->redirect($this->generateUrl('solucel_admin_repairentrytype_index', array('id' => $id)));
+            return $this->redirect($this->generateUrl('solucel_admin_originpoint_index', array('id' => $id)));
 			 
         }
 
-        return $this->render('SolucelAdminBundle:RepairEntryType:edit.html.twig', array(
+        return $this->render('SolucelAdminBundle:OriginPoint:edit.html.twig', array(
             'entity'      => $entity,
             'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

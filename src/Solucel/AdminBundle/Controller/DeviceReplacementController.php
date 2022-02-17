@@ -488,11 +488,17 @@ class DeviceReplacementController extends Controller
 					
 					//var_dump($replacementType);die;
 					
-					$entity = $this->findEntity('Solucel\AdminBundle\Entity\DeviceReplacementType', $replacementType);
+					//$entity = $this->findEntity('Solucel\AdminBundle\Entity\DeviceReplacementType', $replacementType);
+					$entity = $em->getRepository('SolucelAdminBundle:DeviceReplacementType')->findByName($replacementType);
+
 					if(!empty($entity)){
+					    //print "1";
+
 						$entity = $entity[0];
+                        //var_dump($entity->getId());
 					} 
 					else{
+                        //print "2";die;
 						$entity = new ReplacementType();
 						$entity->setName($replacementType);
 			            $em->persist($entity);
@@ -502,11 +508,11 @@ class DeviceReplacementController extends Controller
 					$objDeviceReplacementType = $entity;
 					
 					
-					
 					//**BRAND**//
-					$field =  $value[2];
+					$field =  trim($value[2]);
 					
-					$entity = $this->findEntity('Solucel\AdminBundle\Entity\DeviceBrand', $field);
+					//$entity = $this->findEntity('Solucel\AdminBundle\Entity\DeviceBrand', $field);
+                    $entity = $em->getRepository('SolucelAdminBundle:DeviceBrand')->findByName($field);
 					if(!empty($entity)){
 						$entity = $entity[0];
 					} 
@@ -522,9 +528,10 @@ class DeviceReplacementController extends Controller
 					
 					
 					//**MODEL**//
-					$field =  $value[3];
+					$field =  trim($value[3]);
 					
-					$entity = $this->findEntity('Solucel\AdminBundle\Entity\DeviceModel', $field);
+					//$entity = $this->findEntity('Solucel\AdminBundle\Entity\DeviceModel', $field);
+                    $entity = $em->getRepository('SolucelAdminBundle:DeviceModel')->findBy(array("name" => $field, "enabled" => 1));
 					if(!empty($entity)){
 						$entity = $entity[0];
 					} 
@@ -538,7 +545,7 @@ class DeviceReplacementController extends Controller
                         $entity->setEnabled(1);
 						
 			            $em->persist($entity);
-			            $em->flush();
+			            //$em->flush();
 					} 
 					$objModel = $entity;
 					
@@ -570,6 +577,7 @@ class DeviceReplacementController extends Controller
     }
 
 
+
 	public function findEntity($entity, $searchTerm){
 
 		$em = $this->getDoctrine()->getManager();
@@ -581,8 +589,14 @@ class DeviceReplacementController extends Controller
                     $qb->andWhere('x.enabled = 1');
                 }
 				$qb->getQuery()
-				->getResult();
-				
+				//->getArrayResult();
+				//->execute();
+                //->getSingleResult();
+                //->toIterable();
+                ->getScalarResult();
+
+
+        var_dump($obj);die;
 		return $obj;
 		
 	}

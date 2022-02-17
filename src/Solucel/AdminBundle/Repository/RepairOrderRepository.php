@@ -308,6 +308,7 @@ class RepairOrderRepository extends \Doctrine\ORM\EntityRepository
         //						LEFT JOIN  device_replacement replacement ON (replacement.id = oreplacement.device_replacement_id)
 													
 		//aca chea
+        //var_dump($sql);die;
 
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 	    $stmt->execute();

@@ -83,6 +83,7 @@ class RepairOrderType extends AbstractType
 			
 			//DEVICE END	
 			->add('repairEntryType', null, array('label'=>"Tipo de ingreso", 'required'=>true))
+			->add('originPoint', null, array('label'=>"Punto de Origen", 'required'=>false))
 			->add('invoiceNumber', null, array('label'=>"Número de Factura", 'required'=>true))
 			->add('humidity', null, array('label'=>"Ingreso por Humedad", 'required'=>false))
 			;

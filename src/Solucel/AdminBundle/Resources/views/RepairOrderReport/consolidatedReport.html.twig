@@ -209,6 +209,7 @@
                     	<th>Fecha de ingreso</th>
                     	<th>Tipo ingreso</th>
                     	<th>Operador</th>
+						<th>Punto de Origen</th>
                     	<th>Centro de servicio</th>
                     	<th>No Boleta</th>
                     	<th>Marca</th>
@@ -305,6 +306,7 @@
                     	<td>{{entity.entry_date}}</td>
                     	<td>{{entity.entryType}}</td>
                     	<td>{{entity.operator}}</td>
+                    	<td>{{entity.originPoint}}</td>
                     	<td>{{entity.service}}</td>
                     	<td>{{entity.ticketNumber}}</td>
                     	<td>{{entity.brand}}</td>
@@ -442,7 +444,6 @@
 				data:"operator_id="+$( "#select_operator" ).val(),
 				success:function(data){
 					
-					
 					if (!isEmpty(data)){
 						
 						var items = [];
@@ -458,9 +459,7 @@
 					else{
 						$("#select_agency").html("<option value='0'>Todos</option>");
 					}
-					
-					
-					
+
 				}
 			});	 
 			

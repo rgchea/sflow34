@@ -3,6 +3,9 @@ Solucel\AdminBundle\Entity\RepairOrder:
     repositoryClass: Solucel\AdminBundle\Repository\RepairOrderRepository
     table: repair_order
     indexes:
+        origin_point:
+            columns:
+                - origin_point_id
         repair_entry_type_id:
             columns:
                 - repair_entry_type_id
@@ -335,6 +338,18 @@ Solucel\AdminBundle\Entity\RepairOrder:
             inversedBy: null
             joinColumns:
                 repair_entry_type_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: true
+
+        originPoint:
+            targetEntity: OriginPoint
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                origin_point_id:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: true

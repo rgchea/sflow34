@@ -1,0 +1,18 @@
+{% extends 'SolucelAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+{{ parent() }}
+<li> <a href="{{ path('solucel_admin_originpoint_index') }}">Listado de Puntos de Origen</a> </li>
+<li> <a href="{{ path('solucel_admin_originpoint_edit', { 'id': entity.id }) }}">Editar Punto de Origen</a> </li>
+{% endblock %}
+
+{% block body -%}
+    {{ parent() }}
+    {{ include('SolucelAdminBundle:OriginPoint:form.html.twig') }}
+{% endblock %}
+
+{% block extrascripts %}
+    
+    
+
+{% endblock %}

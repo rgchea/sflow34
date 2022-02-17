@@ -35,8 +35,7 @@ use Symfony\Component\Validator\Constraints\Time;
 
 class RepairOrderController extends Controller
 {
-	
-	
+
 
     /**
      * Lists all RepairOrder entities.
@@ -381,8 +380,11 @@ class RepairOrderController extends Controller
             $tmpReplacements = "";
             if($objReplacemets){
                 foreach ($objReplacemets as $replacement){
-                    $r = $replacement->getDeviceReplacement()->getName();
-                    $tmpReplacements .= $tmpReplacements == "" ? $r: ",".$r;
+                    if($replacement->getDeviceReplacement() != null){
+                        $r = $replacement->getDeviceReplacement()->getName();
+                        $tmpReplacements .= $tmpReplacements == "" ? $r: ",".$r;
+
+                    }
                 }
             }
             else{
@@ -630,7 +632,15 @@ class RepairOrderController extends Controller
             $brands = $em->getRepository('SolucelAdminBundle:DeviceBrand')->findByEnabled(1);
         }
 
+        //aqui rchea
         $entities = $em->getRepository('SolucelAdminBundle:RepairOrder')->filterOrders($arrayFilter);
+
+        /*
+        foreach ($entities as $myOrder){
+            var_dump($myOrder);
+        }
+        die;
+        */
 
 
         /*
@@ -639,7 +649,6 @@ class RepairOrderController extends Controller
 
         //$service_centers = $em->getRepository('SolucelAdminBundle:ServiceCenter')->findByEnabled(1);
         $repair_status = $em->getRepository('SolucelAdminBundle:RepairStatus')->findBy(array("id" => 15), array("id" => "ASC"));
-
 
         return $this->render('SolucelAdminBundle:RepairOrder:paperwork.html.twig', array(
             'entities'       => $entities,
@@ -746,7 +755,6 @@ class RepairOrderController extends Controller
 		$objAdminSetting = $em->getRepository('SolucelAdminBundle:AdminSetting')->find(1);
         $entryEstimatedTime = intval($objAdminSetting->getEntryEstimatedTime());
         $dateNow = date('Y-m-d H:i:s');
-
 
 				
         return $this->render('SolucelAdminBundle:RepairOrder:new.html.twig', array(

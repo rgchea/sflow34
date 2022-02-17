@@ -1583,4 +1583,33 @@ class RepairOrder
     {
         return $this->oldData;
     }
+    /**
+     * @var \Solucel\AdminBundle\Entity\OriginPoint
+     */
+    private $originPoint;
+
+
+    /**
+     * Set originPoint
+     *
+     * @param \Solucel\AdminBundle\Entity\OriginPoint $originPoint
+     *
+     * @return RepairOrder
+     */
+    public function setOriginPoint(\Solucel\AdminBundle\Entity\OriginPoint $originPoint = null)
+    {
+        $this->originPoint = $originPoint;
+
+        return $this;
+    }
+
+    /**
+     * Get originPoint
+     *
+     * @return \Solucel\AdminBundle\Entity\OriginPoint
+     */
+    public function getOriginPoint()
+    {
+        return $this->originPoint;
+    }
 }

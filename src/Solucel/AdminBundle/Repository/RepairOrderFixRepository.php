@@ -673,7 +673,8 @@ class RepairOrderFixRepository extends \Doctrine\ORM\EntityRepository
 						CONCAT(pfc.name, ' ', pfc.code) problem_found_code,
 						CONCAT(arc.name, ' ', arc.code) action_reason_code,
 						CONCAT(tc.description, ' ', tc.transaction_code) transaction_code,
-						rof.software_out
+						rof.software_out,
+						originp.name originPoint
 					
 						
 						
@@ -698,6 +699,7 @@ class RepairOrderFixRepository extends \Doctrine\ORM\EntityRepository
 						LEFT JOIN problem_found_code pfc ON (pfc.id = rof.problem_found_code_id)
 						LEFT JOIN action_reason_code arc ON (arc.id = rof.action_reason_code_id)
 						LEFT JOIN transaction_code tc ON (tc.id = rof.transaction_code_id)
+						LEFT JOIN origin_point originp ON (originp.id = repairo.origin_point_id)
 						
 												
 					WHERE repairo.enabled = 1

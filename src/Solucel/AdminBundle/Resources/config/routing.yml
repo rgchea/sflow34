@@ -107,6 +107,10 @@ solucel_admin_repairentrytype:
     resource: "@SolucelAdminBundle/Resources/config/routing/repairentrytype.yml"
     prefix:   /repairentrytype
 
+solucel_admin_originpoint:
+    resource: "@SolucelAdminBundle/Resources/config/routing/originpoint.yml"
+    prefix:   /originpoint
+
 solucel_admin_repairstatus:
     resource: "@SolucelAdminBundle/Resources/config/routing/repairstatus.yml"
     prefix:   /repairstatus
